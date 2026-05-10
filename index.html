@@ -99,22 +99,8 @@
 <section id="anuncios">
   <div class="label">Novedades</div>
   <div class="title">Anuncios</div>
-  <div class="anuncios-grid">
-    <div class="anuncio">
-      <div class="anuncio-date">10 May 2026</div>
-      <div class="anuncio-title">Inscripciones Alpha abiertas</div>
-      <div class="anuncio-body">Regístrate al programa y vive una experiencia transformadora junto a tu familia.</div>
-    </div>
-    <div class="anuncio">
-      <div class="anuncio-date">5 May 2026</div>
-      <div class="anuncio-title">Retiro de oración</div>
-      <div class="anuncio-body">Este sábado a las 9am. No faltes, será un encuentro especial con Dios.</div>
-    </div>
-    <div class="anuncio">
-      <div class="anuncio-date">1 May 2026</div>
-      <div class="anuncio-title">Bienvenidos nuevos miembros</div>
-      <div class="anuncio-body">Celebramos a quienes se unen a nuestra familia este mes. ¡Los esperamos!</div>
-    </div>
+  <div class="anuncios-grid" id="anunciosGrid">
+    <div class="anuncio" style="opacity:.4;font-size:13px;">Cargando anuncios...</div>
   </div>
 </section>
 
@@ -270,6 +256,7 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="index.js"></script>
 </body>
 </html>
