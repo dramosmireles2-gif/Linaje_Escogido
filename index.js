@@ -6,6 +6,7 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
+  loadGaleria();
 });
 
 // ── ANUNCIOS ──
@@ -25,9 +26,33 @@ async function loadAnuncios() {
 
   grid.innerHTML = data.map(a => `
     <div class="anuncio">
-      <div class="anuncio-date">${formatDate(a.fecha)}</div>
-      <div class="anuncio-title">${a.titulo}</div>
-      <div class="anuncio-body">${a.cuerpo}</div>
+      ${a.imagen_url ? `<img class="anuncio-img" src="${a.imagen_url}" alt="${a.titulo}"/>` : ''}
+      <div class="anuncio-text">
+        <div class="anuncio-date">${formatDate(a.fecha)}</div>
+        <div class="anuncio-title">${a.titulo}</div>
+        <div class="anuncio-body">${a.cuerpo}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── GALERÍA ──
+async function loadGaleria() {
+  const grid = document.getElementById('galeriaGrid');
+  const { data, error } = await db
+    .from('galeria_fotos')
+    .select('*')
+    .eq('activa', true)
+    .order('orden');
+
+  if (error || !data || !data.length) {
+    grid.innerHTML = '<div style="opacity:.4;font-size:13px;padding:20px;">No hay fotos aún.</div>';
+    return;
+  }
+
+  grid.innerHTML = data.map(f => `
+    <div class="gallery-item">
+      <img src="${f.url}" alt="Galería" style="width:100%;height:100%;object-fit:cover;display:block;"/>
     </div>
   `).join('');
 }

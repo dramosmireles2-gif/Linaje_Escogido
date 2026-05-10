@@ -76,6 +76,7 @@ async function loadAnuncios() {
   }
   list.innerHTML = data.map(a => `
     <div class="item-card ${a.activo ? '' : 'inactivo'}">
+      ${a.imagen_url ? `<img src="${a.imagen_url}" style="width:72px;height:72px;object-fit:cover;flex-shrink:0;border:1px solid rgba(26,26,26,.1);" alt=""/>` : ''}
       <div class="item-info">
         <div class="item-title">${a.titulo}</div>
         <div class="item-meta">${formatDate(a.fecha)} &nbsp;·&nbsp; <span class="badge ${a.activo ? 'badge-green' : 'badge-gray'}">${a.activo ? 'Activo' : 'Inactivo'}</span></div>
@@ -83,7 +84,7 @@ async function loadAnuncios() {
       </div>
       <div class="item-actions">
         <button class="btn btn-outline btn-sm" onclick="toggleAnuncio('${a.id}', ${a.activo})">${a.activo ? 'Desactivar' : 'Activar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteAnuncio('${a.id}')">Eliminar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAnuncio('${a.id}', '${a.imagen_url || ''}')">Eliminar</button>
       </div>
     </div>
   `).join('');
@@ -95,10 +96,23 @@ async function handleAnuncio(e) {
   btn.textContent = 'Publicando...';
   btn.disabled = true;
 
+  let imagen_url = null;
+  const file = document.getElementById('anuncioImagen').files[0];
+  if (file) {
+    const ext = file.name.split('.').pop();
+    const path = `anuncios/${Date.now()}.${ext}`;
+    const { error: upError } = await db.storage.from('fotos').upload(path, file);
+    if (!upError) {
+      const { data } = db.storage.from('fotos').getPublicUrl(path);
+      imagen_url = data.publicUrl;
+    }
+  }
+
   const { error } = await db.from('anuncios').insert([{
     titulo: document.getElementById('anuncioTitulo').value,
     cuerpo: document.getElementById('anuncioCuerpo').value,
     fecha: document.getElementById('anuncioFecha').value,
+    imagen_url,
     activo: true
   }]);
 
@@ -118,8 +132,12 @@ async function toggleAnuncio(id, activo) {
   loadAnuncios();
 }
 
-async function deleteAnuncio(id) {
+async function deleteAnuncio(id, imagenUrl) {
   if (!confirm('¿Eliminar este anuncio?')) return;
+  if (imagenUrl) {
+    const path = imagenUrl.split('/fotos/')[1];
+    if (path) await db.storage.from('fotos').remove([path]);
+  }
   const { error } = await db.from('anuncios').delete().eq('id', id);
   if (error) { showToast('Error al eliminar.', true); return; }
   showToast('Anuncio eliminado.');
