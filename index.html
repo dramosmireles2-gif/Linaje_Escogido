@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Linaje Escogido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-brand">
+    <svg width="34" height="40" viewBox="0 0 60 72" fill="none" class="nav-logo" aria-hidden="true">
+      <path d="M22 6 Q22 6 22 18 L13 18 Q6 18 6 25 Q6 32 13 32 L22 32 L22 66" stroke="#1A1A1A" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M22 18 L37 18 Q48 18 48 29 Q48 38 37 38 L22 38" stroke="#1A1A1A" stroke-width="10" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <div class="nav-name">Linaje Escogido</div>
+      <div class="nav-sub">Iglesia</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#horarios">Horarios</a></li>
+    <li><a href="#pastores">Pastores</a></li>
+    <li><a href="#anuncios">Anuncios</a></li>
+    <li><a href="#ubicacion">Ubicación</a></li>
+    <li><a href="#alpha">Alpha</a></li>
+    <li><a href="#oracion">Oración</a></li>
+  </ul>
+  <button class="btn-primary">Visítanos</button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <svg class="hero-swoosh" style="top:-40px;left:-80px;width:300px;" viewBox="0 0 300 200" fill="none">
+    <path d="M-20 180 Q80 120 100 50 Q120 -10 200 -30" stroke="#F5EFE6" stroke-width="40" stroke-linecap="round" fill="none"/>
+  </svg>
+  <svg class="hero-swoosh" style="bottom:-20px;right:-60px;width:280px;" viewBox="0 0 280 180" fill="none">
+    <path d="M300 10 Q200 50 180 110 Q160 170 80 200" stroke="#F5EFE6" stroke-width="40" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <svg width="52" height="62" viewBox="0 0 60 72" fill="none" class="hero-logo" aria-hidden="true">
+    <path d="M22 6 Q22 6 22 18 L13 18 Q6 18 6 25 Q6 32 13 32 L22 32 L22 66" stroke="#F5EFE6" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.7"/>
+    <path d="M22 18 L37 18 Q48 18 48 29 Q48 38 37 38 L22 38" stroke="#F5EFE6" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.7"/>
+  </svg>
+
+  <h1>Linaje Escogido</h1>
+  <div class="hero-script">Una Iglesia Funcional · Apasionada</div>
+  <p class="hero-tagline">Sensible al Espíritu Santo &nbsp;·&nbsp; Reynosa, Tamaulipas</p>
+  <div class="hero-btns">
+    <button class="btn-cream" onclick="document.getElementById('ubicacion').scrollIntoView({behavior:'smooth'})">Cómo llegar</button>
+    <button class="btn-outline-light" onclick="document.getElementById('alpha').scrollIntoView({behavior:'smooth'})">Programa Alpha →</button>
+  </div>
+</section>
+
+<!-- ═══ HORARIOS ═══ -->
+<section id="horarios">
+  <div class="label">Servicios</div>
+  <div class="title">Horarios</div>
+  <div class="horarios-grid">
+    <div class="horario-card">
+      <div class="horario-meta">Reunión semanal</div>
+      <div class="horario-day">Martes</div>
+      <div class="horario-type">Oración</div>
+      <div class="horario-time">7:30 pm</div>
+    </div>
+    <div class="horario-card dark">
+      <div class="horario-meta">Servicio general</div>
+      <div class="horario-day">Domingo</div>
+      <div class="horario-type">Servicio</div>
+      <div class="horario-time">3:30 pm</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ PASTORES ═══ -->
+<section id="pastores" class="pastores-section">
+  <div class="pastor-img-wrap">
+    <img
+      src="https://placehold.co/1200x500/2a2a2a/888?text=Foto+Pastores"
+      alt="Pastores Generales — Pr. Hebert A. Gaytan Olvera y Pra. Luisa Rangel Segovia"
+      class="pastor-img"
+      onerror="this.src='https://placehold.co/1200x500/2a2a2a/888?text=Foto+Pastores'"
+    />
+    <div class="pastor-img-overlay">
+      <div class="pastor-big-title">Pastores Generales</div>
+    </div>
+  </div>
+  <div class="pastor-content">
+    <div class="label" style="color:rgba(245,239,230,.35);">Liderazgo</div>
+    <div class="pastor-script">¡Tenemos un lugar para ti!</div>
+    <div class="pastor-grid">
+      <div class="pastor-card">
+        <div class="pastor-card-name">Pr. Hebert A. Gaytan Olvera</div>
+        <div class="pastor-card-role">Pastor General</div>
+      </div>
+      <div class="pastor-card">
+        <div class="pastor-card-name">Pra. Luisa Rangel Segovia</div>
+        <div class="pastor-card-role">Pastora General</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ANUNCIOS ═══ -->
+<section id="anuncios">
+  <div class="label">Novedades</div>
+  <div class="title">Anuncios</div>
+  <div class="anuncios-grid">
+    <div class="anuncio">
+      <div class="anuncio-date">10 May 2026</div>
+      <div class="anuncio-title">Inscripciones Alpha abiertas</div>
+      <div class="anuncio-body">Regístrate al programa y vive una experiencia transformadora junto a tu familia.</div>
+    </div>
+    <div class="anuncio">
+      <div class="anuncio-date">5 May 2026</div>
+      <div class="anuncio-title">Retiro de oración</div>
+      <div class="anuncio-body">Este sábado a las 9am. No faltes, será un encuentro especial con Dios.</div>
+    </div>
+    <div class="anuncio">
+      <div class="anuncio-date">1 May 2026</div>
+      <div class="anuncio-title">Bienvenidos nuevos miembros</div>
+      <div class="anuncio-body">Celebramos a quienes se unen a nuestra familia este mes. ¡Los esperamos!</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ GALERÍA ═══ -->
+<section>
+  <div class="label">Comunidad</div>
+  <div class="title">Galería</div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><div class="gallery-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Foto</span></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Foto</span></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Foto</span></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Foto</span></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Foto</span></div></div>
+    <div class="gallery-item"><div class="gallery-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Foto</span></div></div>
+  </div>
+  <div style="text-align:center;margin-top:28px;">
+    <a href="https://instagram.com/linajeescogido.mx" target="_blank" class="gallery-link">
+      @linajeescogido.mx en Instagram →
+    </a>
+  </div>
+</section>
+
+<!-- ═══ UBICACIÓN ═══ -->
+<section id="ubicacion" style="padding-top:0">
+  <div class="label">Encuéntranos</div>
+  <div class="title">Ubicación</div>
+  <div class="map-embed">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3594.4!2d-98.29!3d26.09!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDA1JzI0LjAiTiA5OMKwMTcnMjQuMCJX!5e0!3m2!1ses!2smx!4v1620000000000!5m2!1ses!2smx"
+      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      title="Ubicación Iglesia Linaje Escogido"
+    ></iframe>
+  </div>
+  <div class="map-address">
+    <strong>Calle Ávila Camacho #130</strong><br>
+    Col. La Presa, Reynosa, Tamaulipas 88750
+  </div>
+</section>
+
+<!-- ═══ DONACIONES ═══ -->
+<section class="donaciones-section">
+  <div class="label" style="color:rgba(245,239,230,.35);">Generosidad</div>
+  <div class="don-title">Apoya la visión</div>
+  <p class="don-sub">Tu generosidad hace posible que más familias encuentren un lugar en esta comunidad.</p>
+  <a href="#" class="btn-cream" style="display:inline-block;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 40px;">
+    Donar ahora
+  </a>
+</section>
+
+<!-- ═══ ALPHA + PETICIÓN DE ORACIÓN ═══ -->
+<section id="alpha" style="padding-bottom:40px">
+  <div class="forms-section">
+
+    <!-- Formulario Alpha -->
+    <div class="form-block">
+      <div class="form-badge">Programa Alpha</div>
+      <div class="title" style="font-size:clamp(32px,4vw,44px);margin-bottom:16px;">¿Qué es Alpha?</div>
+      <p class="form-desc">
+        Alpha es una serie de sesiones que exploran los fundamentos de la fe cristiana en un ambiente abierto y sin presión. Ideal para quien quiere conocer más.
+        <a href="https://pruebaalpha.org/home/" target="_blank" style="color:var(--dark);opacity:.6;margin-top:8px;display:inline-block;border-bottom:1px solid rgba(26,26,26,.3);">Conoce más sobre Alpha →</a>
+      </p>
+      <div class="label" style="margin-top:32px;">Registro</div>
+      <form class="form-fields" onsubmit="handleAlpha(event)">
+        <div class="form-row">
+          <div class="field-wrap">
+            <label class="field-label">Nombre</label>
+            <input class="field-input" type="text" placeholder="Tu nombre" required/>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Apellidos</label>
+            <input class="field-input" type="text" placeholder="Tus apellidos" required/>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Correo electrónico</label>
+          <input class="field-input" type="email" placeholder="correo@ejemplo.com" required/>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Teléfono</label>
+          <input class="field-input" type="tel" placeholder="+52 899 000 0000"/>
+        </div>
+        <button type="submit" class="btn-submit-dark">Registrarme al Alpha</button>
+      </form>
+    </div>
+
+    <!-- Formulario Petición de Oración -->
+    <div class="form-block" id="oracion-form">
+      <div class="form-badge" style="background:rgba(26,26,26,.08);color:var(--dark);">Petición de Oración</div>
+      <div class="title" style="font-size:clamp(32px,4vw,44px);margin-bottom:16px;">¿Necesitas<br>oración?</div>
+      <p class="form-desc" style="opacity:.6">
+        Nuestros pastores desean estar cerca de ti y caminar este trayecto contigo. Haznos saber cómo podemos orar por ti.
+      </p>
+      <form class="form-fields" onsubmit="handleOracion(event)">
+        <div class="field-wrap">
+          <label class="field-label">Tu petición de oración</label>
+          <textarea class="field-textarea" placeholder="Cuéntanos cómo podemos orar por ti..." required style="min-height:110px;"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="field-wrap">
+            <label class="field-label">Nombre</label>
+            <input class="field-input" type="text" placeholder="Tu nombre" required/>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Apellidos</label>
+            <input class="field-input" type="text" placeholder="Tus apellidos"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-wrap">
+            <label class="field-label">Email</label>
+            <input class="field-input" type="email" placeholder="correo@ejemplo.com"/>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Teléfono</label>
+            <input class="field-input" type="tel" placeholder="+52 899 000 0000"/>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿De qué parte del mundo nos ves?</label>
+          <input class="field-input" type="text" placeholder="Ciudad, País"/>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cómo te enteraste de nuestras reuniones?</label>
+          <input class="field-input" type="text" placeholder="Redes sociales, un amigo..."/>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Tomaste hoy la decisión de seguir a Jesús?</label>
+          <select class="field-select">
+            <option value="">Selecciona una opción</option>
+            <option value="si">Sí, hoy tomé esa decisión</option>
+            <option value="no">No</option>
+            <option value="ya">Ya era cristiano/a</option>
+          </select>
+        </div>
+        <label class="checkbox-wrap">
+          <input type="checkbox" required/>
+          <span class="checkbox-label">Doy consentimiento para que la iglesia Linaje Escogido almacene estos datos para poder ponerse en contacto conmigo.</span>
+        </label>
+        <button type="submit" class="btn-submit-dark">Enviar petición</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">
+    <svg width="22" height="26" viewBox="0 0 60 72" fill="none" class="footer-logo" aria-hidden="true">
+      <path d="M22 6 Q22 6 22 18 L13 18 Q6 18 6 25 Q6 32 13 32 L22 32 L22 66" stroke="#F5EFE6" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M22 18 L37 18 Q48 18 48 29 Q48 38 37 38 L22 38" stroke="#F5EFE6" stroke-width="10" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="footer-copy">© 2026 Linaje Escogido · Reynosa, Tamaulipas</span>
+  </div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/profile.php?id=100070105356634" target="_blank">Facebook</a>
+    <a href="https://instagram.com/linajeescogido.mx" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+<script src="index.js"></script>
+</body>
+</html>
