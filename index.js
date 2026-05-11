@@ -22,7 +22,6 @@ async function loadHero() {
 
   const hero = document.querySelector('.hero');
 
-  // Crear contenedor de slides detrás del contenido
   const slides = document.createElement('div');
   slides.style.cssText = 'position:absolute;inset:0;z-index:0;';
   data.forEach((f, i) => {
@@ -32,7 +31,6 @@ async function loadHero() {
   });
   hero.insertBefore(slides, hero.firstChild);
 
-  // Oscurecer el fondo sólido ya que ahora hay imagen
   hero.style.background = '#000';
 
   if (data.length > 1) {
@@ -127,13 +125,6 @@ async function handleOracion(e) {
   btn.textContent = 'Enviando...';
   btn.disabled = true;
 
-  const btn = form.querySelector('button');
-  
-  // Cambiar estado del botón
-  btn.innerText = 'Enviando...';
-  btn.disabled = true;
-
-  // Extraer valores del formulario
   const nombre = form.querySelector('input[placeholder="Tu nombre"]').value;
   const apellidos = form.querySelector('input[placeholder="Tus apellidos"]').value;
   const email = form.querySelector('input[type="email"]').value;
@@ -156,22 +147,6 @@ async function handleOracion(e) {
   }
   alert('¡Tu petición fue enviada! Estaremos orando por ti.');
   form.reset();
-  const decision = form.querySelector('select').value;
-
-  const { error } = await db.from('peticiones_oracion').insert([{
-    nombre, apellidos, email, telefono, peticion, ubicacion, referencia, decision_seguimiento: decision
-  }]);
-
-  if (error) {
-    alert('Hubo un error al enviar tu petición. Intenta de nuevo.');
-    console.error(error);
-  } else {
-    alert('¡Tu petición fue enviada! Estaremos orando por ti.');
-    form.reset();
-  }
-
-  btn.innerText = 'Enviar petición';
-  btn.disabled = false;
 }
 
 // ── UTILS ──
