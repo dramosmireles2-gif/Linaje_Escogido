@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Autenticando...</title>
+</head>
+<body style="font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;background:#F5EFE6;color:#1A1A1A;">
+
+<div id="status">
+  Verificando acceso...
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = 'https://xzwyyzgcxhpbjioqdrmn.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6d3l5emdjeGhwYmppb3Fkcm1uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNzg0MjQsImV4cCI6MjA5Mzc1NDQyNH0.-En3HLRgdDbnHuQSUO7LfVyMR0-0xMUdZdECz5KGezY';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function init() {
+
+  const hash = window.location.hash;
+
+  if (!hash) {
+    document.getElementById('status').innerText = 'Link inválido.';
+    return;
+  }
+
+  const params = new URLSearchParams(hash.substring(1));
+
+  const access_token = params.get('access_token');
+  const refresh_token = params.get('refresh_token');
+
+  if (!access_token || !refresh_token) {
+    document.getElementById('status').innerText = 'Tokens inválidos.';
+    return;
+  }
+
+  const { error } = await db.auth.setSession({
+    access_token,
+    refresh_token
+  });
+
+  if (error) {
+    document.getElementById('status').innerText = 'Error autenticando.';
+    return;
+  }
+
+  window.location.href =
+    'https://dramosmireles2-gif.github.io/Linaje_Escogido/admin.html';
+}
+
+init();
+</script>
+
+</body>
+</html>

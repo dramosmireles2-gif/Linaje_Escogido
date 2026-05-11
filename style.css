@@ -241,3 +241,39 @@ footer{
   .pastor-img{height:360px}
   .pastor-img-overlay,.pastor-content{padding:24px 20px}
 }
+
+.hero-title-modern{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(42px,7vw,82px);
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--cream);
+  line-height:1;
+  position:relative;
+  z-index:2;
+  margin-bottom:18px;
+}
+
+.hero-tagline{
+  font-size:12px;
+  color:var(--cream);
+  opacity:.72;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  position:relative;
+  z-index:2;
+  margin-bottom:12px;
+  font-weight:500;
+}
+
+.hero-location{
+  font-size:14px;
+  color:var(--cream);
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  position:relative;
+  z-index:2;
+  margin-bottom:40px;
+}

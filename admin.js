@@ -49,6 +49,45 @@ function showAdmin(user) {
   loadAlphaRegistros();
   loadPeticiones();
   loadOraciones();
+  loadPastoresFoto();
+}
+
+async function loadPastoresFoto() {
+  const { data, error } = await db
+    .from('pastores_foto')
+    .select('*')
+    .order('created_at', { ascending:false });
+
+  const grid = document.getElementById('pastoresFotoGrid');
+
+  if (error || !data.length) {
+    grid.innerHTML = '<div style="opacity:.4;">No hay foto.</div>';
+    return;
+  }
+
+  grid.innerHTML = data.map(f => `
+    <div class="foto-item">
+      <img src="${f.url}" alt="Pastores"/>
+      <div class="foto-overlay">
+        <button
+          class="btn btn-danger btn-sm"
+          onclick="deleteFoto('pastores_foto','${f.id}','${f.url}')"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function handlePastoresUpload(e) {
+  await uploadFotos(
+    e.target.files,
+    'pastores_foto',
+    loadPastoresFoto
+  );
+
+  e.target.value = '';
 }
 
 async function loadOraciones() {

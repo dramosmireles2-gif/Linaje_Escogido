@@ -128,6 +128,7 @@
   <div class="admin-tabs">
     <button class="tab-btn active" onclick="switchTab('anuncios')">Anuncios</button>
     <button class="tab-btn" onclick="switchTab('hero')">Hero</button>
+    <button class="tab-btn" onclick="switchTab('pastores')">Pastores</button>
     <button class="tab-btn" onclick="switchTab('galeria')">Galería</button>
     <button class="tab-btn" onclick="switchTab('alpha')">Registros Alpha</button>
     <button class="tab-btn" onclick="switchTab('peticiones')">Peticiones de Oración</button>
@@ -167,6 +168,34 @@
       <div style="font-size:12px;opacity:.4;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">Anuncios publicados</div>
       <div class="items-list" id="anunciosList">
         <div style="font-size:13px;opacity:.4;">Cargando...</div>
+      </div>
+    </div>
+
+    <!-- PASTORES -->
+    <div class="panel" id="panel-pastores">
+      <div class="panel-title">Foto de Pastores</div>
+      <div class="panel-desc">
+        Esta imagen aparecerá en la sección de pastores de la página principal.
+      </div>
+
+      <label class="upload-zone">
+        <input
+          type="file"
+          id="pastoresFileInput"
+          accept="image/*"
+          onchange="handlePastoresUpload(event)"
+        />
+        <div class="upload-icon">📸</div>
+        <div class="upload-text">
+          <strong>Haz clic para subir</strong><br/>
+          JPG o PNG
+        </div>
+      </label>
+
+      <div class="foto-grid" id="pastoresFotoGrid">
+        <div style="font-size:13px;opacity:.4;">
+          Cargando...
+        </div>
       </div>
     </div>
 
