@@ -47,8 +47,41 @@ function showAdmin(user) {
   loadHeroFotos();
   loadGaleriaFotos();
   loadAlphaRegistros();
+  loadOraciones();
 }
 
+async function loadOraciones() {
+  const { data, error } = await db
+    .from('peticiones_oracion')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  const list = document.getElementById('oracionesList');
+  
+  if (error || !data.length) {
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">No hay peticiones registradas.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(o => `
+    <div class="item-card">
+      <div class="item-info">
+        <div class="item-title">${o.nombre} ${o.apellidos || ''}</div>
+        <div class="item-meta">
+          ${formatDate(o.created_at.split('T')[0])} &nbsp;·&nbsp; 
+          <span style="color:var(--mid)">${o.email || 'Sin email'}</span> &nbsp;·&nbsp; 
+          <span style="color:var(--mid)">${o.telefono || ''}</span>
+        </div>
+        <div class="item-body" style="background:rgba(26,26,26,0.03); padding:10px; margin-top:8px; border-radius:4px;">
+          "${o.peticion}"
+        </div>
+        <div style="font-size:11px; opacity:0.5; margin-top:8px;">
+          Ubicación: ${o.ubicacion || 'No especificada'} | Referencia: ${o.referencia || 'N/A'}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
 // ── TABS ──
 function switchTab(tab) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));

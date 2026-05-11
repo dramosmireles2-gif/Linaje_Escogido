@@ -83,10 +83,39 @@ async function handleAlpha(e) {
   e.target.reset();
 }
 
-function handleOracion(e) {
+async function handleOracion(e) {
   e.preventDefault();
-  alert('¡Tu petición fue enviada! Estaremos orando por ti.');
-  e.target.reset();
+  const form = e.target;
+  const btn = form.querySelector('button');
+  
+  // Cambiar estado del botón
+  btn.innerText = 'Enviando...';
+  btn.disabled = true;
+
+  // Extraer valores del formulario
+  const nombre = form.querySelector('input[placeholder="Tu nombre"]').value;
+  const apellidos = form.querySelector('input[placeholder="Tus apellidos"]').value;
+  const email = form.querySelector('input[type="email"]').value;
+  const telefono = form.querySelector('input[type="tel"]').value;
+  const peticion = form.querySelector('textarea').value;
+  const ubicacion = form.querySelector('input[placeholder="Ciudad, País"]').value;
+  const referencia = form.querySelector('input[placeholder="Redes sociales, un amigo..."]').value;
+  const decision = form.querySelector('select').value;
+
+  const { error } = await db.from('peticiones_oracion').insert([{
+    nombre, apellidos, email, telefono, peticion, ubicacion, referencia, decision_seguimiento: decision
+  }]);
+
+  if (error) {
+    alert('Hubo un error al enviar tu petición. Intenta de nuevo.');
+    console.error(error);
+  } else {
+    alert('¡Tu petición fue enviada! Estaremos orando por ti.');
+    form.reset();
+  }
+
+  btn.innerText = 'Enviar petición';
+  btn.disabled = false;
 }
 
 // ── UTILS ──
