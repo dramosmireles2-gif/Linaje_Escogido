@@ -83,10 +83,36 @@ async function handleAlpha(e) {
   e.target.reset();
 }
 
-function handleOracion(e) {
+async function handleOracion(e) {
   e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const orig = btn.textContent;
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  const nombre = form.querySelector('input[placeholder="Tu nombre"]').value;
+  const apellidos = form.querySelector('input[placeholder="Tus apellidos"]').value;
+  const email = form.querySelector('input[type="email"]').value;
+  const telefono = form.querySelector('input[type="tel"]').value;
+  const peticion = form.querySelector('textarea').value;
+  const ubicacion = form.querySelector('input[placeholder="Ciudad, País"]').value;
+  const referencia = form.querySelector('input[placeholder="Redes sociales, un amigo..."]').value;
+  const decision_seguimiento = form.querySelector('select').value;
+
+  const { error } = await db.from('peticiones_oracion').insert([{
+    nombre, apellidos, email, telefono, peticion, ubicacion, referencia, decision_seguimiento
+  }]);
+
+  btn.textContent = orig;
+  btn.disabled = false;
+
+  if (error) {
+    alert('Hubo un error al enviar tu petición. Intenta de nuevo.');
+    return;
+  }
   alert('¡Tu petición fue enviada! Estaremos orando por ti.');
-  e.target.reset();
+  form.reset();
 }
 
 // ── UTILS ──
