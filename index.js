@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadGaleria();
   loadHero();
   loadPastoresFoto();
+  loadHeroContenido();
+  loadHorarios();
 });
 
 // ── HERO ──
@@ -176,4 +178,49 @@ async function handleOracion(e) {
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+async function loadHorarios() {
+
+  const { data, error } = await db
+    .from('horarios')
+    .select('*')
+    .eq('activo', true)
+    .order('orden');
+
+  const grid =
+    document.getElementById('horariosGrid');
+
+  if (error || !data.length) {
+
+    grid.innerHTML =
+      '<div style="opacity:.5;">No hay horarios disponibles.</div>';
+
+    return;
+  }
+
+  grid.innerHTML = data.map((h, index) => `
+    
+    <div class="horario-card ${index % 2 ? 'dark' : ''}">
+
+      <div class="horario-meta">
+        ${h.titulo}
+      </div>
+
+      <div class="horario-day">
+        ${h.dia}
+      </div>
+
+      <div class="horario-type">
+        Servicio
+      </div>
+
+      <div class="horario-time">
+        ${h.hora}
+      </div>
+
+    </div>
+
+  `).join('');
+
 }

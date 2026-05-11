@@ -50,32 +50,51 @@ function showAdmin(user) {
   loadPeticiones();
   loadOraciones();
   loadPastoresFoto();
+  loadHorariosAdmin();
 }
 
 async function loadPastoresFoto() {
+
   const { data, error } = await db
     .from('pastores_foto')
     .select('*')
     .order('created_at', { ascending:false });
 
-  const grid = document.getElementById('pastoresFotoGrid');
+  const grid =
+    document.getElementById('pastoresFotoGrid');
 
   if (error || !data.length) {
-    grid.innerHTML = '<div style="opacity:.4;">No hay foto.</div>';
+
+    grid.innerHTML =
+      '<div style="opacity:.4;">No hay foto.</div>';
+
     return;
   }
 
   grid.innerHTML = data.map(f => `
-    <div class="foto-item">
+    <div class="foto-item ${f.activa ? '' : 'inactivo'}">
+
       <img src="${f.url}" alt="Pastores"/>
+
       <div class="foto-overlay">
+
+        <button
+          class="btn btn-sm"
+          style="background:rgba(245,239,230,.15);color:#fff;border:1px solid rgba(255,255,255,.2);"
+          onclick="toggleFoto('pastores_foto','${f.id}',${f.activa})"
+        >
+          ${f.activa ? 'Ocultar' : 'Mostrar'}
+        </button>
+
         <button
           class="btn btn-danger btn-sm"
           onclick="deleteFoto('pastores_foto','${f.id}','${f.url}')"
         >
           ✕
         </button>
+
       </div>
+
     </div>
   `).join('');
 }
@@ -497,4 +516,155 @@ function formatDateTime(dateStr) {
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+// ══════════════════════════════
+// HORARIOS
+// ══════════════════════════════
+
+async function loadHorariosAdmin() {
+
+  const { data, error } = await db
+    .from('horarios')
+    .select('*')
+    .order('orden');
+
+  const list =
+    document.getElementById('horariosList');
+
+  if (error || !data.length) {
+
+    list.innerHTML =
+      '<div style="opacity:.4;">No hay horarios.</div>';
+
+    return;
+  }
+
+  list.innerHTML = data.map(h => `
+    
+    <div class="item-card ${h.activo ? '' : 'inactivo'}">
+
+      <div class="item-info">
+
+        <div class="item-title">
+          ${h.dia} · ${h.hora}
+        </div>
+
+        <div class="item-body">
+          ${h.titulo}
+        </div>
+
+      </div>
+
+      <div class="item-actions">
+
+        <button
+          class="btn btn-outline btn-sm"
+          onclick="toggleHorario('${h.id}', ${h.activo})"
+        >
+          ${h.activo ? 'Desactivar' : 'Activar'}
+        </button>
+
+        <button
+          class="btn btn-danger btn-sm"
+          onclick="deleteHorario('${h.id}')"
+        >
+          Eliminar
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join('');
+
+}
+
+async function handleHorario(e) {
+
+  e.preventDefault();
+
+  const { data: existing } = await db
+    .from('horarios')
+    .select('orden')
+    .order('orden', { ascending:false })
+    .limit(1);
+
+  const orden =
+    existing && existing.length
+      ? existing[0].orden + 1
+      : 1;
+
+  const { error } = await db
+    .from('horarios')
+    .insert([{
+
+      titulo:
+        document.getElementById('horarioTitulo').value,
+
+      dia:
+        document.getElementById('horarioDia').value,
+
+      hora:
+        document.getElementById('horarioHora').value,
+
+      activo: true,
+      orden
+
+    }]);
+
+  if (error) {
+    showToast('Error al guardar.', true);
+    return;
+  }
+
+  showToast('Horario agregado.');
+
+  e.target.reset();
+
+  loadHorariosAdmin();
+
+}
+
+async function toggleHorario(id, activo) {
+
+  const { error } = await db
+    .from('horarios')
+    .update({ activo: !activo })
+    .eq('id', id);
+
+  if (error) {
+    showToast('Error.', true);
+    return;
+  }
+
+  showToast(
+    activo
+      ? 'Horario desactivado.'
+      : 'Horario activado.'
+  );
+
+  loadHorariosAdmin();
+
+}
+
+async function deleteHorario(id) {
+
+  if (!confirm('¿Eliminar horario?'))
+    return;
+
+  const { error } = await db
+    .from('horarios')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    showToast('Error.', true);
+    return;
+  }
+
+  showToast('Horario eliminado.');
+
+  loadHorariosAdmin();
+
 }

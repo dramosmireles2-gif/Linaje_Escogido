@@ -133,6 +133,7 @@
     <button class="tab-btn" onclick="switchTab('alpha')">Registros Alpha</button>
     <button class="tab-btn" onclick="switchTab('peticiones')">Peticiones de Oración</button>
     <button class="tab-btn" onclick="switchTab('oraciones')">Oraciones</button>
+    <button class="tab-btn" onclick="switchTab('horarios')">Horarios</button>
   </div>
 
   <div class="admin-body">
@@ -169,6 +170,74 @@
       <div class="items-list" id="anunciosList">
         <div style="font-size:13px;opacity:.4;">Cargando...</div>
       </div>
+    </div>
+
+    <!-- HORARIOS -->
+    <div class="panel" id="panel-horarios">
+
+      <div class="panel-title">
+        Horarios
+      </div>
+
+      <div class="panel-desc">
+        Administra los horarios y reuniones.
+      </div>
+
+      <form onsubmit="handleHorario(event)">
+
+        <div class="grid-2">
+
+          <div class="field">
+            <label>Título</label>
+            <input
+              type="text"
+              id="horarioTitulo"
+              placeholder="Servicio general"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label>Día</label>
+            <input
+              type="text"
+              id="horarioDia"
+              placeholder="Domingo"
+              required
+            />
+          </div>
+
+        </div>
+
+        <div class="grid-2">
+
+          <div class="field">
+            <label>Hora</label>
+            <input
+              type="text"
+              id="horarioHora"
+              placeholder="7:00 PM"
+              required
+            />
+          </div>
+
+        </div>
+
+        <button class="btn" type="submit">
+          Agregar horario
+        </button>
+
+      </form>
+
+      <div
+        id="horariosList"
+        style="margin-top:24px;"
+      >
+        <div style="opacity:.4;">
+          Cargando...
+        </div>
+      </div>
+
     </div>
 
     <!-- PASTORES -->
