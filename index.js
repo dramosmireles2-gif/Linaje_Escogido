@@ -130,8 +130,8 @@ async function handleOracion(e) {
   const email = form.querySelector('input[type="email"]').value;
   const telefono = form.querySelector('input[type="tel"]').value;
   const peticion = form.querySelector('textarea').value;
-  const ubicacion = form.querySelector('input[placeholder="Ciudad, País"]').value;
-  const referencia = form.querySelector('input[placeholder="Redes sociales, un amigo..."]').value;
+  const ubicacion = document.getElementById('oracionPais').value;
+  const referencia = document.getElementById('oracionReferencia').value;
   const decision_seguimiento = form.querySelector('select').value;
 
   const { error } = await db.from('peticiones_oracion').insert([{

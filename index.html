@@ -28,7 +28,7 @@
     <li><a href="#alpha">Alpha</a></li>
     <li><a href="#oracion">Oración</a></li>
   </ul>
-  <button href="#ubicacion" class="btn-primary">Visítanos</button>
+  <button class="btn-primary" onclick="document.getElementById('ubicacion').scrollIntoView({behavior:'smooth'})"> Visítanos </button>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -190,11 +190,34 @@
         </div>
         <div class="field-wrap">
           <label class="field-label">¿De qué parte del mundo nos ves?</label>
-          <input class="field-input" type="text" placeholder="Ciudad, País"/>
+          <select class="field-select" id="oracionPais">
+            <option value="">Selecciona tu país</option>
+            <option value="México">México</option>
+            <option value="Estados Unidos">Estados Unidos</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Chile">Chile</option>
+            <option value="Perú">Perú</option>
+              <option value="Venezuela">Venezuela</option>
+            <option value="España">España</option>
+            <option value="Otro">Otro</option>
+          </select>
         </div>
         <div class="field-wrap">
           <label class="field-label">¿Cómo te enteraste de nuestras reuniones?</label>
-          <input class="field-input" type="text" placeholder="Redes sociales, un amigo..."/>
+          <select class="field-select" id="oracionReferencia">
+            <option value="">Selecciona una opción</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Instagram">Instagram</option>
+            <option value="TikTok">TikTok</option>
+            <option value="YouTube">YouTube</option>
+            <option value="Sitio Web">Sitio Web</option>
+            <option value="Google">Google</option>
+            <option value="Amigo">Amigo</option>
+            <option value="Familia">Familia</option>
+            <option value="Invitación">Invitación</option>
+            <option value="Otro">Otro</option>
+          </select>
         </div>
         <div class="field-wrap">
           <label class="field-label">¿Tomaste hoy la decisión de seguir a Jesús?</label>
