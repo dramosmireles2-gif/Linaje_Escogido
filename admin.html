@@ -130,6 +130,7 @@
     <button class="tab-btn" onclick="switchTab('hero')">Hero</button>
     <button class="tab-btn" onclick="switchTab('galeria')">Galería</button>
     <button class="tab-btn" onclick="switchTab('alpha')">Registros Alpha</button>
+    <button class="tab-btn" onclick="switchTab('peticiones')">Peticiones de Oración</button>
     <button class="tab-btn" onclick="switchTab('oraciones')">Oraciones</button>
   </div>
 
@@ -198,6 +199,19 @@
 
       <div class="foto-grid" id="galeriaFotoGrid">
         <div style="font-size:13px;opacity:.4;grid-column:1/-1;">Cargando...</div>
+      </div>
+    </div>
+
+    <!-- PETICIONES DE ORACIÓN -->
+    <div class="panel" id="panel-peticiones">
+      <div class="panel-title">Peticiones de Oración</div>
+      <div class="panel-desc">Peticiones enviadas desde la página principal.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span id="peticionesCount" style="font-size:13px;opacity:.45;"></span>
+        <button class="btn btn-outline btn-sm" onclick="exportPeticiones()">Exportar CSV</button>
+      </div>
+      <div class="items-list" id="peticionesList">
+        <div style="font-size:13px;opacity:.4;">Cargando...</div>
       </div>
     </div>
 

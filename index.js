@@ -7,7 +7,43 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
   loadGaleria();
+  loadHero();
 });
+
+// ── HERO ──
+async function loadHero() {
+  const { data, error } = await db
+    .from('hero_fotos')
+    .select('*')
+    .eq('activa', true)
+    .order('orden');
+
+  if (error || !data || !data.length) return;
+
+  const hero = document.querySelector('.hero');
+
+  // Crear contenedor de slides detrás del contenido
+  const slides = document.createElement('div');
+  slides.style.cssText = 'position:absolute;inset:0;z-index:0;';
+  data.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = `position:absolute;inset:0;background:url('${f.url}') center/cover no-repeat;opacity:${i === 0 ? '0.45' : '0'};transition:opacity 1.2s ease;`;
+    slides.appendChild(div);
+  });
+  hero.insertBefore(slides, hero.firstChild);
+
+  // Oscurecer el fondo sólido ya que ahora hay imagen
+  hero.style.background = '#000';
+
+  if (data.length > 1) {
+    let current = 0;
+    setInterval(() => {
+      slides.children[current].style.opacity = '0';
+      current = (current + 1) % slides.children.length;
+      slides.children[current].style.opacity = '0.45';
+    }, 5000);
+  }
+}
 
 // ── ANUNCIOS ──
 async function loadAnuncios() {
@@ -86,6 +122,11 @@ async function handleAlpha(e) {
 async function handleOracion(e) {
   e.preventDefault();
   const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const orig = btn.textContent;
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
   const btn = form.querySelector('button');
   
   // Cambiar estado del botón
@@ -100,6 +141,21 @@ async function handleOracion(e) {
   const peticion = form.querySelector('textarea').value;
   const ubicacion = form.querySelector('input[placeholder="Ciudad, País"]').value;
   const referencia = form.querySelector('input[placeholder="Redes sociales, un amigo..."]').value;
+  const decision_seguimiento = form.querySelector('select').value;
+
+  const { error } = await db.from('peticiones_oracion').insert([{
+    nombre, apellidos, email, telefono, peticion, ubicacion, referencia, decision_seguimiento
+  }]);
+
+  btn.textContent = orig;
+  btn.disabled = false;
+
+  if (error) {
+    alert('Hubo un error al enviar tu petición. Intenta de nuevo.');
+    return;
+  }
+  alert('¡Tu petición fue enviada! Estaremos orando por ti.');
+  form.reset();
   const decision = form.querySelector('select').value;
 
   const { error } = await db.from('peticiones_oracion').insert([{

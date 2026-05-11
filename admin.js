@@ -47,6 +47,7 @@ function showAdmin(user) {
   loadHeroFotos();
   loadGaleriaFotos();
   loadAlphaRegistros();
+  loadPeticiones();
   loadOraciones();
 }
 
@@ -272,6 +273,71 @@ async function deleteFoto(tabla, id, url) {
   if (error) { showToast('Error al eliminar.', true); return; }
   showToast('Foto eliminada.');
   tabla === 'hero_fotos' ? loadHeroFotos() : loadGaleriaFotos();
+}
+
+// ══════════════════════════════
+// PETICIONES DE ORACIÓN
+// ══════════════════════════════
+async function loadPeticiones() {
+  const { data, error } = await db
+    .from('peticiones_oracion')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  const list = document.getElementById('peticionesList');
+  const countEl = document.getElementById('peticionesCount');
+
+  if (error) {
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Error al cargar peticiones.</div>';
+    return;
+  }
+  if (!data.length) {
+    countEl.textContent = '0 peticiones';
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Aún no hay peticiones.</div>';
+    return;
+  }
+
+  countEl.textContent = `${data.length} petición${data.length !== 1 ? 'es' : ''}`;
+  list.innerHTML = data.map(p => `
+    <div class="item-card">
+      <div class="item-info">
+        <div class="item-title">${p.nombre || ''}${p.apellidos ? ' ' + p.apellidos : ''}</div>
+        <div class="item-meta">
+          ${formatDateTime(p.created_at)}
+          ${p.ubicacion ? ` &nbsp;·&nbsp; ${p.ubicacion}` : ''}
+        </div>
+        <div class="item-body" style="margin-bottom:8px;font-style:italic;">"${p.peticion}"</div>
+        <div style="font-size:12px;opacity:.5;">
+          ${p.email ? `<a href="mailto:${p.email}" style="color:inherit;">${p.email}</a>` : ''}
+          ${p.telefono ? ` &nbsp;·&nbsp; ${p.telefono}` : ''}
+          ${p.decision_seguimiento ? ` &nbsp;·&nbsp; ${decisionLabel(p.decision_seguimiento)}` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function decisionLabel(val) {
+  const map = { si: 'Tomó decisión hoy', no: 'No tomó decisión', ya: 'Ya era cristiano/a' };
+  return map[val] || val;
+}
+
+function exportPeticiones() {
+  db.from('peticiones_oracion').select('*').order('created_at', { ascending: false })
+    .then(({ data }) => {
+      if (!data || !data.length) { showToast('No hay peticiones para exportar.', true); return; }
+      const header = 'Nombre,Apellidos,Email,Teléfono,Petición,Ubicación,Referencia,Decisión,Fecha';
+      const csv = [header, ...data.map(p =>
+        `"${p.nombre||''}","${p.apellidos||''}","${p.email||''}","${p.telefono||''}","${(p.peticion||'').replace(/"/g,'""')}","${p.ubicacion||''}","${p.referencia||''}","${p.decision_seguimiento||''}","${formatDateTime(p.created_at)}"`
+      )].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `peticiones-oracion-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
 }
 
 // ══════════════════════════════
