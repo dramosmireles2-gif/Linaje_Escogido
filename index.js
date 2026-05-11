@@ -7,7 +7,43 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
   loadGaleria();
+  loadHero();
 });
+
+// ── HERO ──
+async function loadHero() {
+  const { data, error } = await db
+    .from('hero_fotos')
+    .select('*')
+    .eq('activa', true)
+    .order('orden');
+
+  if (error || !data || !data.length) return;
+
+  const hero = document.querySelector('.hero');
+
+  // Crear contenedor de slides detrás del contenido
+  const slides = document.createElement('div');
+  slides.style.cssText = 'position:absolute;inset:0;z-index:0;';
+  data.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = `position:absolute;inset:0;background:url('${f.url}') center/cover no-repeat;opacity:${i === 0 ? '0.45' : '0'};transition:opacity 1.2s ease;`;
+    slides.appendChild(div);
+  });
+  hero.insertBefore(slides, hero.firstChild);
+
+  // Oscurecer el fondo sólido ya que ahora hay imagen
+  hero.style.background = '#000';
+
+  if (data.length > 1) {
+    let current = 0;
+    setInterval(() => {
+      slides.children[current].style.opacity = '0';
+      current = (current + 1) % slides.children.length;
+      slides.children[current].style.opacity = '0.45';
+    }, 5000);
+  }
+}
 
 // ── ANUNCIOS ──
 async function loadAnuncios() {
