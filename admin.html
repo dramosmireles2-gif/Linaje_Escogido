@@ -91,6 +91,14 @@
   .badge{display:inline-block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;font-weight:600}
   .badge-green{background:#e8f8ee;color:var(--green)}
   .badge-gray{background:#eee;color:var(--mid)}
+
+  /* TIPS */
+  .tips-box{background:rgba(26,26,26,.04);border-left:3px solid rgba(26,26,26,.15);padding:14px 18px;margin-bottom:24px}
+  .tips-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.4;margin-bottom:8px}
+  .tips-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+  .tips-list li{font-size:13px;opacity:.55;padding-left:14px;position:relative;line-height:1.5}
+  .tips-list li::before{content:'·';position:absolute;left:0;opacity:.5}
+  .field-hint{font-size:12px;opacity:.45;margin-top:4px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -159,6 +167,7 @@
         <div class="field-wrap">
           <label class="field-label">Imagen (opcional · proporción 1:1)</label>
           <input class="field-input" type="file" id="anuncioImagen" accept="image/*" style="padding:8px;"/>
+          <div class="field-hint">Recomendado: imagen cuadrada (1:1), JPG o PNG, menos de 2 MB. Funciona bien con fotos de retrato o imágenes con fondo simple.</div>
         </div>
         <button type="submit" class="btn btn-dark" id="anuncioBtn">Publicar anuncio</button>
       </form>
@@ -175,6 +184,17 @@
       <div class="panel-title">Fotos del Hero</div>
       <div class="panel-desc">Estas fotos se mostrarán en el carrusel principal de la página.</div>
 
+      <div class="tips-box">
+        <div class="tips-title">Consejos para mejores resultados</div>
+        <ul class="tips-list">
+          <li>Formato JPG horizontal, idealmente 1920 × 1080 px o más ancho</li>
+          <li>Menos de 1.5 MB por foto para que cargue rápido</li>
+          <li>Pon el sujeto principal al centro — los bordes se recortan en móvil</li>
+          <li>Las fotos oscuras se ven mejor: el texto blanco encima se lee con facilidad</li>
+          <li>Si la foto es muy clara, no te preocupes — se aplica una transparencia automática</li>
+        </ul>
+      </div>
+
       <label class="upload-zone" id="heroUploadZone">
         <input type="file" id="heroFileInput" accept="image/*" multiple onchange="handleHeroUpload(event)"/>
         <div class="upload-icon">📷</div>
@@ -190,6 +210,17 @@
     <div class="panel" id="panel-galeria">
       <div class="panel-title">Galería</div>
       <div class="panel-desc">Estas fotos aparecen en la sección Comunidad de la página.</div>
+
+      <div class="tips-box">
+        <div class="tips-title">Consejos para mejores resultados</div>
+        <ul class="tips-list">
+          <li>Fotos cuadradas o verticales funcionan mejor — la galería muestra cuadrículas</li>
+          <li>JPG o PNG, menos de 2 MB cada una</li>
+          <li>Puedes subir varias a la vez arrastrándolas todas juntas</li>
+          <li>El orden en que aparecen depende del campo "orden" — las primeras subidas aparecen primero</li>
+          <li>Usa "Ocultar" si quieres retirar una foto temporalmente sin borrarla</li>
+        </ul>
+      </div>
 
       <label class="upload-zone" id="galeriaUploadZone">
         <input type="file" id="galeriaFileInput" accept="image/*" multiple onchange="handleGaleriaUpload(event)"/>
