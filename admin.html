@@ -288,12 +288,40 @@
       <label class="upload-zone" id="heroUploadZone">
         <input type="file" id="heroFileInput" accept="image/*" multiple onchange="handleHeroUpload(event)"/>
         <div class="upload-icon">📷</div>
-        <div class="upload-text"><strong>Haz clic para subir</strong> o arrastra las fotos aquí<br/>JPG, PNG — máx. 5MB por foto</div>
+        <div class="upload-text">
+          <strong>Haz clic para subir</strong> o arrastra las fotos aquí<br/>
+          JPG, PNG — máx. 5MB por foto
+        </div>
       </label>
 
       <div class="foto-grid" id="heroFotoGrid">
         <div style="font-size:13px;opacity:.4;grid-column:1/-1;">Cargando...</div>
       </div>
+
+      <div class="section-sep"></div>
+
+      <div style="font-size:12px;opacity:.4;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px;">
+        Contenido Hero
+      </div>
+
+      <form onsubmit="saveHeroContenido(event)">
+        <div class="field-wrap">
+          <label class="field-label">Título</label>
+          <input class="field-input" type="text" id="heroTituloInput" placeholder="Linaje Escogido" required/>
+        </div>
+
+        <div class="field-wrap">
+          <label class="field-label">Subtítulo</label>
+          <input class="field-input" type="text" id="heroSubtituloInput" placeholder="Una Iglesia Funcional..." required/>
+        </div>
+
+        <div class="field-wrap">
+          <label class="field-label">Ubicación</label>
+          <input class="field-input" type="text" id="heroUbicacionInput" placeholder="Reynosa, Tamaulipas" required/>
+        </div>
+
+        <button class="btn btn-dark" type="submit">Guardar contenido</button>
+      </form>
     </div>
 
     <!-- GALERÍA FOTOS -->

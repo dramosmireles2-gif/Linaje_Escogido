@@ -103,7 +103,7 @@ async function loadPastoresFoto() {
     .eq('activa', true)
     .order('created_at', { ascending:false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (error || !data) return;
 
@@ -222,5 +222,34 @@ async function loadHorarios() {
     </div>
 
   `).join('');
+
+}
+async function loadHeroContenido() {
+
+  const { data, error } = await db
+    .from('hero_contenido')
+    .select('*')
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) return;
+
+  const titulo =
+    document.getElementById('heroTitulo');
+
+  const subtitulo =
+    document.getElementById('heroSubtitulo');
+
+  const ubicacion =
+    document.getElementById('heroUbicacion');
+
+  if (titulo)
+    titulo.textContent = data.titulo;
+
+  if (subtitulo)
+    subtitulo.textContent = data.subtitulo;
+
+  if (ubicacion)
+    ubicacion.textContent = data.ubicacion;
 
 }

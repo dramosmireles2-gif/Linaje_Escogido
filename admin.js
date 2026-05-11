@@ -51,6 +51,7 @@ function showAdmin(user) {
   loadOraciones();
   loadPastoresFoto();
   loadHorariosAdmin();
+  loadHeroContenidoAdmin();
 }
 
 async function loadPastoresFoto() {
@@ -666,5 +667,82 @@ async function deleteHorario(id) {
   showToast('Horario eliminado.');
 
   loadHorariosAdmin();
+
+}
+// ══════════════════════════════
+// HERO CONTENIDO
+// ══════════════════════════════
+
+async function loadHeroContenidoAdmin() {
+
+  const { data, error } = await db
+    .from('hero_contenido')
+    .select('*')
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) return;
+
+  document.getElementById('heroTituloInput').value =
+    data.titulo || '';
+
+  document.getElementById('heroSubtituloInput').value =
+    data.subtitulo || '';
+
+  document.getElementById('heroUbicacionInput').value =
+    data.ubicacion || '';
+
+}
+
+async function saveHeroContenido(e) {
+
+  e.preventDefault();
+
+  const titulo =
+    document.getElementById('heroTituloInput').value;
+
+  const subtitulo =
+    document.getElementById('heroSubtituloInput').value;
+
+  const ubicacion =
+    document.getElementById('heroUbicacionInput').value;
+
+  const { data: existing } = await db
+    .from('hero_contenido')
+    .select('id')
+    .limit(1)
+    .maybeSingle();
+
+  let error;
+
+  if (existing) {
+
+    ({ error } = await db
+      .from('hero_contenido')
+      .update({
+        titulo,
+        subtitulo,
+        ubicacion
+      })
+      .eq('id', existing.id));
+
+  } else {
+
+    ({ error } = await db
+      .from('hero_contenido')
+      .insert([{
+        titulo,
+        subtitulo,
+        ubicacion
+      }]));
+
+  }
+
+  if (error) {
+    showToast('Error al guardar.', true);
+    return;
+  }
+
+  showToast('Contenido actualizado.');
 
 }
