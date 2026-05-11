@@ -46,6 +46,7 @@ function showAdmin(user) {
   loadAnuncios();
   loadHeroFotos();
   loadGaleriaFotos();
+  loadAlphaRegistros();
 }
 
 // ── TABS ──
@@ -240,7 +241,72 @@ async function deleteFoto(tabla, id, url) {
   tabla === 'hero_fotos' ? loadHeroFotos() : loadGaleriaFotos();
 }
 
+// ══════════════════════════════
+// REGISTROS ALPHA
+// ══════════════════════════════
+async function loadAlphaRegistros() {
+  const { data, error } = await db
+    .from('registros_alpha')
+    .select('*')
+    .order('fecha_registro', { ascending: false });
+
+  const list = document.getElementById('alphaList');
+  const countEl = document.getElementById('alphaCount');
+
+  if (error) {
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Error al cargar registros.</div>';
+    return;
+  }
+  if (!data.length) {
+    countEl.textContent = '0 registros';
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Aún no hay registros.</div>';
+    return;
+  }
+
+  countEl.textContent = `${data.length} registro${data.length !== 1 ? 's' : ''}`;
+  list.innerHTML = data.map(r => `
+    <div class="item-card">
+      <div class="item-info">
+        <div class="item-title">${r.nombre} ${r.apellidos}</div>
+        <div class="item-meta">${formatDateTime(r.fecha_registro)}</div>
+        <div class="item-body">
+          <a href="mailto:${r.email}" style="color:var(--dark)">${r.email}</a>
+          ${r.telefono ? ` &nbsp;·&nbsp; <a href="tel:${r.telefono}" style="color:var(--dark)">${r.telefono}</a>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function exportAlpha() {
+  const rows = document.querySelectorAll('#alphaList .item-card');
+  if (!rows.length) { showToast('No hay registros para exportar.', true); return; }
+
+  db.from('registros_alpha').select('*').order('fecha_registro', { ascending: false })
+    .then(({ data }) => {
+      if (!data) return;
+      const header = 'Nombre,Apellidos,Email,Teléfono,Fecha de registro';
+      const csv = [header, ...data.map(r =>
+        `"${r.nombre}","${r.apellidos}","${r.email}","${r.telefono || ''}","${formatDateTime(r.fecha_registro)}"`
+      )].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `registros-alpha-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+}
+
 // ── UTILS ──
+function formatDateTime(dateStr) {
+  return new Date(dateStr).toLocaleDateString('es-MX', {
+    day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+}
+
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
