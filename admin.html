@@ -129,6 +129,7 @@
     <button class="tab-btn active" onclick="switchTab('anuncios')">Anuncios</button>
     <button class="tab-btn" onclick="switchTab('hero')">Hero</button>
     <button class="tab-btn" onclick="switchTab('galeria')">Galería</button>
+    <button class="tab-btn" onclick="switchTab('alpha')">Registros Alpha</button>
   </div>
 
   <div class="admin-body">
@@ -196,6 +197,19 @@
 
       <div class="foto-grid" id="galeriaFotoGrid">
         <div style="font-size:13px;opacity:.4;grid-column:1/-1;">Cargando...</div>
+      </div>
+    </div>
+
+    <!-- REGISTROS ALPHA -->
+    <div class="panel" id="panel-alpha">
+      <div class="panel-title">Registros Alpha</div>
+      <div class="panel-desc">Personas que se han registrado al programa Alpha desde la página principal.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span id="alphaCount" style="font-size:13px;opacity:.45;"></span>
+        <button class="btn btn-outline btn-sm" onclick="exportAlpha()">Exportar CSV</button>
+      </div>
+      <div class="items-list" id="alphaList">
+        <div style="font-size:13px;opacity:.4;">Cargando...</div>
       </div>
     </div>
 

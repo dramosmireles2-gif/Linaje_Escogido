@@ -58,8 +58,27 @@ async function loadGaleria() {
 }
 
 // ── FORMULARIOS ──
-function handleAlpha(e) {
+async function handleAlpha(e) {
   e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  const orig = btn.textContent;
+  btn.textContent = 'Enviando...';
+  btn.disabled = true;
+
+  const { error } = await db.from('registros_alpha').insert([{
+    nombre: document.getElementById('alphaNombre').value,
+    apellidos: document.getElementById('alphaApellidos').value,
+    email: document.getElementById('alphaEmail').value,
+    telefono: document.getElementById('alphaTelefono').value || null
+  }]);
+
+  btn.textContent = orig;
+  btn.disabled = false;
+
+  if (error) {
+    alert('Hubo un error al enviar tu registro. Por favor intenta de nuevo.');
+    return;
+  }
   alert('¡Registro recibido! Nos pondremos en contacto contigo pronto.');
   e.target.reset();
 }
