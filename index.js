@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
   loadGaleria();
   loadHero();
+  loadPastoresFoto();
 });
 
 // ── HERO ──
@@ -89,6 +90,28 @@ async function loadGaleria() {
       <img src="${f.url}" alt="Galería" style="width:100%;height:100%;object-fit:cover;display:block;"/>
     </div>
   `).join('');
+}
+
+// ── PASTORES ──
+async function loadPastoresFoto() {
+
+  const { data, error } = await db
+    .from('pastores_foto')
+    .select('*')
+    .eq('activa', true)
+    .order('created_at', { ascending:false })
+    .limit(1)
+    .single();
+
+  if (error || !data) return;
+
+  const pastorImg =
+    document.querySelector('.pastor-img');
+
+  if (pastorImg) {
+    pastorImg.src = data.url;
+  }
+
 }
 
 // ── FORMULARIOS ──

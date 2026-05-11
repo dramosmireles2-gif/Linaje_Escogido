@@ -298,20 +298,69 @@ async function uploadFotos(files, tabla, reload) {
 }
 
 async function toggleFoto(tabla, id, activa) {
-  const { error } = await db.from(tabla).update({ activa: !activa }).eq('id', id);
-  if (error) { showToast('Error al actualizar.', true); return; }
-  showToast(activa ? 'Foto ocultada.' : 'Foto activada.');
-  tabla === 'hero_fotos' ? loadHeroFotos() : loadGaleriaFotos();
+
+  const { error } = await db
+    .from(tabla)
+    .update({ activa: !activa })
+    .eq('id', id);
+
+  if (error) {
+    showToast('Error al actualizar.', true);
+    return;
+  }
+
+  showToast(
+    activa
+      ? 'Foto ocultada.'
+      : 'Foto activada.'
+  );
+
+  if (tabla === 'hero_fotos') {
+    loadHeroFotos();
+  }
+  else if (tabla === 'galeria_fotos') {
+    loadGaleriaFotos();
+  }
+  else if (tabla === 'pastores_foto') {
+    loadPastoresFoto();
+  }
+
 }
 
 async function deleteFoto(tabla, id, url) {
-  if (!confirm('¿Eliminar esta foto?')) return;
-  const path = url.split('/fotos/')[1];
-  await db.storage.from('fotos').remove([path]);
-  const { error } = await db.from(tabla).delete().eq('id', id);
-  if (error) { showToast('Error al eliminar.', true); return; }
+
+  if (!confirm('¿Eliminar esta foto?'))
+    return;
+
+  const path =
+    url.split('/fotos/')[1];
+
+  await db.storage
+    .from('fotos')
+    .remove([path]);
+
+  const { error } = await db
+    .from(tabla)
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    showToast('Error al eliminar.', true);
+    return;
+  }
+
   showToast('Foto eliminada.');
-  tabla === 'hero_fotos' ? loadHeroFotos() : loadGaleriaFotos();
+
+  if (tabla === 'hero_fotos') {
+    loadHeroFotos();
+  }
+  else if (tabla === 'galeria_fotos') {
+    loadGaleriaFotos();
+  }
+  else if (tabla === 'pastores_foto') {
+    loadPastoresFoto();
+  }
+
 }
 
 // ══════════════════════════════
