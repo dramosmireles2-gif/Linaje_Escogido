@@ -48,7 +48,6 @@ function showAdmin(user) {
   loadGaleriaFotos();
   loadAlphaRegistros();
   loadPeticiones();
-  loadOraciones();
   loadPastoresFoto();
   loadHorariosAdmin();
   loadHeroContenidoAdmin();
