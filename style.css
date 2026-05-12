@@ -26,6 +26,15 @@ nav{
 .btn-primary{background:var(--dark);color:var(--cream);border:none;padding:10px 22px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;transition:opacity .2s}
 .btn-primary:hover{opacity:.85}
 
+.menu-toggle{
+  display:none;
+  background:none;
+  border:none;
+  font-size:30px;
+  color:var(--dark);
+  cursor:pointer;
+}
+
 /* ── HERO ── */
 .hero{
   min-height:92vh;background:var(--dark);
@@ -231,7 +240,27 @@ footer{
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   nav{padding:14px 20px}
-  .nav-links{display:none}
+  .menu-toggle{
+  display:block;
+}
+
+.nav-links{
+  position:absolute;
+  top:100%;
+  right:20px;
+  background:var(--cream);
+  border:1px solid var(--border);
+  padding:18px;
+  flex-direction:column;
+  gap:16px;
+  width:220px;
+  display:none;
+  z-index:200;
+}
+
+.nav-links.active{
+  display:flex;
+}
   section{padding:60px 20px}
   .divider{margin:0 20px}
   .horarios-grid,.anuncios-grid,.forms-section,.pastor-grid{grid-template-columns:1fr}

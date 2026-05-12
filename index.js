@@ -253,3 +253,11 @@ async function loadHeroContenido() {
     ubicacion.textContent = data.ubicacion;
 
 }
+function toggleMenu(){
+
+  document
+    .querySelector('.nav-links')
+    .classList
+    .toggle('active');
+
+}
