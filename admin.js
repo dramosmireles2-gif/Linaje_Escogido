@@ -272,6 +272,95 @@ async function handleGaleriaUpload(e) {
 // ══════════════════════════════
 // FOTOS COMPARTIDO
 // ══════════════════════════════
+async function compressImage(file) {
+
+  return new Promise((resolve) => {
+
+    const img = new Image();
+
+    img.onload = () => {
+
+      const canvas =
+        document.createElement('canvas');
+
+      const ctx =
+        canvas.getContext('2d');
+
+      let width = img.width;
+      let height = img.height;
+
+      const MAX_SIZE = 2000;
+
+      if (width > height) {
+
+        if (width > MAX_SIZE) {
+
+          height *= MAX_SIZE / width;
+          width = MAX_SIZE;
+
+        }
+
+      } else {
+
+        if (height > MAX_SIZE) {
+
+          width *= MAX_SIZE / height;
+          height = MAX_SIZE;
+
+        }
+
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.drawImage(
+        img,
+        0,
+        0,
+        width,
+        height
+      );
+
+      canvas.toBlob(
+
+        (blob) => {
+
+          if (!blob) {
+
+            showToast(
+              'Error procesando imagen.',
+              true
+            );
+
+            return;
+          }
+
+          const compressedFile =
+            new File(
+              [blob],
+              file.name.replace(/\.\w+$/, '.jpg'),
+              {
+                type: 'image/jpeg'
+              }
+            );
+
+          resolve(compressedFile);
+
+        },
+
+        'image/jpeg',
+        0.8
+
+      );
+          };
+
+    img.src =
+      URL.createObjectURL(file);
+
+  });
+
+}
 async function uploadFotos(files, tabla, reload) {
   if (!files.length) return;
   showToast(`Subiendo ${files.length} foto(s)...`);
@@ -279,13 +368,30 @@ async function uploadFotos(files, tabla, reload) {
   const { data: existing } = await db.from(tabla).select('orden').order('orden', { ascending: false }).limit(1);
   let orden = existing && existing.length ? existing[0].orden + 1 : 1;
 
-  for (const file of files) {
+  for (let file of files) {
+    file = await compressImage(file);
     if (file.size > 5 * 1024 * 1024) { showToast(`${file.name} supera 5MB.`, true); continue; }
     const ext = file.name.split('.').pop();
     const path = `${tabla}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
 
-    const { error: upError } = await db.storage.from('fotos').upload(path, file);
-    if (upError) { showToast(`Error subiendo ${file.name}.`, true); continue; }
+    const { data: uploadData, error: upError } =
+      await db.storage
+        .from('fotos')
+        .upload(path, file);
+
+    console.log('UPLOAD:', uploadData);
+    console.log('UPLOAD ERROR:', upError);
+    if (upError) {
+
+      console.error(upError);
+
+      showToast(
+        'Error subiendo imagen.',
+        true
+      );
+
+      continue;
+    }
 
     const { data: urlData } = db.storage.from('fotos').getPublicUrl(path);
     await db.from(tabla).insert([{ url: urlData.publicUrl, orden, activa: true }]);
