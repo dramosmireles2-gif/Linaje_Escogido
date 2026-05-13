@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
   loadGaleria();
   loadHero();
+  loadPastorFoto();
 });
 
 // ── HERO ──
@@ -43,6 +44,19 @@ async function loadHero() {
       slides.children[current].style.opacity = '0.45';
     }, 5000);
   }
+}
+
+// ── PASTORES ──
+async function loadPastorFoto() {
+  const { data, error } = await db
+    .from('pastores_foto')
+    .select('url')
+    .eq('activa', true)
+    .order('created_at', { ascending: false })
+    .limit(1);
+  if (error || !data || !data.length) return;
+  const img = document.querySelector('.pastor-img');
+  if (img) img.src = data[0].url;
 }
 
 // ── ANUNCIOS ──

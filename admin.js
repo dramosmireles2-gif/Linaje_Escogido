@@ -48,6 +48,7 @@ function showAdmin(user) {
   loadAnuncios();
   loadHeroFotos();
   loadGaleriaFotos();
+  loadPastorFoto();
   loadAlphaRegistros();
   loadPeticiones();
 }
@@ -165,6 +166,100 @@ async function deleteAnuncio(id, imagenUrl) {
   if (error) { showToast('Error al eliminar.', true); return; }
   showToast('Anuncio eliminado.');
   loadAnuncios();
+}
+
+// ══════════════════════════════
+// PASTORES
+// ══════════════════════════════
+async function loadPastorFoto() {
+  const { data, error } = await db
+    .from('pastores_foto')
+    .select('*')
+    .eq('activa', true)
+    .order('created_at', { ascending: false })
+    .limit(1);
+
+  const preview = document.getElementById('pastorPreview');
+  if (error || !data || !data.length) {
+    preview.innerHTML = '<div style="font-size:13px;color:var(--mid);">No hay foto cargada aún.</div>';
+    return;
+  }
+
+  const foto = data[0];
+  preview.innerHTML = `
+    <img src="${foto.url}" style="width:100%;border-radius:6px;border:1px solid var(--border);margin-bottom:12px;" alt="Foto pastores"/>
+    <button class="btn btn-danger btn-sm" onclick="deletePastorFoto('${foto.id}','${foto.url}')">Eliminar foto</button>
+  `;
+}
+
+async function handlePastorUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  showToast('Procesando imagen...');
+  const compressed = await compressImage(file, 2);
+  const sizeMB = (compressed.size / 1024 / 1024).toFixed(1);
+  showToast(`Subiendo (${sizeMB} MB)...`);
+
+  await db.from('pastores_foto').update({ activa: false }).eq('activa', true);
+
+  const path = `pastores/${Date.now()}.jpg`;
+  const { error: upError } = await db.storage.from('fotos').upload(path, compressed);
+  if (upError) { showToast('Error al subir la foto.', true); e.target.value = ''; return; }
+
+  const { data: urlData } = db.storage.from('fotos').getPublicUrl(path);
+  const { error } = await db.from('pastores_foto').insert([{ url: urlData.publicUrl, activa: true, orden: 1 }]);
+
+  e.target.value = '';
+  if (error) { showToast('Error al guardar.', true); return; }
+  showToast('Foto de pastores actualizada.');
+  loadPastorFoto();
+}
+
+async function deletePastorFoto(id, url) {
+  if (!confirm('¿Eliminar la foto de pastores?')) return;
+  const path = url.split('/fotos/')[1];
+  if (path) await db.storage.from('fotos').remove([path]);
+  await db.from('pastores_foto').delete().eq('id', id);
+  showToast('Foto eliminada.');
+  loadPastorFoto();
+}
+
+async function compressImage(file, maxMB = 2) {
+  return new Promise((resolve) => {
+    const maxBytes = maxMB * 1024 * 1024;
+    if (file.size <= maxBytes) { resolve(file); return; }
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+        const maxDim = 1920;
+        if (width > maxDim) { height = Math.round(height * maxDim / width); width = maxDim; }
+        if (height > maxDim) { width = Math.round(width * maxDim / height); height = maxDim; }
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+        let quality = 0.85;
+        const tryCompress = () => {
+          canvas.toBlob((blob) => {
+            if (blob.size <= maxBytes || quality <= 0.1) {
+              resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+            } else {
+              quality = Math.round((quality - 0.1) * 10) / 10;
+              tryCompress();
+            }
+          }, 'image/jpeg', quality);
+        };
+        tryCompress();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 // ══════════════════════════════

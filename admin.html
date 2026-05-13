@@ -210,6 +210,10 @@ option{background:var(--card);color:var(--cream);}
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Registros Alpha
       </button>
+      <button class="nav-item" onclick="switchTab('pastores',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Pastores
+      </button>
       <button class="nav-item" onclick="switchTab('peticiones',this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         Peticiones de Oración
@@ -358,6 +362,47 @@ option{background:var(--card);color:var(--cream);}
         </label>
         <div class="foto-grid" id="galeriaFotoGrid">
           <div style="font-size:13px;color:var(--mid);grid-column:1/-1;">Cargando...</div>
+        </div>
+      </div>
+
+      <!-- PASTORES -->
+      <div class="panel" id="panel-pastores">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title-row">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              <div class="panel-title">Foto de Pastores</div>
+            </div>
+            <div class="panel-desc">Esta foto aparece en la sección de liderazgo de la página principal.</div>
+          </div>
+        </div>
+
+        <div class="anuncios-split">
+          <div class="dark-card">
+            <div class="dark-card-title">Subir nueva foto</div>
+            <div class="dark-card-sub">Si la foto es muy grande se comprimirá automáticamente antes de subirse.</div>
+            <label class="upload-zone" id="pastorUploadZone">
+              <input type="file" id="pastorFileInput" accept="image/*" onchange="handlePastorUpload(event)"/>
+              <div class="upload-icon">📷</div>
+              <div class="upload-text"><strong>Haz clic para subir</strong><br/>JPG, PNG — se comprime si supera 2 MB</div>
+            </label>
+            <div class="tips-box" style="margin-top:4px;">
+              <div class="tips-title">Consejos</div>
+              <ul class="tips-list">
+                <li>Foto horizontal, idealmente 1200 × 500 px o más ancha</li>
+                <li>Que el sujeto esté centrado — los bordes se recortan en móvil</li>
+                <li>Si pesa más de 2 MB se comprime automáticamente</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="dark-card">
+            <div class="dark-card-title">Foto actual</div>
+            <div class="dark-card-sub">La foto que se muestra ahora en la página.</div>
+            <div id="pastorPreview">
+              <div style="font-size:13px;color:var(--mid);">Cargando...</div>
+            </div>
+          </div>
         </div>
       </div>
 
