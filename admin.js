@@ -4,13 +4,11 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await db.auth.getSession();
   if (session) showAdmin(session.user);
 });
 
-// ── LOGIN ──
 async function handleLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('loginBtn');
@@ -21,7 +19,6 @@ async function handleLogin(e) {
 
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
-
   const { data, error } = await db.auth.signInWithPassword({ email, password });
 
   if (error) {
@@ -42,82 +39,23 @@ async function handleLogout() {
 function showAdmin(user) {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('adminWrap').style.display = 'flex';
-  document.getElementById('adminUser').textContent = user.email;
+  const name = user.email.split('@')[0];
+  document.getElementById('adminUser').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+  document.getElementById('userAvatar').textContent = name.slice(0, 2).toUpperCase();
   loadAnuncios();
   loadHeroFotos();
   loadGaleriaFotos();
   loadAlphaRegistros();
   loadPeticiones();
-  loadPastoresFoto();
-  loadHorariosAdmin();
-  loadHeroContenidoAdmin();
 }
 
-async function loadPastoresFoto() {
-
-  const { data, error } = await db
-    .from('pastores_foto')
-    .select('*')
-    .order('created_at', { ascending:false });
-
-  const grid =
-    document.getElementById('pastoresFotoGrid');
-
-  if (error || !data.length) {
-
-    grid.innerHTML =
-      '<div style="opacity:.4;">No hay foto.</div>';
-
-    return;
-  }
-
-  grid.innerHTML = data.map(f => `
-    <div class="foto-item ${f.activa ? '' : 'inactivo'}">
-
-      <img src="${f.url}" alt="Pastores"/>
-
-      <div class="foto-overlay">
-
-        <button
-          class="btn btn-sm"
-          style="background:rgba(245,239,230,.15);color:#fff;border:1px solid rgba(255,255,255,.2);"
-          onclick="toggleFoto('pastores_foto','${f.id}',${f.activa})"
-        >
-          ${f.activa ? 'Ocultar' : 'Mostrar'}
-        </button>
-
-        <button
-          class="btn btn-danger btn-sm"
-          onclick="deleteFoto('pastores_foto','${f.id}','${f.url}')"
-        >
-          ✕
-        </button>
-
-      </div>
-
-    </div>
-  `).join('');
-}
-
-async function handlePastoresUpload(e) {
-  await uploadFotos(
-    e.target.files,
-    'pastores_foto',
-    loadPastoresFoto
-  );
-
-  e.target.value = '';
-}
-
-// ── TABS ──
-function switchTab(tab) {
+function switchTab(tab, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if (el) el.classList.add('active');
 }
 
-// ── TOAST ──
 function showToast(msg, error = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -125,30 +63,47 @@ function showToast(msg, error = false) {
   setTimeout(() => t.className = 'toast', 3000);
 }
 
-// ══════════════════════════════
-// ANUNCIOS
-// ══════════════════════════════
+// ══ ANUNCIOS ══
 async function loadAnuncios() {
   const { data, error } = await db.from('anuncios').select('*').order('fecha', { ascending: false });
   const list = document.getElementById('anunciosList');
+  const countEl = document.getElementById('anunciosCount');
   if (error || !data.length) {
-    list.innerHTML = '<div style="font-size:13px;opacity:.4;">No hay anuncios aún.</div>';
+    if (countEl) countEl.textContent = '0';
+    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">No hay anuncios aún.</div>';
     return;
   }
-  list.innerHTML = data.map(a => `
-    <div class="item-card ${a.activo ? '' : 'inactivo'}">
-      ${a.imagen_url ? `<img src="${a.imagen_url}" style="width:72px;height:72px;object-fit:cover;flex-shrink:0;border:1px solid rgba(26,26,26,.1);" alt=""/>` : ''}
-      <div class="item-info">
-        <div class="item-title">${a.titulo}</div>
-        <div class="item-meta">${formatDate(a.fecha)} &nbsp;·&nbsp; <span class="badge ${a.activo ? 'badge-green' : 'badge-gray'}">${a.activo ? 'Activo' : 'Inactivo'}</span></div>
-        <div class="item-body">${a.cuerpo}</div>
-      </div>
-      <div class="item-actions">
-        <button class="btn btn-outline btn-sm" onclick="toggleAnuncio('${a.id}', ${a.activo})">${a.activo ? 'Desactivar' : 'Activar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteAnuncio('${a.id}', '${a.imagen_url || ''}')">Eliminar</button>
-      </div>
-    </div>
-  `).join('');
+  if (countEl) countEl.textContent = data.length;
+  list.innerHTML = `
+    <table class="anuncios-table" id="anunciosTable">
+      <thead><tr>
+        <th>Imagen</th><th>Título</th><th>Fecha</th><th>Estado</th><th>Acciones</th>
+      </tr></thead>
+      <tbody>
+        ${data.map(a => `
+          <tr>
+            <td>${a.imagen_url ? `<img class="anuncio-thumb" src="${a.imagen_url}" alt=""/>` : `<div class="anuncio-thumb-empty"></div>`}</td>
+            <td style="font-weight:500;">${a.titulo}</td>
+            <td style="color:var(--mid);white-space:nowrap;">${formatDate(a.fecha)}</td>
+            <td style="white-space:nowrap;"><span class="status-dot ${a.activo ? 'on' : 'off'}"></span>${a.activo ? 'Activo' : 'Inactivo'}</td>
+            <td>
+              <div style="display:flex;gap:5px;">
+                <button class="btn-icon" onclick="toggleAnuncio('${a.id}',${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}">${a.activo ? '⏸' : '▶'}</button>
+                <button class="btn-icon danger" onclick="deleteAnuncio('${a.id}','${a.imagen_url || ''}')" title="Eliminar">✕</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+function filterAnuncios() {
+  const q = document.getElementById('anuncioSearch').value.toLowerCase();
+  document.querySelectorAll('#anunciosTable tbody tr').forEach(row => {
+    const title = row.cells[1]?.textContent.toLowerCase() || '';
+    row.style.display = title.includes(q) ? '' : 'none';
+  });
 }
 
 async function handleAnuncio(e) {
@@ -159,18 +114,6 @@ async function handleAnuncio(e) {
 
   let imagen_url = null;
   const file = document.getElementById('anuncioImagen').files[0];
-  if (file && file.size > 5 * 1024 * 1024) {
-
-    showToast(
-      'La imagen supera 5MB',
-      true
-    );
-
-    btn.textContent = 'Publicar anuncio';
-    btn.disabled = false;
-
-    return;
-  }
   if (file) {
     const ext = file.name.split('.').pop();
     const path = `anuncios/${Date.now()}.${ext}`;
@@ -217,14 +160,12 @@ async function deleteAnuncio(id, imagenUrl) {
   loadAnuncios();
 }
 
-// ══════════════════════════════
-// HERO FOTOS
-// ══════════════════════════════
+// ══ HERO FOTOS ══
 async function loadHeroFotos() {
   const { data, error } = await db.from('hero_fotos').select('*').order('orden');
   const grid = document.getElementById('heroFotoGrid');
   if (error || !data.length) {
-    grid.innerHTML = '<div style="font-size:13px;opacity:.4;grid-column:1/-1;">No hay fotos aún.</div>';
+    grid.innerHTML = '<div style="font-size:13px;color:var(--mid);grid-column:1/-1;">No hay fotos aún.</div>';
     return;
   }
   grid.innerHTML = data.map(f => `
@@ -232,7 +173,7 @@ async function loadHeroFotos() {
       <img src="${f.url}" alt="Hero foto"/>
       <div class="foto-overlay">
         <button class="btn btn-sm" style="background:rgba(245,239,230,.15);color:#fff;border:1px solid rgba(255,255,255,.2);" onclick="toggleFoto('hero_fotos','${f.id}',${f.activa})">${f.activa ? 'Ocultar' : 'Mostrar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteFoto('hero_fotos','${f.id}','${f.url}')">✕</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteFoto('hero_fotos','${f.id}','${f.url}')">&#x2715;</button>
       </div>
     </div>
   `).join('');
@@ -243,14 +184,12 @@ async function handleHeroUpload(e) {
   e.target.value = '';
 }
 
-// ══════════════════════════════
-// GALERÍA FOTOS
-// ══════════════════════════════
+// ══ GALERÍA FOTOS ══
 async function loadGaleriaFotos() {
   const { data, error } = await db.from('galeria_fotos').select('*').order('orden');
   const grid = document.getElementById('galeriaFotoGrid');
   if (error || !data.length) {
-    grid.innerHTML = '<div style="font-size:13px;opacity:.4;grid-column:1/-1;">No hay fotos aún.</div>';
+    grid.innerHTML = '<div style="font-size:13px;color:var(--mid);grid-column:1/-1;">No hay fotos aún.</div>';
     return;
   }
   grid.innerHTML = data.map(f => `
@@ -258,7 +197,7 @@ async function loadGaleriaFotos() {
       <img src="${f.url}" alt="Galería foto"/>
       <div class="foto-overlay">
         <button class="btn btn-sm" style="background:rgba(245,239,230,.15);color:#fff;border:1px solid rgba(255,255,255,.2);" onclick="toggleFoto('galeria_fotos','${f.id}',${f.activa})">${f.activa ? 'Ocultar' : 'Mostrar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteFoto('galeria_fotos','${f.id}','${f.url}')">✕</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteFoto('galeria_fotos','${f.id}','${f.url}')">&#x2715;</button>
       </div>
     </div>
   `).join('');
@@ -269,98 +208,7 @@ async function handleGaleriaUpload(e) {
   e.target.value = '';
 }
 
-// ══════════════════════════════
-// FOTOS COMPARTIDO
-// ══════════════════════════════
-async function compressImage(file) {
-
-  return new Promise((resolve) => {
-
-    const img = new Image();
-
-    img.onload = () => {
-
-      const canvas =
-        document.createElement('canvas');
-
-      const ctx =
-        canvas.getContext('2d');
-
-      let width = img.width;
-      let height = img.height;
-
-      const MAX_SIZE = 2000;
-
-      if (width > height) {
-
-        if (width > MAX_SIZE) {
-
-          height *= MAX_SIZE / width;
-          width = MAX_SIZE;
-
-        }
-
-      } else {
-
-        if (height > MAX_SIZE) {
-
-          width *= MAX_SIZE / height;
-          height = MAX_SIZE;
-
-        }
-
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-
-      ctx.drawImage(
-        img,
-        0,
-        0,
-        width,
-        height
-      );
-
-      canvas.toBlob(
-
-        (blob) => {
-
-          if (!blob) {
-
-            showToast(
-              'Error procesando imagen.',
-              true
-            );
-
-            return;
-          }
-
-          const compressedFile =
-            new File(
-              [blob],
-              file.name.replace(/\.\w+$/, '.jpg'),
-              {
-                type: 'image/jpeg'
-              }
-            );
-
-          resolve(compressedFile);
-
-        },
-
-        'image/jpeg',
-        0.8
-
-      );
-          };
-
-    img.src =
-      URL.createObjectURL(file);
-
-  });
-
-}
+// ══ FOTOS COMPARTIDO ══
 async function uploadFotos(files, tabla, reload) {
   if (!files.length) return;
   showToast(`Subiendo ${files.length} foto(s)...`);
@@ -368,31 +216,12 @@ async function uploadFotos(files, tabla, reload) {
   const { data: existing } = await db.from(tabla).select('orden').order('orden', { ascending: false }).limit(1);
   let orden = existing && existing.length ? existing[0].orden + 1 : 1;
 
-  for (let file of files) {
-    file = await compressImage(file);
+  for (const file of files) {
     if (file.size > 5 * 1024 * 1024) { showToast(`${file.name} supera 5MB.`, true); continue; }
     const ext = file.name.split('.').pop();
     const path = `${tabla}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-
-    const { data: uploadData, error: upError } =
-      await db.storage
-        .from('fotos')
-        .upload(path, file);
-
-    console.log('UPLOAD:', uploadData);
-    console.log('UPLOAD ERROR:', upError);
-    if (upError) {
-
-      console.error(upError);
-
-      showToast(
-        'Error subiendo imagen.',
-        true
-      );
-
-      continue;
-    }
-
+    const { error: upError } = await db.storage.from('fotos').upload(path, file);
+    if (upError) { showToast(`Error subiendo ${file.name}.`, true); continue; }
     const { data: urlData } = db.storage.from('fotos').getPublicUrl(path);
     await db.from(tabla).insert([{ url: urlData.publicUrl, orden, activa: true }]);
     orden++;
@@ -403,74 +232,23 @@ async function uploadFotos(files, tabla, reload) {
 }
 
 async function toggleFoto(tabla, id, activa) {
-
-  const { error } = await db
-    .from(tabla)
-    .update({ activa: !activa })
-    .eq('id', id);
-
-  if (error) {
-    showToast('Error al actualizar.', true);
-    return;
-  }
-
-  showToast(
-    activa
-      ? 'Foto ocultada.'
-      : 'Foto activada.'
-  );
-
-  if (tabla === 'hero_fotos') {
-    loadHeroFotos();
-  }
-  else if (tabla === 'galeria_fotos') {
-    loadGaleriaFotos();
-  }
-  else if (tabla === 'pastores_foto') {
-    loadPastoresFoto();
-  }
-
+  const { error } = await db.from(tabla).update({ activa: !activa }).eq('id', id);
+  if (error) { showToast('Error al actualizar.', true); return; }
+  showToast(activa ? 'Foto ocultada.' : 'Foto activada.');
+  tabla === 'hero_fotos' ? loadHeroFotos() : loadGaleriaFotos();
 }
 
 async function deleteFoto(tabla, id, url) {
-
-  if (!confirm('¿Eliminar esta foto?'))
-    return;
-
-  const path =
-    url.split('/fotos/')[1];
-
-  await db.storage
-    .from('fotos')
-    .remove([path]);
-
-  const { error } = await db
-    .from(tabla)
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    showToast('Error al eliminar.', true);
-    return;
-  }
-
+  if (!confirm('¿Eliminar esta foto?')) return;
+  const path = url.split('/fotos/')[1];
+  await db.storage.from('fotos').remove([path]);
+  const { error } = await db.from(tabla).delete().eq('id', id);
+  if (error) { showToast('Error al eliminar.', true); return; }
   showToast('Foto eliminada.');
-
-  if (tabla === 'hero_fotos') {
-    loadHeroFotos();
-  }
-  else if (tabla === 'galeria_fotos') {
-    loadGaleriaFotos();
-  }
-  else if (tabla === 'pastores_foto') {
-    loadPastoresFoto();
-  }
-
+  tabla === 'hero_fotos' ? loadHeroFotos() : loadGaleriaFotos();
 }
 
-// ══════════════════════════════
-// PETICIONES DE ORACIÓN
-// ══════════════════════════════
+// ══ PETICIONES DE ORACIÓN ══
 async function loadPeticiones() {
   const { data, error } = await db
     .from('peticiones_oracion')
@@ -481,30 +259,25 @@ async function loadPeticiones() {
   const countEl = document.getElementById('peticionesCount');
 
   if (error) {
-    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Error al cargar peticiones.</div>';
+    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Error al cargar peticiones.</div>';
     return;
   }
   if (!data.length) {
-    countEl.textContent = '0 peticiones';
-    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Aún no hay peticiones.</div>';
+    if (countEl) countEl.textContent = '0 peticiones';
+    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Aún no hay peticiones.</div>';
     return;
   }
 
-  countEl.textContent = `${data.length} petición${data.length !== 1 ? 'es' : ''}`;
+  if (countEl) countEl.textContent = `${data.length} petición${data.length !== 1 ? 'es' : ''}`;
   list.innerHTML = data.map(p => `
     <div class="item-card">
-      <div class="item-info">
-        <div class="item-title">${p.nombre || ''}${p.apellidos ? ' ' + p.apellidos : ''}</div>
-        <div class="item-meta">
-          ${formatDateTime(p.created_at)}
-          ${p.ubicacion ? ` &nbsp;·&nbsp; ${p.ubicacion}` : ''}
-        </div>
-        <div class="item-body" style="margin-bottom:8px;font-style:italic;">"${p.peticion}"</div>
-        <div style="font-size:12px;opacity:.5;">
-          ${p.email ? `<a href="mailto:${p.email}" style="color:inherit;">${p.email}</a>` : ''}
-          ${p.telefono ? ` &nbsp;·&nbsp; ${p.telefono}` : ''}
-          ${p.decision_seguimiento ? ` &nbsp;·&nbsp; ${decisionLabel(p.decision_seguimiento)}` : ''}
-        </div>
+      <div class="item-title">${p.nombre || ''}${p.apellidos ? ' ' + p.apellidos : ''}</div>
+      <div class="item-meta">${formatDateTime(p.created_at)}${p.ubicacion ? ' · ' + p.ubicacion : ''}</div>
+      <div class="item-body" style="font-style:italic;margin-bottom:6px;">"“${p.peticion}”"</div>
+      <div style="font-size:12px;color:var(--mid);">
+        ${p.email ? `<a href="mailto:${p.email}" style="color:var(--cream);">${p.email}</a>` : ''}
+        ${p.telefono ? ` · ${p.telefono}` : ''}
+        ${p.decision_seguimiento ? ` · ${decisionLabel(p.decision_seguimiento)}` : ''}
       </div>
     </div>
   `).join('');
@@ -533,9 +306,7 @@ function exportPeticiones() {
     });
 }
 
-// ══════════════════════════════
-// REGISTROS ALPHA
-// ══════════════════════════════
+// ══ REGISTROS ALPHA ══
 async function loadAlphaRegistros() {
   const { data, error } = await db
     .from('registros_alpha')
@@ -546,25 +317,23 @@ async function loadAlphaRegistros() {
   const countEl = document.getElementById('alphaCount');
 
   if (error) {
-    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Error al cargar registros.</div>';
+    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Error al cargar registros.</div>';
     return;
   }
   if (!data.length) {
-    countEl.textContent = '0 registros';
-    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Aún no hay registros.</div>';
+    if (countEl) countEl.textContent = '0 registros';
+    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Aún no hay registros.</div>';
     return;
   }
 
-  countEl.textContent = `${data.length} registro${data.length !== 1 ? 's' : ''}`;
+  if (countEl) countEl.textContent = `${data.length} registro${data.length !== 1 ? 's' : ''}`;
   list.innerHTML = data.map(r => `
     <div class="item-card">
-      <div class="item-info">
-        <div class="item-title">${r.nombre} ${r.apellidos}</div>
-        <div class="item-meta">${formatDateTime(r.fecha_registro)}</div>
-        <div class="item-body">
-          <a href="mailto:${r.email}" style="color:var(--dark)">${r.email}</a>
-          ${r.telefono ? ` &nbsp;·&nbsp; <a href="tel:${r.telefono}" style="color:var(--dark)">${r.telefono}</a>` : ''}
-        </div>
+      <div class="item-title">${r.nombre} ${r.apellidos}</div>
+      <div class="item-meta">${formatDateTime(r.fecha_registro)}</div>
+      <div class="item-body">
+        <a href="mailto:${r.email}" style="color:var(--cream);">${r.email}</a>
+        ${r.telefono ? ` · <a href="tel:${r.telefono}" style="color:var(--cream);">${r.telefono}</a>` : ''}
       </div>
     </div>
   `).join('');
@@ -573,7 +342,6 @@ async function loadAlphaRegistros() {
 function exportAlpha() {
   const rows = document.querySelectorAll('#alphaList .item-card');
   if (!rows.length) { showToast('No hay registros para exportar.', true); return; }
-
   db.from('registros_alpha').select('*').order('fecha_registro', { ascending: false })
     .then(({ data }) => {
       if (!data) return;
@@ -602,232 +370,4 @@ function formatDateTime(dateStr) {
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-// ══════════════════════════════
-// HORARIOS
-// ══════════════════════════════
-
-async function loadHorariosAdmin() {
-
-  const { data, error } = await db
-    .from('horarios')
-    .select('*')
-    .order('orden');
-
-  const list =
-    document.getElementById('horariosList');
-
-  if (error || !data.length) {
-
-    list.innerHTML =
-      '<div style="opacity:.4;">No hay horarios.</div>';
-
-    return;
-  }
-
-  list.innerHTML = data.map(h => `
-    
-    <div class="item-card ${h.activo ? '' : 'inactivo'}">
-
-      <div class="item-info">
-
-        <div class="item-title">
-          ${h.dia} · ${h.hora}
-        </div>
-
-        <div class="item-body">
-          ${h.titulo}
-        </div>
-
-      </div>
-
-      <div class="item-actions">
-
-        <button
-          class="btn btn-outline btn-sm"
-          onclick="toggleHorario('${h.id}', ${h.activo})"
-        >
-          ${h.activo ? 'Desactivar' : 'Activar'}
-        </button>
-
-        <button
-          class="btn btn-danger btn-sm"
-          onclick="deleteHorario('${h.id}')"
-        >
-          Eliminar
-        </button>
-
-      </div>
-
-    </div>
-
-  `).join('');
-
-}
-
-async function handleHorario(e) {
-
-  e.preventDefault();
-
-  const { data: existing } = await db
-    .from('horarios')
-    .select('orden')
-    .order('orden', { ascending:false })
-    .limit(1);
-
-  const orden =
-    existing && existing.length
-      ? existing[0].orden + 1
-      : 1;
-
-  const { error } = await db
-    .from('horarios')
-    .insert([{
-
-      titulo:
-        document.getElementById('horarioTitulo').value,
-
-      dia:
-        document.getElementById('horarioDia').value,
-
-      hora:
-        document.getElementById('horarioHora').value,
-
-      activo: true,
-      orden
-
-    }]);
-
-  if (error) {
-    showToast('Error al guardar.', true);
-    return;
-  }
-
-  showToast('Horario agregado.');
-
-  e.target.reset();
-
-  loadHorariosAdmin();
-
-}
-
-async function toggleHorario(id, activo) {
-
-  const { error } = await db
-    .from('horarios')
-    .update({ activo: !activo })
-    .eq('id', id);
-
-  if (error) {
-    showToast('Error.', true);
-    return;
-  }
-
-  showToast(
-    activo
-      ? 'Horario desactivado.'
-      : 'Horario activado.'
-  );
-
-  loadHorariosAdmin();
-
-}
-
-async function deleteHorario(id) {
-
-  if (!confirm('¿Eliminar horario?'))
-    return;
-
-  const { error } = await db
-    .from('horarios')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    showToast('Error.', true);
-    return;
-  }
-
-  showToast('Horario eliminado.');
-
-  loadHorariosAdmin();
-
-}
-// ══════════════════════════════
-// HERO CONTENIDO
-// ══════════════════════════════
-
-async function loadHeroContenidoAdmin() {
-
-  const { data, error } = await db
-    .from('hero_contenido')
-    .select('*')
-    .limit(1)
-    .maybeSingle();
-
-  if (error || !data) return;
-
-  document.getElementById('heroTituloInput').value =
-    data.titulo || '';
-
-  document.getElementById('heroSubtituloInput').value =
-    data.subtitulo || '';
-
-  document.getElementById('heroUbicacionInput').value =
-    data.ubicacion || '';
-
-}
-
-async function saveHeroContenido(e) {
-
-  e.preventDefault();
-
-  const titulo =
-    document.getElementById('heroTituloInput').value;
-
-  const subtitulo =
-    document.getElementById('heroSubtituloInput').value;
-
-  const ubicacion =
-    document.getElementById('heroUbicacionInput').value;
-
-  const { data: existing } = await db
-    .from('hero_contenido')
-    .select('id')
-    .limit(1)
-    .maybeSingle();
-
-  let error;
-
-  if (existing) {
-
-    ({ error } = await db
-      .from('hero_contenido')
-      .update({
-        titulo,
-        subtitulo,
-        ubicacion
-      })
-      .eq('id', existing.id));
-
-  } else {
-
-    ({ error } = await db
-      .from('hero_contenido')
-      .insert([{
-        titulo,
-        subtitulo,
-        ubicacion
-      }]));
-
-  }
-
-  if (error) {
-    showToast('Error al guardar.', true);
-    return;
-  }
-
-  showToast('Contenido actualizado.');
-
 }
