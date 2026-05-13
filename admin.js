@@ -4,11 +4,13 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await db.auth.getSession();
   if (session) showAdmin(session.user);
 });
 
+// ── LOGIN ──
 async function handleLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('loginBtn');
@@ -19,6 +21,7 @@ async function handleLogin(e) {
 
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
+
   const { data, error } = await db.auth.signInWithPassword({ email, password });
 
   if (error) {
@@ -45,10 +48,12 @@ function showAdmin(user) {
   loadAnuncios();
   loadHeroFotos();
   loadGaleriaFotos();
+  loadPastorFoto();
   loadAlphaRegistros();
   loadPeticiones();
 }
 
+// ── TABS ──
 function switchTab(tab, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -56,6 +61,7 @@ function switchTab(tab, el) {
   if (el) el.classList.add('active');
 }
 
+// ── TOAST ──
 function showToast(msg, error = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -63,7 +69,9 @@ function showToast(msg, error = false) {
   setTimeout(() => t.className = 'toast', 3000);
 }
 
-// ══ ANUNCIOS ══
+// ══════════════════════════════
+// ANUNCIOS
+// ══════════════════════════════
 async function loadAnuncios() {
   const { data, error } = await db.from('anuncios').select('*').order('fecha', { ascending: false });
   const list = document.getElementById('anunciosList');
@@ -160,12 +168,108 @@ async function deleteAnuncio(id, imagenUrl) {
   loadAnuncios();
 }
 
-// ══ HERO FOTOS ══
+// ══════════════════════════════
+// PASTORES
+// ══════════════════════════════
+async function loadPastorFoto() {
+  const { data, error } = await db
+    .from('pastores_foto')
+    .select('*')
+    .eq('activa', true)
+    .order('created_at', { ascending: false })
+    .limit(1);
+
+  const preview = document.getElementById('pastorPreview');
+  if (error || !data || !data.length) {
+    preview.innerHTML = '<div style="font-size:13px;color:var(--mid);">No hay foto cargada aún.</div>';
+    return;
+  }
+
+  const foto = data[0];
+  preview.innerHTML = `
+    <img src="${foto.url}" style="width:100%;border-radius:6px;border:1px solid var(--border);margin-bottom:12px;" alt="Foto pastores"/>
+    <button class="btn btn-danger btn-sm" onclick="deletePastorFoto('${foto.id}','${foto.url}')">Eliminar foto</button>
+  `;
+}
+
+async function handlePastorUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  showToast('Procesando imagen...');
+  const compressed = await compressImage(file, 2);
+  const sizeMB = (compressed.size / 1024 / 1024).toFixed(1);
+  showToast(`Subiendo (${sizeMB} MB)...`);
+
+  await db.from('pastores_foto').update({ activa: false }).eq('activa', true);
+
+  const path = `pastores/${Date.now()}.jpg`;
+  const { error: upError } = await db.storage.from('fotos').upload(path, compressed);
+  if (upError) { showToast('Error al subir la foto.', true); e.target.value = ''; return; }
+
+  const { data: urlData } = db.storage.from('fotos').getPublicUrl(path);
+  const { error } = await db.from('pastores_foto').insert([{ url: urlData.publicUrl, activa: true, orden: 1 }]);
+
+  e.target.value = '';
+  if (error) { showToast('Error al guardar.', true); return; }
+  showToast('Foto de pastores actualizada.');
+  loadPastorFoto();
+}
+
+async function deletePastorFoto(id, url) {
+  if (!confirm('¿Eliminar la foto de pastores?')) return;
+  const path = url.split('/fotos/')[1];
+  if (path) await db.storage.from('fotos').remove([path]);
+  await db.from('pastores_foto').delete().eq('id', id);
+  showToast('Foto eliminada.');
+  loadPastorFoto();
+}
+
+async function compressImage(file, maxMB = 2) {
+  return new Promise((resolve) => {
+    const maxBytes = maxMB * 1024 * 1024;
+    if (file.size <= maxBytes) { resolve(file); return; }
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+        const maxDim = 1920;
+        if (width > maxDim) { height = Math.round(height * maxDim / width); width = maxDim; }
+        if (height > maxDim) { width = Math.round(width * maxDim / height); height = maxDim; }
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+        let quality = 0.85;
+        const tryCompress = () => {
+          canvas.toBlob((blob) => {
+            if (blob.size <= maxBytes || quality <= 0.1) {
+              resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+            } else {
+              quality = Math.round((quality - 0.1) * 10) / 10;
+              tryCompress();
+            }
+          }, 'image/jpeg', quality);
+        };
+        tryCompress();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ══════════════════════════════
+// HERO FOTOS
+// ══════════════════════════════
 async function loadHeroFotos() {
   const { data, error } = await db.from('hero_fotos').select('*').order('orden');
   const grid = document.getElementById('heroFotoGrid');
   if (error || !data.length) {
-    grid.innerHTML = '<div style="font-size:13px;color:var(--mid);grid-column:1/-1;">No hay fotos aún.</div>';
+    grid.innerHTML = '<div style="font-size:13px;opacity:.4;grid-column:1/-1;">No hay fotos aún.</div>';
     return;
   }
   grid.innerHTML = data.map(f => `
@@ -173,7 +277,7 @@ async function loadHeroFotos() {
       <img src="${f.url}" alt="Hero foto"/>
       <div class="foto-overlay">
         <button class="btn btn-sm" style="background:rgba(245,239,230,.15);color:#fff;border:1px solid rgba(255,255,255,.2);" onclick="toggleFoto('hero_fotos','${f.id}',${f.activa})">${f.activa ? 'Ocultar' : 'Mostrar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteFoto('hero_fotos','${f.id}','${f.url}')">&#x2715;</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteFoto('hero_fotos','${f.id}','${f.url}')">✕</button>
       </div>
     </div>
   `).join('');
@@ -184,12 +288,14 @@ async function handleHeroUpload(e) {
   e.target.value = '';
 }
 
-// ══ GALERÍA FOTOS ══
+// ══════════════════════════════
+// GALERÍA FOTOS
+// ══════════════════════════════
 async function loadGaleriaFotos() {
   const { data, error } = await db.from('galeria_fotos').select('*').order('orden');
   const grid = document.getElementById('galeriaFotoGrid');
   if (error || !data.length) {
-    grid.innerHTML = '<div style="font-size:13px;color:var(--mid);grid-column:1/-1;">No hay fotos aún.</div>';
+    grid.innerHTML = '<div style="font-size:13px;opacity:.4;grid-column:1/-1;">No hay fotos aún.</div>';
     return;
   }
   grid.innerHTML = data.map(f => `
@@ -197,7 +303,7 @@ async function loadGaleriaFotos() {
       <img src="${f.url}" alt="Galería foto"/>
       <div class="foto-overlay">
         <button class="btn btn-sm" style="background:rgba(245,239,230,.15);color:#fff;border:1px solid rgba(255,255,255,.2);" onclick="toggleFoto('galeria_fotos','${f.id}',${f.activa})">${f.activa ? 'Ocultar' : 'Mostrar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteFoto('galeria_fotos','${f.id}','${f.url}')">&#x2715;</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteFoto('galeria_fotos','${f.id}','${f.url}')">✕</button>
       </div>
     </div>
   `).join('');
@@ -208,7 +314,9 @@ async function handleGaleriaUpload(e) {
   e.target.value = '';
 }
 
-// ══ FOTOS COMPARTIDO ══
+// ══════════════════════════════
+// FOTOS COMPARTIDO
+// ══════════════════════════════
 async function uploadFotos(files, tabla, reload) {
   if (!files.length) return;
   showToast(`Subiendo ${files.length} foto(s)...`);
@@ -220,8 +328,10 @@ async function uploadFotos(files, tabla, reload) {
     if (file.size > 5 * 1024 * 1024) { showToast(`${file.name} supera 5MB.`, true); continue; }
     const ext = file.name.split('.').pop();
     const path = `${tabla}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+
     const { error: upError } = await db.storage.from('fotos').upload(path, file);
     if (upError) { showToast(`Error subiendo ${file.name}.`, true); continue; }
+
     const { data: urlData } = db.storage.from('fotos').getPublicUrl(path);
     await db.from(tabla).insert([{ url: urlData.publicUrl, orden, activa: true }]);
     orden++;
@@ -248,7 +358,9 @@ async function deleteFoto(tabla, id, url) {
   tabla === 'hero_fotos' ? loadHeroFotos() : loadGaleriaFotos();
 }
 
-// ══ PETICIONES DE ORACIÓN ══
+// ══════════════════════════════
+// PETICIONES DE ORACIÓN
+// ══════════════════════════════
 async function loadPeticiones() {
   const { data, error } = await db
     .from('peticiones_oracion')
@@ -259,25 +371,30 @@ async function loadPeticiones() {
   const countEl = document.getElementById('peticionesCount');
 
   if (error) {
-    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Error al cargar peticiones.</div>';
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Error al cargar peticiones.</div>';
     return;
   }
   if (!data.length) {
-    if (countEl) countEl.textContent = '0 peticiones';
-    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Aún no hay peticiones.</div>';
+    countEl.textContent = '0 peticiones';
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Aún no hay peticiones.</div>';
     return;
   }
 
-  if (countEl) countEl.textContent = `${data.length} petición${data.length !== 1 ? 'es' : ''}`;
+  countEl.textContent = `${data.length} petición${data.length !== 1 ? 'es' : ''}`;
   list.innerHTML = data.map(p => `
     <div class="item-card">
-      <div class="item-title">${p.nombre || ''}${p.apellidos ? ' ' + p.apellidos : ''}</div>
-      <div class="item-meta">${formatDateTime(p.created_at)}${p.ubicacion ? ' · ' + p.ubicacion : ''}</div>
-      <div class="item-body" style="font-style:italic;margin-bottom:6px;">"“${p.peticion}”"</div>
-      <div style="font-size:12px;color:var(--mid);">
-        ${p.email ? `<a href="mailto:${p.email}" style="color:var(--cream);">${p.email}</a>` : ''}
-        ${p.telefono ? ` · ${p.telefono}` : ''}
-        ${p.decision_seguimiento ? ` · ${decisionLabel(p.decision_seguimiento)}` : ''}
+      <div class="item-info">
+        <div class="item-title">${p.nombre || ''}${p.apellidos ? ' ' + p.apellidos : ''}</div>
+        <div class="item-meta">
+          ${formatDateTime(p.created_at)}
+          ${p.ubicacion ? ` &nbsp;·&nbsp; ${p.ubicacion}` : ''}
+        </div>
+        <div class="item-body" style="margin-bottom:8px;font-style:italic;">"${p.peticion}"</div>
+        <div style="font-size:12px;opacity:.5;">
+          ${p.email ? `<a href="mailto:${p.email}" style="color:inherit;">${p.email}</a>` : ''}
+          ${p.telefono ? ` &nbsp;·&nbsp; ${p.telefono}` : ''}
+          ${p.decision_seguimiento ? ` &nbsp;·&nbsp; ${decisionLabel(p.decision_seguimiento)}` : ''}
+        </div>
       </div>
     </div>
   `).join('');
@@ -306,7 +423,9 @@ function exportPeticiones() {
     });
 }
 
-// ══ REGISTROS ALPHA ══
+// ══════════════════════════════
+// REGISTROS ALPHA
+// ══════════════════════════════
 async function loadAlphaRegistros() {
   const { data, error } = await db
     .from('registros_alpha')
@@ -317,23 +436,25 @@ async function loadAlphaRegistros() {
   const countEl = document.getElementById('alphaCount');
 
   if (error) {
-    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Error al cargar registros.</div>';
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Error al cargar registros.</div>';
     return;
   }
   if (!data.length) {
-    if (countEl) countEl.textContent = '0 registros';
-    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">Aún no hay registros.</div>';
+    countEl.textContent = '0 registros';
+    list.innerHTML = '<div style="font-size:13px;opacity:.4;">Aún no hay registros.</div>';
     return;
   }
 
-  if (countEl) countEl.textContent = `${data.length} registro${data.length !== 1 ? 's' : ''}`;
+  countEl.textContent = `${data.length} registro${data.length !== 1 ? 's' : ''}`;
   list.innerHTML = data.map(r => `
     <div class="item-card">
-      <div class="item-title">${r.nombre} ${r.apellidos}</div>
-      <div class="item-meta">${formatDateTime(r.fecha_registro)}</div>
-      <div class="item-body">
-        <a href="mailto:${r.email}" style="color:var(--cream);">${r.email}</a>
-        ${r.telefono ? ` · <a href="tel:${r.telefono}" style="color:var(--cream);">${r.telefono}</a>` : ''}
+      <div class="item-info">
+        <div class="item-title">${r.nombre} ${r.apellidos}</div>
+        <div class="item-meta">${formatDateTime(r.fecha_registro)}</div>
+        <div class="item-body">
+          <a href="mailto:${r.email}" style="color:var(--cream)">${r.email}</a>
+          ${r.telefono ? ` &nbsp;·&nbsp; <a href="tel:${r.telefono}" style="color:var(--cream)">${r.telefono}</a>` : ''}
+        </div>
       </div>
     </div>
   `).join('');
@@ -342,6 +463,7 @@ async function loadAlphaRegistros() {
 function exportAlpha() {
   const rows = document.querySelectorAll('#alphaList .item-card');
   if (!rows.length) { showToast('No hay registros para exportar.', true); return; }
+
   db.from('registros_alpha').select('*').order('fecha_registro', { ascending: false })
     .then(({ data }) => {
       if (!data) return;

@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
   loadGaleria();
   loadHero();
-  loadPastoresFoto();
-  loadHeroContenido();
-  loadHorarios();
+  loadPastorFoto();
 });
 
 // ── HERO ──
@@ -25,6 +23,7 @@ async function loadHero() {
 
   const hero = document.querySelector('.hero');
 
+  // Crear contenedor de slides detrás del contenido
   const slides = document.createElement('div');
   slides.style.cssText = 'position:absolute;inset:0;z-index:0;';
   data.forEach((f, i) => {
@@ -34,6 +33,7 @@ async function loadHero() {
   });
   hero.insertBefore(slides, hero.firstChild);
 
+  // Oscurecer el fondo sólido ya que ahora hay imagen
   hero.style.background = '#000';
 
   if (data.length > 1) {
@@ -44,6 +44,19 @@ async function loadHero() {
       slides.children[current].style.opacity = '0.45';
     }, 5000);
   }
+}
+
+// ── PASTORES ──
+async function loadPastorFoto() {
+  const { data, error } = await db
+    .from('pastores_foto')
+    .select('url')
+    .eq('activa', true)
+    .order('created_at', { ascending: false })
+    .limit(1);
+  if (error || !data || !data.length) return;
+  const img = document.querySelector('.pastor-img');
+  if (img) img.src = data[0].url;
 }
 
 // ── ANUNCIOS ──
@@ -94,28 +107,6 @@ async function loadGaleria() {
   `).join('');
 }
 
-// ── PASTORES ──
-async function loadPastoresFoto() {
-
-  const { data, error } = await db
-    .from('pastores_foto')
-    .select('*')
-    .eq('activa', true)
-    .order('created_at', { ascending:false })
-    .limit(1)
-    .maybeSingle();
-
-  if (error || !data) return;
-
-  const pastorImg =
-    document.querySelector('.pastor-img');
-
-  if (pastorImg) {
-    pastorImg.src = data.url;
-  }
-
-}
-
 // ── FORMULARIOS ──
 async function handleAlpha(e) {
   e.preventDefault();
@@ -155,8 +146,8 @@ async function handleOracion(e) {
   const email = form.querySelector('input[type="email"]').value;
   const telefono = form.querySelector('input[type="tel"]').value;
   const peticion = form.querySelector('textarea').value;
-  const ubicacion = document.getElementById('oracionPais').value;
-  const referencia = document.getElementById('oracionReferencia').value;
+  const ubicacion = form.querySelector('input[placeholder="Ciudad, País"]').value;
+  const referencia = form.querySelector('input[placeholder="Redes sociales, un amigo..."]').value;
   const decision_seguimiento = form.querySelector('select').value;
 
   const { error } = await db.from('peticiones_oracion').insert([{
@@ -178,86 +169,4 @@ async function handleOracion(e) {
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T12:00:00');
   return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-async function loadHorarios() {
-
-  const { data, error } = await db
-    .from('horarios')
-    .select('*')
-    .eq('activo', true)
-    .order('orden');
-
-  const grid =
-    document.getElementById('horariosGrid');
-
-  if (error || !data.length) {
-
-    grid.innerHTML =
-      '<div style="opacity:.5;">No hay horarios disponibles.</div>';
-
-    return;
-  }
-
-  grid.innerHTML = data.map((h, index) => `
-    
-    <div class="horario-card ${index % 2 ? 'dark' : ''}">
-
-      <div class="horario-meta">
-        ${h.titulo}
-      </div>
-
-      <div class="horario-day">
-        ${h.dia}
-      </div>
-
-      <div class="horario-type">
-        Servicio
-      </div>
-
-      <div class="horario-time">
-        ${h.hora}
-      </div>
-
-    </div>
-
-  `).join('');
-
-}
-async function loadHeroContenido() {
-
-  const { data, error } = await db
-    .from('hero_contenido')
-    .select('*')
-    .limit(1)
-    .maybeSingle();
-
-  if (error || !data) return;
-
-  const titulo =
-    document.getElementById('heroTitulo');
-
-  const subtitulo =
-    document.getElementById('heroSubtitulo');
-
-  const ubicacion =
-    document.getElementById('heroUbicacion');
-
-  if (titulo)
-    titulo.textContent = data.titulo;
-
-  if (subtitulo)
-    subtitulo.textContent = data.subtitulo;
-
-  if (ubicacion)
-    ubicacion.textContent = data.ubicacion;
-
-}
-function toggleMenu(){
-
-  document
-    .querySelector('.nav-links')
-    .classList
-    .toggle('active');
-
 }
