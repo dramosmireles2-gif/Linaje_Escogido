@@ -42,53 +42,22 @@ async function handleLogout() {
 function showAdmin(user) {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('adminWrap').style.display = 'flex';
-  document.getElementById('adminUser').textContent = user.email;
+  const name = user.email.split('@')[0];
+  document.getElementById('adminUser').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+  document.getElementById('userAvatar').textContent = name.slice(0, 2).toUpperCase();
   loadAnuncios();
   loadHeroFotos();
   loadGaleriaFotos();
   loadAlphaRegistros();
   loadPeticiones();
-  loadOraciones();
 }
 
-async function loadOraciones() {
-  const { data, error } = await db
-    .from('peticiones_oracion')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  const list = document.getElementById('oracionesList');
-  
-  if (error || !data.length) {
-    list.innerHTML = '<div style="font-size:13px;opacity:.4;">No hay peticiones registradas.</div>';
-    return;
-  }
-
-  list.innerHTML = data.map(o => `
-    <div class="item-card">
-      <div class="item-info">
-        <div class="item-title">${o.nombre} ${o.apellidos || ''}</div>
-        <div class="item-meta">
-          ${formatDate(o.created_at.split('T')[0])} &nbsp;·&nbsp; 
-          <span style="color:var(--mid)">${o.email || 'Sin email'}</span> &nbsp;·&nbsp; 
-          <span style="color:var(--mid)">${o.telefono || ''}</span>
-        </div>
-        <div class="item-body" style="background:rgba(26,26,26,0.03); padding:10px; margin-top:8px; border-radius:4px;">
-          "${o.peticion}"
-        </div>
-        <div style="font-size:11px; opacity:0.5; margin-top:8px;">
-          Ubicación: ${o.ubicacion || 'No especificada'} | Referencia: ${o.referencia || 'N/A'}
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
 // ── TABS ──
-function switchTab(tab) {
+function switchTab(tab, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if (el) el.classList.add('active');
 }
 
 // ── TOAST ──
@@ -105,24 +74,43 @@ function showToast(msg, error = false) {
 async function loadAnuncios() {
   const { data, error } = await db.from('anuncios').select('*').order('fecha', { ascending: false });
   const list = document.getElementById('anunciosList');
+  const countEl = document.getElementById('anunciosCount');
   if (error || !data.length) {
-    list.innerHTML = '<div style="font-size:13px;opacity:.4;">No hay anuncios aún.</div>';
+    if (countEl) countEl.textContent = '0';
+    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">No hay anuncios aún.</div>';
     return;
   }
-  list.innerHTML = data.map(a => `
-    <div class="item-card ${a.activo ? '' : 'inactivo'}">
-      ${a.imagen_url ? `<img src="${a.imagen_url}" style="width:72px;height:72px;object-fit:cover;flex-shrink:0;border:1px solid rgba(26,26,26,.1);" alt=""/>` : ''}
-      <div class="item-info">
-        <div class="item-title">${a.titulo}</div>
-        <div class="item-meta">${formatDate(a.fecha)} &nbsp;·&nbsp; <span class="badge ${a.activo ? 'badge-green' : 'badge-gray'}">${a.activo ? 'Activo' : 'Inactivo'}</span></div>
-        <div class="item-body">${a.cuerpo}</div>
-      </div>
-      <div class="item-actions">
-        <button class="btn btn-outline btn-sm" onclick="toggleAnuncio('${a.id}', ${a.activo})">${a.activo ? 'Desactivar' : 'Activar'}</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteAnuncio('${a.id}', '${a.imagen_url || ''}')">Eliminar</button>
-      </div>
-    </div>
-  `).join('');
+  if (countEl) countEl.textContent = data.length;
+  list.innerHTML = `
+    <table class="anuncios-table" id="anunciosTable">
+      <thead><tr>
+        <th>Imagen</th><th>Título</th><th>Fecha</th><th>Estado</th><th>Acciones</th>
+      </tr></thead>
+      <tbody>
+        ${data.map(a => `
+          <tr>
+            <td>${a.imagen_url ? `<img class="anuncio-thumb" src="${a.imagen_url}" alt=""/>` : `<div class="anuncio-thumb-empty"></div>`}</td>
+            <td style="font-weight:500;">${a.titulo}</td>
+            <td style="color:var(--mid);white-space:nowrap;">${formatDate(a.fecha)}</td>
+            <td style="white-space:nowrap;"><span class="status-dot ${a.activo ? 'on' : 'off'}"></span>${a.activo ? 'Activo' : 'Inactivo'}</td>
+            <td>
+              <div style="display:flex;gap:5px;">
+                <button class="btn-icon" onclick="toggleAnuncio('${a.id}',${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}">${a.activo ? '⏸' : '▶'}</button>
+                <button class="btn-icon danger" onclick="deleteAnuncio('${a.id}','${a.imagen_url || ''}')" title="Eliminar">✕</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+function filterAnuncios() {
+  const q = document.getElementById('anuncioSearch').value.toLowerCase();
+  document.querySelectorAll('#anunciosTable tbody tr').forEach(row => {
+    const title = row.cells[1]?.textContent.toLowerCase() || '';
+    row.style.display = title.includes(q) ? '' : 'none';
+  });
 }
 
 async function handleAnuncio(e) {
@@ -369,8 +357,8 @@ async function loadAlphaRegistros() {
         <div class="item-title">${r.nombre} ${r.apellidos}</div>
         <div class="item-meta">${formatDateTime(r.fecha_registro)}</div>
         <div class="item-body">
-          <a href="mailto:${r.email}" style="color:var(--dark)">${r.email}</a>
-          ${r.telefono ? ` &nbsp;·&nbsp; <a href="tel:${r.telefono}" style="color:var(--dark)">${r.telefono}</a>` : ''}
+          <a href="mailto:${r.email}" style="color:var(--cream)">${r.email}</a>
+          ${r.telefono ? ` &nbsp;·&nbsp; <a href="tel:${r.telefono}" style="color:var(--cream)">${r.telefono}</a>` : ''}
         </div>
       </div>
     </div>
