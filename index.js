@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadGaleria();
   loadHero();
   loadPastorFoto();
+  loadHorarios();
 });
 
 // ── HERO ──
@@ -23,7 +24,6 @@ async function loadHero() {
 
   const hero = document.querySelector('.hero');
 
-  // Crear contenedor de slides detrás del contenido
   const slides = document.createElement('div');
   slides.style.cssText = 'position:absolute;inset:0;z-index:0;';
   data.forEach((f, i) => {
@@ -32,8 +32,6 @@ async function loadHero() {
     slides.appendChild(div);
   });
   hero.insertBefore(slides, hero.firstChild);
-
-  // Oscurecer el fondo sólido ya que ahora hay imagen
   hero.style.background = '#000';
 
   if (data.length > 1) {
@@ -57,6 +55,26 @@ async function loadPastorFoto() {
   if (error || !data || !data.length) return;
   const img = document.querySelector('.pastor-img');
   if (img) img.src = data[0].url;
+}
+
+// ── HORARIOS ──
+async function loadHorarios() {
+  const grid = document.getElementById('horariosGrid');
+  const { data, error } = await db
+    .from('horarios')
+    .select('*')
+    .eq('activo', true)
+    .order('orden');
+
+  if (error || !data || !data.length) return;
+
+  grid.innerHTML = data.map((h, i) => `
+    <div class="horario-card${i % 2 === 1 ? ' dark' : ''}">
+      <div class="horario-day">${h.dia}</div>
+      <div class="horario-type">${h.titulo}</div>
+      <div class="horario-time">${h.hora}</div>
+    </div>
+  `).join('');
 }
 
 // ── ANUNCIOS ──
