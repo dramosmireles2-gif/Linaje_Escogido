@@ -206,6 +206,10 @@ option{background:var(--card);color:var(--cream);}
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         Galería
       </button>
+      <button class="nav-item" onclick="switchTab('horarios',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Horarios
+      </button>
       <button class="nav-item" onclick="switchTab('alpha',this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         Registros Alpha
@@ -400,6 +404,53 @@ option{background:var(--card);color:var(--cream);}
             <div class="dark-card-title">Foto actual</div>
             <div class="dark-card-sub">La foto que se muestra ahora en la página.</div>
             <div id="pastorPreview">
+              <div style="font-size:13px;color:var(--mid);">Cargando...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HORARIOS -->
+      <div class="panel" id="panel-horarios">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title-row">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <div class="panel-title">Horarios</div>
+            </div>
+            <div class="panel-desc">Los horarios activos aparecen en la sección de servicios de la página.</div>
+          </div>
+        </div>
+
+        <div class="anuncios-split">
+          <div class="dark-card">
+            <div class="dark-card-title">Nuevo Horario</div>
+            <div class="dark-card-sub">Agrega un servicio o reunión a la página.</div>
+            <form onsubmit="handleHorario(event)">
+              <div class="field-wrap">
+                <label class="field-label">Título</label>
+                <input class="field-input" type="text" id="horarioTitulo" placeholder="Ej: Servicio dominical" required/>
+              </div>
+              <div class="form-row">
+                <div class="field-wrap">
+                  <label class="field-label">Día</label>
+                  <input class="field-input" type="text" id="horarioDia" placeholder="Ej: Domingo" required/>
+                </div>
+                <div class="field-wrap">
+                  <label class="field-label">Hora</label>
+                  <input class="field-input" type="text" id="horarioHora" placeholder="Ej: 2:30 pm" required/>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="horarioBtn">Agregar horario</button>
+            </form>
+          </div>
+
+          <div class="dark-card">
+            <div class="table-meta">
+              <span class="table-label">Horarios actuales</span>
+              <span class="table-count" id="horariosCount">0</span>
+            </div>
+            <div id="horariosList">
               <div style="font-size:13px;color:var(--mid);">Cargando...</div>
             </div>
           </div>

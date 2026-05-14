@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadGaleria();
   loadHero();
   loadPastorFoto();
+  loadHorarios();
 });
 
 // ── HERO ──
@@ -57,6 +58,26 @@ async function loadPastorFoto() {
   if (error || !data || !data.length) return;
   const img = document.querySelector('.pastor-img');
   if (img) img.src = data[0].url;
+}
+
+// ── HORARIOS ──
+async function loadHorarios() {
+  const grid = document.getElementById('horariosGrid');
+  const { data, error } = await db
+    .from('horarios')
+    .select('*')
+    .eq('activo', true)
+    .order('orden');
+
+  if (error || !data || !data.length) return;
+
+  grid.innerHTML = data.map((h, i) => `
+    <div class="horario-card${i % 2 === 1 ? ' dark' : ''}">
+      <div class="horario-day">${h.dia}</div>
+      <div class="horario-type">${h.titulo}</div>
+      <div class="horario-time">${h.hora}</div>
+    </div>
+  `).join('');
 }
 
 // ── ANUNCIOS ──

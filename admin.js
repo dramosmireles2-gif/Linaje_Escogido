@@ -46,6 +46,7 @@ function showAdmin(user) {
   document.getElementById('adminUser').textContent = name.charAt(0).toUpperCase() + name.slice(1);
   document.getElementById('userAvatar').textContent = name.slice(0, 2).toUpperCase();
   loadAnuncios();
+  loadHorarios();
   loadHeroFotos();
   loadGaleriaFotos();
   loadPastorFoto();
@@ -166,6 +167,84 @@ async function deleteAnuncio(id, imagenUrl) {
   if (error) { showToast('Error al eliminar.', true); return; }
   showToast('Anuncio eliminado.');
   loadAnuncios();
+}
+
+// ══════════════════════════════
+// HORARIOS
+// ══════════════════════════════
+async function loadHorarios() {
+  const { data, error } = await db.from('horarios').select('*').order('orden');
+  const list = document.getElementById('horariosList');
+  const countEl = document.getElementById('horariosCount');
+  if (error || !data || !data.length) {
+    if (countEl) countEl.textContent = '0';
+    list.innerHTML = '<div style="font-size:13px;color:var(--mid);">No hay horarios aún.</div>';
+    return;
+  }
+  if (countEl) countEl.textContent = data.length;
+  list.innerHTML = `
+    <table class="anuncios-table" id="horariosTable">
+      <thead><tr>
+        <th>Día</th><th>Título</th><th>Hora</th><th>Estado</th><th>Acciones</th>
+      </tr></thead>
+      <tbody>
+        ${data.map(h => `
+          <tr>
+            <td style="font-weight:500;">${h.dia}</td>
+            <td>${h.titulo}</td>
+            <td style="color:var(--mid);">${h.hora}</td>
+            <td><span class="status-dot ${h.activo ? 'on' : 'off'}"></span>${h.activo ? 'Activo' : 'Inactivo'}</td>
+            <td>
+              <div style="display:flex;gap:5px;">
+                <button class="btn-icon" onclick="toggleHorario('${h.id}',${h.activo})" title="${h.activo ? 'Desactivar' : 'Activar'}">${h.activo ? '⏸' : '▶'}</button>
+                <button class="btn-icon danger" onclick="deleteHorario('${h.id}')" title="Eliminar">✕</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function handleHorario(e) {
+  e.preventDefault();
+  const btn = document.getElementById('horarioBtn');
+  btn.textContent = 'Guardando...';
+  btn.disabled = true;
+
+  const { data: existing } = await db.from('horarios').select('orden').order('orden', { ascending: false }).limit(1);
+  const orden = existing && existing.length ? existing[0].orden + 1 : 1;
+
+  const { error } = await db.from('horarios').insert([{
+    titulo: document.getElementById('horarioTitulo').value,
+    dia: document.getElementById('horarioDia').value,
+    hora: document.getElementById('horarioHora').value,
+    activo: true,
+    orden
+  }]);
+
+  btn.textContent = 'Agregar horario';
+  btn.disabled = false;
+
+  if (error) { showToast('Error al guardar.', true); return; }
+  showToast('Horario agregado.');
+  e.target.reset();
+  loadHorarios();
+}
+
+async function toggleHorario(id, activo) {
+  const { error } = await db.from('horarios').update({ activo: !activo }).eq('id', id);
+  if (error) { showToast('Error al actualizar.', true); return; }
+  showToast(activo ? 'Horario desactivado.' : 'Horario activado.');
+  loadHorarios();
+}
+
+async function deleteHorario(id) {
+  if (!confirm('¿Eliminar este horario?')) return;
+  const { error } = await db.from('horarios').delete().eq('id', id);
+  if (error) { showToast('Error al eliminar.', true); return; }
+  showToast('Horario eliminado.');
+  loadHorarios();
 }
 
 // ══════════════════════════════
