@@ -60,6 +60,21 @@ function switchTab(tab, el) {
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
   if (el) el.classList.add('active');
+  if (window.innerWidth <= 768) closeSidebar();
+}
+
+// ── SIDEBAR MÓVIL ──
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const isOpen = sidebar.classList.contains('open');
+  sidebar.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('show', !isOpen);
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
 }
 
 // ── TOAST ──
