@@ -297,7 +297,6 @@ option{background:var(--card);color:var(--cream);}
         </div>
 
         <div class="anuncios-split">
-          <!-- FORM -->
           <div class="dark-card">
             <div class="dark-card-title">Nuevo Anuncio</div>
             <div class="dark-card-sub">Completa la información para crear un nuevo anuncio.</div>
@@ -327,7 +326,6 @@ option{background:var(--card);color:var(--cream);}
             </form>
           </div>
 
-          <!-- LIST -->
           <div class="dark-card">
             <div class="table-meta">
               <div>
@@ -371,6 +369,24 @@ option{background:var(--card);color:var(--cream);}
         <div class="foto-grid" id="heroFotoGrid">
           <div style="font-size:13px;color:var(--mid);grid-column:1/-1;">Cargando...</div>
         </div>
+
+        <div class="dark-card" style="margin-top:24px;">
+          <div class="dark-card-title">Texto del Hero</div>
+          <div class="dark-card-sub">El texto que aparece bajo el título principal en la página.</div>
+          <form onsubmit="handleHeroTexto(event)">
+            <div class="field-wrap">
+              <label class="field-label">Tagline</label>
+              <input class="field-input" type="text" id="heroTagline" placeholder="Una Iglesia Funcional · Apasionada · Sensible al Espíritu Santo"/>
+              <div class="field-hint">Texto pequeño que aparece bajo "Linaje Escogido".</div>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">Ciudad</label>
+              <input class="field-input" type="text" id="heroCiudad" placeholder="Reynosa, Tamaulipas"/>
+              <div class="field-hint">Aparece en negrita debajo del tagline.</div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="heroTextoBtn">Guardar texto</button>
+          </form>
+        </div>
       </div>
 
       <!-- GALERÍA -->
@@ -400,6 +416,53 @@ option{background:var(--card);color:var(--cream);}
         </label>
         <div class="foto-grid" id="galeriaFotoGrid">
           <div style="font-size:13px;color:var(--mid);grid-column:1/-1;">Cargando...</div>
+        </div>
+      </div>
+
+      <!-- HORARIOS -->
+      <div class="panel" id="panel-horarios">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title-row">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <div class="panel-title">Horarios</div>
+            </div>
+            <div class="panel-desc">Los horarios activos aparecen en la sección de servicios de la página.</div>
+          </div>
+        </div>
+
+        <div class="anuncios-split">
+          <div class="dark-card">
+            <div class="dark-card-title">Nuevo Horario</div>
+            <div class="dark-card-sub">Agrega un servicio o reunión a la página.</div>
+            <form onsubmit="handleHorario(event)">
+              <div class="field-wrap">
+                <label class="field-label">Título</label>
+                <input class="field-input" type="text" id="horarioTitulo" placeholder="Ej: Servicio dominical" required/>
+              </div>
+              <div class="form-row">
+                <div class="field-wrap">
+                  <label class="field-label">Día</label>
+                  <input class="field-input" type="text" id="horarioDia" placeholder="Ej: Domingo" required/>
+                </div>
+                <div class="field-wrap">
+                  <label class="field-label">Hora</label>
+                  <input class="field-input" type="text" id="horarioHora" placeholder="Ej: 2:30 pm" required/>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="horarioBtn">Agregar horario</button>
+            </form>
+          </div>
+
+          <div class="dark-card">
+            <div class="table-meta">
+              <span class="table-label">Horarios actuales</span>
+              <span class="table-count" id="horariosCount">0</span>
+            </div>
+            <div id="horariosList" style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+              <div style="font-size:13px;color:var(--mid);">Cargando...</div>
+            </div>
+          </div>
         </div>
       </div>
 

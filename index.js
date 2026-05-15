@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
   loadGaleria();
   loadHero();
+  loadHeroTexto();
   loadPastorFoto();
   loadHorarios();
 });
@@ -24,7 +25,6 @@ async function loadHero() {
 
   const hero = document.querySelector('.hero');
 
-  // Crear contenedor de slides detrás del contenido
   const slides = document.createElement('div');
   slides.style.cssText = 'position:absolute;inset:0;z-index:0;';
   data.forEach((f, i) => {
@@ -33,8 +33,6 @@ async function loadHero() {
     slides.appendChild(div);
   });
   hero.insertBefore(slides, hero.firstChild);
-
-  // Oscurecer el fondo sólido ya que ahora hay imagen
   hero.style.background = '#000';
 
   if (data.length > 1) {
@@ -45,6 +43,15 @@ async function loadHero() {
       slides.children[current].style.opacity = '0.45';
     }, 5000);
   }
+}
+
+// ── HERO TEXTO ──
+async function loadHeroTexto() {
+  const { data } = await db.from('hero_texto').select('*').eq('id', 1).single();
+  if (!data) return;
+  const tagEls = document.querySelectorAll('.hero-tagline');
+  if (tagEls[0] && data.tagline) tagEls[0].textContent = data.tagline;
+  if (tagEls[1] && data.ciudad) tagEls[1].textContent = data.ciudad;
 }
 
 // ── PASTORES ──

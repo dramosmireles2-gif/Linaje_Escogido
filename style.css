@@ -39,10 +39,6 @@ nav{
   letter-spacing:.04em;color:var(--cream);line-height:1;
   position:relative;z-index:2;margin-bottom:4px;
 }
-.hero-script{
-  font-family:'Dancing Script',cursive;font-size:clamp(28px,4vw,46px);
-  color:var(--cream);opacity:.8;position:relative;z-index:2;margin-bottom:8px;
-}
 .hero-tagline{
   font-size:11px;color:var(--cream);opacity:.5;
   letter-spacing:.14em;text-transform:uppercase;
