@@ -369,6 +369,24 @@ option{background:var(--card);color:var(--cream);}
         <div class="foto-grid" id="heroFotoGrid">
           <div style="font-size:13px;color:var(--mid);grid-column:1/-1;">Cargando...</div>
         </div>
+
+        <div class="dark-card" style="margin-top:24px;">
+          <div class="dark-card-title">Texto del Hero</div>
+          <div class="dark-card-sub">El texto que aparece bajo el título principal en la página.</div>
+          <form onsubmit="handleHeroTexto(event)">
+            <div class="field-wrap">
+              <label class="field-label">Tagline</label>
+              <input class="field-input" type="text" id="heroTagline" placeholder="Una Iglesia Funcional · Apasionada · Sensible al Espíritu Santo"/>
+              <div class="field-hint">Texto pequeño que aparece bajo "Linaje Escogido".</div>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label">Ciudad</label>
+              <input class="field-input" type="text" id="heroCiudad" placeholder="Reynosa, Tamaulipas"/>
+              <div class="field-hint">Aparece en negrita debajo del tagline.</div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="heroTextoBtn">Guardar texto</button>
+          </form>
+        </div>
       </div>
 
       <!-- GALERÍA -->

@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAnuncios();
   loadGaleria();
   loadHero();
+  loadHeroTexto();
   loadPastorFoto();
   loadHorarios();
 });
@@ -42,6 +43,15 @@ async function loadHero() {
       slides.children[current].style.opacity = '0.45';
     }, 5000);
   }
+}
+
+// ── HERO TEXTO ──
+async function loadHeroTexto() {
+  const { data } = await db.from('hero_texto').select('*').eq('id', 1).single();
+  if (!data) return;
+  const tagEls = document.querySelectorAll('.hero-tagline');
+  if (tagEls[0] && data.tagline) tagEls[0].textContent = data.tagline;
+  if (tagEls[1] && data.ciudad) tagEls[1].textContent = data.ciudad;
 }
 
 // ── PASTORES ──

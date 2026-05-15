@@ -48,6 +48,7 @@ function showAdmin(user) {
   loadAnuncios();
   loadHorarios();
   loadHeroFotos();
+  loadHeroTexto();
   loadGaleriaFotos();
   loadPastorFoto();
   loadAlphaRegistros();
@@ -380,6 +381,34 @@ async function loadHeroFotos() {
 async function handleHeroUpload(e) {
   await uploadFotos(e.target.files, 'hero_fotos', loadHeroFotos);
   e.target.value = '';
+}
+
+async function loadHeroTexto() {
+  const { data } = await db.from('hero_texto').select('*').eq('id', 1).single();
+  if (!data) return;
+  const tagEl = document.getElementById('heroTagline');
+  const ciudadEl = document.getElementById('heroCiudad');
+  if (tagEl) tagEl.value = data.tagline || '';
+  if (ciudadEl) ciudadEl.value = data.ciudad || '';
+}
+
+async function handleHeroTexto(e) {
+  e.preventDefault();
+  const btn = document.getElementById('heroTextoBtn');
+  btn.textContent = 'Guardando...';
+  btn.disabled = true;
+
+  const { error } = await db.from('hero_texto').upsert([{
+    id: 1,
+    tagline: document.getElementById('heroTagline').value,
+    ciudad: document.getElementById('heroCiudad').value
+  }]);
+
+  btn.textContent = 'Guardar texto';
+  btn.disabled = false;
+
+  if (error) { showToast('Error al guardar.', true); return; }
+  showToast('Texto del hero actualizado.');
 }
 
 // ══════════════════════════════
