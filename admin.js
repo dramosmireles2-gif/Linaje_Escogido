@@ -383,13 +383,16 @@ async function handleHeroUpload(e) {
   e.target.value = '';
 }
 
+let _heroContenidoId = null;
+
 async function loadHeroTexto() {
-  const { data } = await db.from('hero_texto').select('*').eq('id', 1).single();
+  const { data } = await db.from('hero_contenido').select('*').limit(1).single();
   if (!data) return;
+  _heroContenidoId = data.id;
   const tagEl = document.getElementById('heroTagline');
   const ciudadEl = document.getElementById('heroCiudad');
-  if (tagEl) tagEl.value = data.tagline || '';
-  if (ciudadEl) ciudadEl.value = data.ciudad || '';
+  if (tagEl) tagEl.value = data.subtitulo || '';
+  if (ciudadEl) ciudadEl.value = data.ubicacion || '';
 }
 
 async function handleHeroTexto(e) {
@@ -398,11 +401,14 @@ async function handleHeroTexto(e) {
   btn.textContent = 'Guardando...';
   btn.disabled = true;
 
-  const { error } = await db.from('hero_texto').upsert([{
-    id: 1,
-    tagline: document.getElementById('heroTagline').value,
-    ciudad: document.getElementById('heroCiudad').value
-  }]);
+  const payload = {
+    subtitulo: document.getElementById('heroTagline').value,
+    ubicacion: document.getElementById('heroCiudad').value
+  };
+
+  const { error } = _heroContenidoId
+    ? await db.from('hero_contenido').update(payload).eq('id', _heroContenidoId)
+    : await db.from('hero_contenido').insert([payload]);
 
   btn.textContent = 'Guardar texto';
   btn.disabled = false;

@@ -47,11 +47,11 @@ async function loadHero() {
 
 // ── HERO TEXTO ──
 async function loadHeroTexto() {
-  const { data } = await db.from('hero_texto').select('*').eq('id', 1).single();
+  const { data } = await db.from('hero_contenido').select('*').limit(1).single();
   if (!data) return;
   const tagEls = document.querySelectorAll('.hero-tagline');
-  if (tagEls[0] && data.tagline) tagEls[0].textContent = data.tagline;
-  if (tagEls[1] && data.ciudad) tagEls[1].textContent = data.ciudad;
+  if (tagEls[0] && data.subtitulo) tagEls[0].textContent = data.subtitulo;
+  if (tagEls[1] && data.ubicacion) tagEls[1].textContent = data.ubicacion;
 }
 
 // ── PASTORES ──
