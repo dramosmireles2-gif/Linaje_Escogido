@@ -590,12 +590,9 @@ async function loadAlphaRegistros() {
 }
 
 function exportAlpha() {
-  const rows = document.querySelectorAll('#alphaList .item-card');
-  if (!rows.length) { showToast('No hay registros para exportar.', true); return; }
-
   db.from('registros_alpha').select('*').order('fecha_registro', { ascending: false })
     .then(({ data }) => {
-      if (!data) return;
+      if (!data || !data.length) { showToast('No hay registros para exportar.', true); return; }
       const header = 'Nombre,Apellidos,Email,Teléfono,Fecha de registro';
       const csv = [header, ...data.map(r =>
         `"${r.nombre}","${r.apellidos}","${r.email}","${r.telefono || ''}","${formatDateTime(r.fecha_registro)}"`
