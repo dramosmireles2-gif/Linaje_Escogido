@@ -226,6 +226,7 @@ footer{
 .footer-social{display:flex;gap:24px}
 .footer-social a{font-size:13px;opacity:.45;color:var(--cream);text-decoration:none;transition:opacity .2s}
 .footer-social a:hover{opacity:.9}
+.footer-credit{width:100%;text-align:center;font-size:10px;opacity:.2;letter-spacing:.1em;text-transform:uppercase;padding-top:16px;border-top:1px solid rgba(245,239,230,.06);margin-top:8px;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
