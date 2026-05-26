@@ -327,9 +327,8 @@ body{
 }
 .post-cta .c-qr img{
   width:88px;height:88px;
-  border:1px solid #1a1a1a;border-radius:6px;
-  filter:brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(95deg) brightness(.8);
-  opacity:.85;
+  border-radius:6px;
+  background:#fff;padding:4px;
 }
 .post-cta .c-qr .qr-label{
   font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
@@ -471,9 +470,7 @@ body{
 .story .st-qr{display:flex;flex-direction:column;align-items:center;gap:8px;}
 .story .st-qr img{
   width:96px;height:96px;border-radius:8px;
-  border:1px solid #1c1c1c;
-  filter:brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(95deg) brightness(.75);
-  opacity:.9;
+  background:#fff;padding:4px;
 }
 .story .st-qr .ql{
   font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
@@ -588,8 +585,20 @@ body{
 
     <!-- BOTTOM -->
     <div class="s-bottom">
-      <div class="site-url">ramosmkt<span>.lat</span></div>
-      <div class="ig-handle" style="color:#333;">@ramosmkt</div>
+      <div>
+        <div class="site-url">ramosmkt<span>.lat</span></div>
+        <div class="ig-handle" style="color:#333;margin-top:3px;">@ramosmkt</div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:flex-end;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=112x112&color=000000&bgcolor=ffffff&data=https://linajeescogidoreynosa.org" alt="QR Sitio" style="width:54px;height:54px;border-radius:4px;background:#fff;padding:3px;"/>
+          <span style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#333;">Sitio web</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=112x112&color=000000&bgcolor=ffffff&data=https://wa.me/528148078309?text=Hola!%20Vi%20el%20sitio%20de%20Linaje%20Escogido%20y%20me%20interesa%20un%20sitio%20web%20para%20mi%20iglesia" alt="QR WhatsApp" style="width:54px;height:54px;border-radius:4px;background:#fff;padding:3px;"/>
+          <span style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#333;">WhatsApp</span>
+        </div>
+      </div>
     </div>
 
   </div>
