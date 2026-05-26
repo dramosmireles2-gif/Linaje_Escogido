@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<title>Flyers — Linaje Escogido</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#0d0d0d;
+  display:flex;flex-direction:column;align-items:center;
+  gap:60px;padding:60px 20px;
+  font-family:'DM Sans',sans-serif;
+}
+.label{
+  color:#444;font-size:11px;text-align:center;
+  margin-bottom:-44px;letter-spacing:3px;text-transform:uppercase;
+}
+.page{outline:1px dashed rgba(128,128,128,0.3);}
+
+/* ══════════════════════════════════════════
+   DESIGN 1 — IG POST SHOWCASE  600×600
+══════════════════════════════════════════ */
+.post-showcase{
+  width:600px;height:600px;
+  background:#1A1A1A;
+  position:relative;overflow:hidden;
+}
+
+/* Fondo — arcos decorativos */
+.post-showcase .bg-arc{
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(245,239,230,.06);
+}
+.post-showcase .arc1{width:700px;height:700px;top:-200px;right:-200px;}
+.post-showcase .arc2{width:500px;height:500px;top:-100px;right:-100px;}
+.post-showcase .arc3{width:340px;height:340px;top:-30px;right:-30px;}
+
+/* Cruz SVG decorativa grande */
+.post-showcase .cross-bg{
+  position:absolute;right:38px;top:38px;opacity:.07;
+}
+
+/* Franja de acento izquierda */
+.post-showcase .stripe{
+  position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(to bottom,#F5EFE6,rgba(245,239,230,0));
+}
+
+/* Contenido */
+.post-showcase .inner{
+  position:relative;z-index:2;
+  height:100%;display:flex;flex-direction:column;justify-content:space-between;
+  padding:44px 44px 40px 52px;
+}
+.post-showcase .top{display:flex;align-items:center;gap:10px;}
+.post-showcase .logo-mark{
+  width:28px;height:28px;opacity:.7;flex-shrink:0;
+}
+.post-showcase .brand-label{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(245,239,230,.4);font-weight:500;
+}
+
+.post-showcase .mid{}
+.post-showcase .pre-title{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(245,239,230,.35);font-weight:500;margin-bottom:10px;
+}
+.post-showcase .main-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:86px;line-height:.92;letter-spacing:.03em;
+  color:#F5EFE6;margin-bottom:18px;
+}
+.post-showcase .tagline{
+  font-size:12px;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(245,239,230,.5);line-height:1.8;
+}
+.post-showcase .tagline span{color:rgba(245,239,230,.2);}
+
+.post-showcase .services{
+  display:flex;gap:0;margin-top:28px;
+}
+.post-showcase .svc{
+  flex:1;border:1px solid rgba(245,239,230,.1);
+  padding:14px 16px;
+}
+.post-showcase .svc:first-child{border-right:none;}
+.post-showcase .svc-day{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(245,239,230,.3);margin-bottom:5px;
+}
+.post-showcase .svc-name{
+  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.06em;
+  color:#F5EFE6;margin-bottom:2px;
+}
+.post-showcase .svc-time{
+  font-size:22px;font-weight:700;color:#F5EFE6;letter-spacing:-.01em;
+}
+
+.post-showcase .bottom{
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.post-showcase .location{
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(245,239,230,.25);
+}
+.post-showcase .qr-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.post-showcase .qr-wrap img{
+  width:56px;height:56px;border:1px solid rgba(245,239,230,.1);
+  border-radius:2px;opacity:.7;
+}
+.post-showcase .qr-label{
+  font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(245,239,230,.2);
+}
+
+
+/* ══════════════════════════════════════════
+   DESIGN 2 — IG POST CTA  600×600
+══════════════════════════════════════════ */
+.post-cta{
+  width:600px;height:600px;
+  background:#F5EFE6;
+  position:relative;overflow:hidden;
+}
+
+/* Fondo geométrico */
+.post-cta .bg-block{
+  position:absolute;bottom:0;right:0;
+  width:340px;height:340px;
+  background:#1A1A1A;
+  clip-path:polygon(100% 0,100% 100%,0 100%);
+}
+.post-cta .bg-line{
+  position:absolute;bottom:0;right:0;
+  width:350px;height:350px;
+  border-top:1px solid rgba(26,26,26,.08);
+  clip-path:polygon(100% 0,100% 100%,0 100%);
+}
+
+/* Cruz decorativa en el bloque oscuro */
+.post-cta .cross-dark{
+  position:absolute;right:44px;bottom:44px;opacity:.12;
+}
+
+.post-cta .inner{
+  position:relative;z-index:2;
+  height:100%;display:flex;flex-direction:column;justify-content:space-between;
+  padding:44px;
+}
+
+.post-cta .top-row{display:flex;align-items:center;justify-content:space-between;}
+.post-cta .brand-small{
+  display:flex;align-items:center;gap:8px;
+}
+.post-cta .brand-small .logo-dark{width:22px;height:22px;opacity:.5;}
+.post-cta .brand-small span{
+  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.1em;
+  color:#1A1A1A;opacity:.5;
+}
+.post-cta .ig-tag{
+  font-size:11px;letter-spacing:.06em;color:rgba(26,26,26,.35);
+}
+
+.post-cta .main-block{}
+.post-cta .eyebrow{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(26,26,26,.4);margin-bottom:10px;
+}
+.post-cta .headline{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:72px;line-height:.9;letter-spacing:.02em;
+  color:#1A1A1A;margin-bottom:20px;
+}
+.post-cta .sub{
+  font-size:14px;color:rgba(26,26,26,.55);line-height:1.65;
+  max-width:280px;font-weight:400;
+}
+
+.post-cta .cta-block{
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.post-cta .social-stack{display:flex;flex-direction:column;gap:10px;}
+.post-cta .soc-item{
+  display:flex;align-items:center;gap:10px;
+}
+.post-cta .soc-icon{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(26,26,26,.15);
+  font-size:14px;color:#1A1A1A;flex-shrink:0;
+}
+.post-cta .soc-handle{
+  font-size:13px;font-weight:600;color:#1A1A1A;letter-spacing:.01em;
+}
+.post-cta .soc-platform{
+  font-size:10px;color:rgba(26,26,26,.35);letter-spacing:.05em;text-transform:uppercase;
+}
+
+.post-cta .qr-block{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.post-cta .qr-block img{
+  width:90px;height:90px;border-radius:4px;
+  border:1px solid rgba(26,26,26,.12);
+}
+.post-cta .qr-block .qr-txt{
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(26,26,26,.3);text-align:center;line-height:1.5;
+}
+
+
+/* ══════════════════════════════════════════
+   DESIGN 3 — IG STORY  600×1067
+══════════════════════════════════════════ */
+.story{
+  width:600px;height:1067px;
+  background:#1A1A1A;
+  position:relative;overflow:hidden;
+}
+
+/* Degradado de fondo */
+.story .bg-grad{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 80% 0%,rgba(245,239,230,.04) 0%,transparent 70%);
+}
+/* Líneas de fondo */
+.story .bg-lines{
+  position:absolute;inset:0;opacity:.04;
+  background:repeating-linear-gradient(
+    90deg,
+    rgba(245,239,230,1) 0px,rgba(245,239,230,1) 1px,
+    transparent 1px,transparent 60px
+  );
+}
+/* Franja superior */
+.story .top-stripe{
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(to right,#F5EFE6,rgba(245,239,230,0));
+}
+
+.story .inner{
+  position:relative;z-index:2;
+  height:100%;display:flex;flex-direction:column;
+  padding:52px 48px;
+}
+
+/* STORY TOP */
+.story .s-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:56px;
+}
+.story .s-brand{display:flex;align-items:center;gap:12px;}
+.story .s-brand .logo-story{width:36px;height:36px;opacity:.8;}
+.story .s-brand .name{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.12em;
+  color:#F5EFE6;
+}
+.story .s-brand .sub{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(245,239,230,.3);
+}
+.story .s-ig{
+  font-size:11px;color:rgba(245,239,230,.3);letter-spacing:.05em;
+}
+
+/* STORY MAIN TITLE */
+.story .s-title-block{margin-bottom:40px;}
+.story .s-pre{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(245,239,230,.3);margin-bottom:14px;
+}
+.story .s-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:96px;line-height:.9;letter-spacing:.03em;
+  color:#F5EFE6;
+}
+.story .s-title .line2{
+  display:block;font-size:72px;letter-spacing:.04em;
+  color:rgba(245,239,230,.5);
+}
+
+/* DIVIDER */
+.story .s-divider{
+  height:1px;background:rgba(245,239,230,.08);
+  margin:32px 0;
+}
+
+/* TAGLINE */
+.story .s-tagline{
+  font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(245,239,230,.4);line-height:2;margin-bottom:40px;
+}
+
+/* SERVICIOS CARDS */
+.story .s-svc-title{
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(245,239,230,.25);margin-bottom:14px;
+}
+.story .s-services{display:flex;gap:12px;margin-bottom:40px;}
+.story .s-svc{
+  flex:1;border:1px solid rgba(245,239,230,.1);
+  padding:20px 18px;
+  background:rgba(245,239,230,.02);
+}
+.story .s-svc .s-day{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(245,239,230,.25);margin-bottom:6px;
+}
+.story .s-svc .s-sname{
+  font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;
+  color:#F5EFE6;margin-bottom:4px;
+}
+.story .s-svc .s-stime{
+  font-size:26px;font-weight:700;color:#F5EFE6;letter-spacing:-.01em;
+}
+
+/* PROGRAMA ALPHA */
+.story .s-alpha{
+  background:rgba(245,239,230,.05);
+  border:1px solid rgba(245,239,230,.1);
+  border-left:3px solid rgba(245,239,230,.4);
+  padding:18px 22px;
+  margin-bottom:40px;
+}
+.story .s-alpha .a-label{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(245,239,230,.35);margin-bottom:5px;
+}
+.story .s-alpha .a-name{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;
+  color:#F5EFE6;
+}
+.story .s-alpha .a-desc{
+  font-size:12px;color:rgba(245,239,230,.4);margin-top:4px;line-height:1.5;
+}
+
+/* BOTTOM CTA */
+.story .s-bottom{
+  margin-top:auto;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.story .s-social{display:flex;flex-direction:column;gap:8px;}
+.story .s-soc-row{
+  display:flex;align-items:center;gap:10px;
+}
+.story .s-soc-row .icon{
+  width:30px;height:30px;border:1px solid rgba(245,239,230,.12);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:rgba(245,239,230,.5);flex-shrink:0;
+}
+.story .s-soc-row .handle{
+  font-size:12px;font-weight:600;color:rgba(245,239,230,.6);
+}
+.story .s-soc-row .net{
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(245,239,230,.25);
+}
+
+.story .s-qr{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.story .s-qr img{
+  width:80px;height:80px;
+  border:1px solid rgba(245,239,230,.1);border-radius:3px;opacity:.65;
+}
+.story .s-qr .s-qr-txt{
+  font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(245,239,230,.2);text-align:center;line-height:1.6;
+}
+
+/* ── CROSS SVG REUTILIZABLE ── */
+.cross-svg{display:block;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     LABEL 1
+══════════════════════════════════════════════════════ -->
+<p class="label">IG Post — 600 × 600</p>
+
+<!-- ══════════════════════════════════════════════════════
+     DESIGN 1 — SHOWCASE
+══════════════════════════════════════════════════════ -->
+<div class="post-showcase page">
+
+  <!-- Arcos de fondo -->
+  <div class="bg-arc arc1"></div>
+  <div class="bg-arc arc2"></div>
+  <div class="bg-arc arc3"></div>
+
+  <!-- Cruz decorativa -->
+  <div class="cross-bg">
+    <svg class="cross-svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
+      <rect x="68" y="0" width="24" height="160" fill="#F5EFE6"/>
+      <rect x="0" y="56" width="160" height="24" fill="#F5EFE6"/>
+    </svg>
+  </div>
+
+  <!-- Franja izquierda -->
+  <div class="stripe"></div>
+
+  <div class="inner">
+
+    <!-- TOP -->
+    <div class="top">
+      <svg class="logo-mark" viewBox="0 0 28 28" fill="none">
+        <rect x="11" y="0" width="6" height="28" fill="#F5EFE6" opacity=".7"/>
+        <rect x="0" y="8" width="28" height="6" fill="#F5EFE6" opacity=".7"/>
+      </svg>
+      <span class="brand-label">Iglesia Linaje Escogido</span>
+    </div>
+
+    <!-- MID -->
+    <div class="mid">
+      <div class="pre-title">Reynosa, Tamaulipas</div>
+      <div class="main-title">LINAJE<br>ESCOGIDO</div>
+      <div class="tagline">
+        Una iglesia funcional · Apasionada<br>
+        <span>·</span> Sensible al Espíritu Santo
+      </div>
+
+      <div class="services">
+        <div class="svc">
+          <div class="svc-day">Domingo</div>
+          <div class="svc-name">Servicio General</div>
+          <div class="svc-time">2:30<small style="font-size:13px;font-weight:400;opacity:.6;"> pm</small></div>
+        </div>
+        <div class="svc">
+          <div class="svc-day">Martes</div>
+          <div class="svc-name">Reunión General</div>
+          <div class="svc-time">7:30<small style="font-size:13px;font-weight:400;opacity:.6;"> pm</small></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="bottom">
+      <div class="location">
+        Ávila Camacho #130 · Col. La Presa<br>
+        <span style="opacity:.6;">@linajeescogido.mx</span>
+      </div>
+      <div class="qr-wrap">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=112x112&color=F5EFE6&bgcolor=1A1A1A&data=https://linajeescogidoreynosa.org" alt="QR"/>
+        <span class="qr-label">Visita el sitio</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LABEL 2
+══════════════════════════════════════════════════════ -->
+<p class="label">IG Post CTA — 600 × 600</p>
+
+<!-- ══════════════════════════════════════════════════════
+     DESIGN 2 — CTA
+══════════════════════════════════════════════════════ -->
+<div class="post-cta page">
+
+  <!-- Bloque geométrico oscuro -->
+  <div class="bg-block"></div>
+  <div class="bg-line"></div>
+
+  <!-- Cruz decorativa sobre bloque oscuro -->
+  <div class="cross-dark">
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+      <rect x="50" y="0" width="20" height="120" fill="#F5EFE6"/>
+      <rect x="0" y="40" width="120" height="20" fill="#F5EFE6"/>
+    </svg>
+  </div>
+
+  <div class="inner">
+
+    <!-- TOP ROW -->
+    <div class="top-row">
+      <div class="brand-small">
+        <svg class="logo-dark" viewBox="0 0 22 22" fill="none">
+          <rect x="8.5" y="0" width="5" height="22" fill="#1A1A1A" opacity=".4"/>
+          <rect x="0" y="6" width="22" height="5" fill="#1A1A1A" opacity=".4"/>
+        </svg>
+        <span>Linaje Escogido</span>
+      </div>
+      <span class="ig-tag">@linajeescogido.mx</span>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-block">
+      <div class="eyebrow">¡Te esperamos!</div>
+      <div class="headline">TENEMOS<br>UN LUGAR<br>PARA TI</div>
+      <div class="sub">
+        Únete al Programa Alpha y explora los fundamentos de la fe en un ambiente abierto, sin presión y lleno de comunidad.
+      </div>
+    </div>
+
+    <!-- CTA BOTTOM -->
+    <div class="cta-block">
+      <div class="social-stack">
+        <div class="soc-item">
+          <div class="soc-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div>
+            <div class="soc-handle">@linajeescogido.mx</div>
+            <div class="soc-platform">Instagram</div>
+          </div>
+        </div>
+        <div class="soc-item">
+          <div class="soc-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </div>
+          <div>
+            <div class="soc-handle">Linaje Escogido</div>
+            <div class="soc-platform">Facebook</div>
+          </div>
+        </div>
+        <div class="soc-item" style="margin-top:4px;">
+          <div style="font-size:11px;color:rgba(26,26,26,.4);letter-spacing:.06em;">
+            🌐 linajeescogidoreynosa.org
+          </div>
+        </div>
+      </div>
+
+      <div class="qr-block">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&color=1A1A1A&bgcolor=F5EFE6&data=https://linajeescogidoreynosa.org/index.html%23alpha" alt="QR Alpha"/>
+        <div class="qr-txt">Regístrate al<br>Programa Alpha</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     LABEL 3
+══════════════════════════════════════════════════════ -->
+<p class="label">IG Story — 600 × 1067</p>
+
+<!-- ══════════════════════════════════════════════════════
+     DESIGN 3 — STORY
+══════════════════════════════════════════════════════ -->
+<div class="story page">
+
+  <div class="bg-grad"></div>
+  <div class="bg-lines"></div>
+  <div class="top-stripe"></div>
+
+  <!-- Cruz decorativa fondo -->
+  <div style="position:absolute;right:40px;top:40px;opacity:.04;">
+    <svg width="280" height="280" viewBox="0 0 280 280" fill="none">
+      <rect x="118" y="0" width="44" height="280" fill="#F5EFE6"/>
+      <rect x="0" y="100" width="280" height="44" fill="#F5EFE6"/>
+    </svg>
+  </div>
+
+  <div class="inner">
+
+    <!-- TOP -->
+    <div class="s-top">
+      <div class="s-brand">
+        <svg class="logo-story" viewBox="0 0 36 36" fill="none">
+          <rect x="14" y="0" width="8" height="36" fill="#F5EFE6" opacity=".75"/>
+          <rect x="0" y="10" width="36" height="8" fill="#F5EFE6" opacity=".75"/>
+        </svg>
+        <div>
+          <div class="name">Linaje Escogido</div>
+          <div class="sub">Iglesia · Reynosa, Tamps.</div>
+        </div>
+      </div>
+      <div class="s-ig">@linajeescogido.mx</div>
+    </div>
+
+    <!-- TITLE BLOCK -->
+    <div class="s-title-block">
+      <div class="s-pre">Una iglesia que te espera</div>
+      <div class="s-title">
+        LINAJE
+        <span class="line2">ESCOGIDO</span>
+      </div>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <!-- TAGLINE -->
+    <div class="s-tagline">
+      Funcional · Apasionada<br>Sensible al Espíritu Santo
+    </div>
+
+    <!-- SERVICIOS -->
+    <div class="s-svc-title">Horarios de servicios</div>
+    <div class="s-services">
+      <div class="s-svc">
+        <div class="s-day">Domingo</div>
+        <div class="s-sname">Servicio General</div>
+        <div class="s-stime">2:30<small style="font-size:14px;font-weight:400;opacity:.5;"> pm</small></div>
+      </div>
+      <div class="s-svc">
+        <div class="s-day">Martes</div>
+        <div class="s-sname">Reunión General</div>
+        <div class="s-stime">7:30<small style="font-size:14px;font-weight:400;opacity:.5;"> pm</small></div>
+      </div>
+    </div>
+
+    <!-- ALPHA -->
+    <div class="s-alpha">
+      <div class="a-label">Nuevo · Programa</div>
+      <div class="a-name">Alpha — ¿Quién es Dios?</div>
+      <div class="a-desc">Sesiones abiertas para explorar la fe · Sin presión · Todos son bienvenidos</div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="s-bottom">
+      <div class="s-social">
+        <div class="s-soc-row">
+          <div class="icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <div>
+            <div class="handle">@linajeescogido.mx</div>
+            <div class="net">Instagram</div>
+          </div>
+        </div>
+        <div class="s-soc-row">
+          <div class="icon">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" opacity=".5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </div>
+          <div>
+            <div class="handle">Linaje Escogido</div>
+            <div class="net">Facebook</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:10px;letter-spacing:.08em;color:rgba(245,239,230,.25);">
+            📍 Ávila Camacho #130 · Col. La Presa
+          </div>
+          <div style="font-size:10px;letter-spacing:.08em;color:rgba(245,239,230,.2);margin-top:3px;">
+            🌐 linajeescogidoreynosa.org
+          </div>
+        </div>
+      </div>
+
+      <div class="s-qr">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&color=F5EFE6&bgcolor=1A1A1A&data=https://linajeescogidoreynosa.org" alt="QR Sitio"/>
+        <div class="s-qr-txt">Escanea para<br>visitar el sitio</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
