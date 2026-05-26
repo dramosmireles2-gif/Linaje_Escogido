@@ -2,656 +2,800 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<title>Flyers — Linaje Escogido</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+<title>Flyers RMKT — Linaje Escogido</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
-  background:#0d0d0d;
+  background:#050505;
   display:flex;flex-direction:column;align-items:center;
-  gap:60px;padding:60px 20px;
-  font-family:'DM Sans',sans-serif;
+  gap:64px;padding:64px 20px;
+  font-family:'Jost',sans-serif;
 }
 .label{
-  color:#444;font-size:11px;text-align:center;
-  margin-bottom:-44px;letter-spacing:3px;text-transform:uppercase;
+  color:#333;font-size:10px;text-align:center;
+  margin-bottom:-48px;letter-spacing:4px;text-transform:uppercase;
+  font-family:'Jost',sans-serif;font-weight:400;
 }
-.page{outline:1px dashed rgba(128,128,128,0.3);}
+.page{outline:1px dashed rgba(128,128,128,0.2);}
 
-/* ══════════════════════════════════════════
+/* ─────────────────────────────────────────────
+   SHARED RMKT ELEMENTS
+───────────────────────────────────────────── */
+.rmkt-logo{display:flex;align-items:baseline;gap:0;line-height:1;}
+.rmkt-r{font-weight:900;font-size:inherit;color:#fff;}
+.rmkt-mkt{font-weight:900;font-size:inherit;color:#00e676;}
+.rmkt-sub{
+  font-size:9px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
+  color:#555;
+}
+.green{color:#00e676;}
+.arrow-btn{
+  width:36px;height:36px;background:#00e676;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.arrow-btn svg{display:block;}
+
+/* ─────────────────────────────────────────────
+   PHONE MOCKUP — muestra el proyecto real
+───────────────────────────────────────────── */
+.phone-mock{
+  width:138px;height:236px;
+  background:#0f0f0f;
+  border-radius:18px;
+  border:2px solid #222;
+  overflow:hidden;
+  position:relative;
+  flex-shrink:0;
+  box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 0 1px #111;
+}
+.phone-notch{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:36px;height:7px;background:#0f0f0f;
+  border-radius:0 0 6px 6px;z-index:10;
+}
+/* Nav del sitio */
+.ph-nav{
+  background:#F5EFE6;padding:6px 8px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(26,26,26,.1);
+  margin-top:7px;
+}
+.ph-nav-logo{
+  display:flex;align-items:center;gap:4px;
+}
+.ph-nav-cross{
+  width:9px;height:9px;position:relative;flex-shrink:0;
+}
+.ph-nav-cross::before,.ph-nav-cross::after{
+  content:'';position:absolute;background:#1A1A1A;
+}
+.ph-nav-cross::before{width:2px;height:9px;left:3.5px;top:0;}
+.ph-nav-cross::after{width:9px;height:2px;left:0;top:3.5px;}
+.ph-nav-name{font-size:5px;font-weight:700;color:#1A1A1A;letter-spacing:.1em;text-transform:uppercase;}
+.ph-nav-btn{
+  background:#1A1A1A;color:#F5EFE6;
+  font-size:4px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 5px;
+}
+/* Hero del sitio */
+.ph-hero{
+  background:#1A1A1A;
+  padding:10px 8px 8px;
+  position:relative;overflow:hidden;
+  min-height:74px;
+}
+.ph-hero-cross{
+  position:absolute;right:6px;top:4px;opacity:.06;
+}
+.ph-hero-eyebrow{
+  font-size:4px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(245,239,230,.35);margin-bottom:3px;
+}
+.ph-hero-title{
+  font-family:'Jost',sans-serif;font-weight:900;font-size:16px;
+  line-height:.92;letter-spacing:.03em;color:#F5EFE6;
+  text-transform:uppercase;margin-bottom:5px;
+}
+.ph-hero-tag{
+  font-size:4px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(245,239,230,.4);line-height:1.7;margin-bottom:7px;
+}
+.ph-hero-btns{display:flex;gap:3px;}
+.ph-btn-cream{
+  background:#F5EFE6;color:#1A1A1A;
+  font-size:4px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 6px;
+}
+.ph-btn-out{
+  border:1px solid rgba(245,239,230,.3);
+  font-size:4px;color:#F5EFE6;padding:3px 5px;letter-spacing:.04em;
+}
+/* Sección horarios mini */
+.ph-section{
+  background:#F5EFE6;padding:7px 8px;
+}
+.ph-sec-label{
+  font-size:4px;letter-spacing:.18em;text-transform:uppercase;
+  color:#888;margin-bottom:2px;
+}
+.ph-sec-title{
+  font-weight:900;font-size:9px;letter-spacing:.04em;color:#1A1A1A;
+  text-transform:uppercase;margin-bottom:5px;
+}
+.ph-cards{display:flex;gap:3px;}
+.ph-card{
+  flex:1;border:1px solid #1A1A1A;padding:4px 5px;
+}
+.ph-card.dark{background:#1A1A1A;color:#F5EFE6;}
+.ph-card-day{font-size:4px;opacity:.4;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px;}
+.ph-card-time{font-weight:700;font-size:7px;color:inherit;}
+.ph-card-name{font-size:4px;opacity:.5;text-transform:uppercase;letter-spacing:.08em;}
+/* Sección anuncios mini */
+.ph-announce{
+  background:#F5EFE6;padding:5px 8px;
+  border-top:1px solid rgba(26,26,26,.08);
+}
+.ph-ann-chip{
+  display:inline-block;background:#1A1A1A;color:#F5EFE6;
+  font-size:3.5px;padding:1.5px 4px;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:2px;
+}
+.ph-ann-title{font-weight:700;font-size:6px;color:#1A1A1A;margin-bottom:1px;}
+.ph-ann-body{font-size:4px;color:rgba(26,26,26,.5);line-height:1.4;}
+
+
+/* ══════════════════════════════════════════════════
    DESIGN 1 — IG POST SHOWCASE  600×600
-══════════════════════════════════════════ */
+══════════════════════════════════════════════════ */
 .post-showcase{
   width:600px;height:600px;
-  background:#1A1A1A;
+  background:#0a0a0a;
   position:relative;overflow:hidden;
 }
 
-/* Fondo — arcos decorativos */
-.post-showcase .bg-arc{
+/* Fondo: gradiente verde sutil */
+.post-showcase .bg-glow{
   position:absolute;
+  width:500px;height:500px;
   border-radius:50%;
-  border:1px solid rgba(245,239,230,.06);
+  background:radial-gradient(circle,rgba(0,230,118,.07) 0%,transparent 70%);
+  top:-100px;right:-100px;pointer-events:none;
 }
-.post-showcase .arc1{width:700px;height:700px;top:-200px;right:-200px;}
-.post-showcase .arc2{width:500px;height:500px;top:-100px;right:-100px;}
-.post-showcase .arc3{width:340px;height:340px;top:-30px;right:-30px;}
-
-/* Cruz SVG decorativa grande */
-.post-showcase .cross-bg{
-  position:absolute;right:38px;top:38px;opacity:.07;
+/* Líneas de grid de fondo */
+.post-showcase .bg-grid{
+  position:absolute;inset:0;opacity:.035;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,1) 39px,rgba(255,255,255,1) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,1) 39px,rgba(255,255,255,1) 40px);
+}
+/* Borde verde izquierdo */
+.post-showcase .green-bar{
+  position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(to bottom,#00e676,rgba(0,230,118,0));
 }
 
-/* Franja de acento izquierda */
-.post-showcase .stripe{
-  position:absolute;left:0;top:0;bottom:0;width:4px;
-  background:linear-gradient(to bottom,#F5EFE6,rgba(245,239,230,0));
-}
-
-/* Contenido */
-.post-showcase .inner{
+.post-showcase .s-inner{
   position:relative;z-index:2;
   height:100%;display:flex;flex-direction:column;justify-content:space-between;
-  padding:44px 44px 40px 52px;
-}
-.post-showcase .top{display:flex;align-items:center;gap:10px;}
-.post-showcase .logo-mark{
-  width:28px;height:28px;opacity:.7;flex-shrink:0;
-}
-.post-showcase .brand-label{
-  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(245,239,230,.4);font-weight:500;
+  padding:36px 40px 32px;
 }
 
-.post-showcase .mid{}
-.post-showcase .pre-title{
-  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(245,239,230,.35);font-weight:500;margin-bottom:10px;
+/* TOP: marca RMKT */
+.post-showcase .s-top{
+  display:flex;align-items:center;justify-content:space-between;
 }
-.post-showcase .main-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:86px;line-height:.92;letter-spacing:.03em;
-  color:#F5EFE6;margin-bottom:18px;
-}
-.post-showcase .tagline{
-  font-size:12px;letter-spacing:.13em;text-transform:uppercase;
-  color:rgba(245,239,230,.5);line-height:1.8;
-}
-.post-showcase .tagline span{color:rgba(245,239,230,.2);}
-
-.post-showcase .services{
-  display:flex;gap:0;margin-top:28px;
-}
-.post-showcase .svc{
-  flex:1;border:1px solid rgba(245,239,230,.1);
-  padding:14px 16px;
-}
-.post-showcase .svc:first-child{border-right:none;}
-.post-showcase .svc-day{
-  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(245,239,230,.3);margin-bottom:5px;
-}
-.post-showcase .svc-name{
-  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.06em;
-  color:#F5EFE6;margin-bottom:2px;
-}
-.post-showcase .svc-time{
-  font-size:22px;font-weight:700;color:#F5EFE6;letter-spacing:-.01em;
+.post-showcase .s-top .rmkt-logo{font-size:22px;}
+.post-showcase .s-top .tag{
+  font-size:10px;font-weight:400;color:#444;letter-spacing:.06em;
 }
 
-.post-showcase .bottom{
-  display:flex;align-items:flex-end;justify-content:space-between;
+/* MIDDLE: headline + mockup */
+.post-showcase .s-mid{
+  display:flex;align-items:center;gap:32px;
+  flex:1;align-self:center;padding:20px 0 0;
 }
-.post-showcase .location{
-  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(245,239,230,.25);
+.post-showcase .headline-block{flex:1;}
+.post-showcase .overline{
+  font-size:10px;font-weight:600;color:#00e676;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:12px;
 }
-.post-showcase .qr-wrap{
-  display:flex;flex-direction:column;align-items:center;gap:5px;
+.post-showcase .h1{
+  font-size:46px;font-weight:900;color:#fff;
+  line-height:.9;letter-spacing:-.01em;text-transform:uppercase;
+  margin-bottom:16px;
 }
-.post-showcase .qr-wrap img{
-  width:56px;height:56px;border:1px solid rgba(245,239,230,.1);
-  border-radius:2px;opacity:.7;
+.post-showcase .h1 em{color:#00e676;font-style:normal;}
+.post-showcase .desc{
+  font-size:13px;font-weight:300;color:#888;line-height:1.6;
+  max-width:220px;
 }
-.post-showcase .qr-label{
-  font-size:8px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(245,239,230,.2);
+.post-showcase .features{
+  display:flex;flex-direction:column;gap:6px;margin-top:18px;
+}
+.post-showcase .feat{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:500;color:#aaa;
+}
+.post-showcase .feat-dot{
+  width:5px;height:5px;border-radius:50%;background:#00e676;flex-shrink:0;
+}
+
+/* PHONE en el post-showcase */
+.post-showcase .phone-wrap{
+  position:relative;
+}
+.post-showcase .phone-shadow{
+  position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+  width:100px;height:20px;
+  background:radial-gradient(ellipse,rgba(0,230,118,.2),transparent 70%);
+}
+
+/* BOTTOM */
+.post-showcase .s-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.post-showcase .site-url{
+  font-size:11px;font-weight:500;color:#333;letter-spacing:.04em;
+}
+.post-showcase .site-url span{color:#00e676;}
+.post-showcase .ig-handle{
+  font-size:11px;color:#444;letter-spacing:.04em;
 }
 
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    DESIGN 2 — IG POST CTA  600×600
-══════════════════════════════════════════ */
+══════════════════════════════════════════════════ */
 .post-cta{
   width:600px;height:600px;
-  background:#F5EFE6;
+  background:#0a0a0a;
   position:relative;overflow:hidden;
 }
-
-/* Fondo geométrico */
-.post-cta .bg-block{
+.post-cta .bg-glow2{
+  position:absolute;
+  width:600px;height:400px;
+  background:radial-gradient(ellipse 70% 60% at 30% 120%,rgba(0,230,118,.1) 0%,transparent 70%);
+  bottom:0;left:0;pointer-events:none;
+}
+/* Bloque verde esquina inferior derecha */
+.post-cta .corner-block{
   position:absolute;bottom:0;right:0;
-  width:340px;height:340px;
-  background:#1A1A1A;
+  width:200px;height:200px;
+  background:#00e676;
   clip-path:polygon(100% 0,100% 100%,0 100%);
 }
-.post-cta .bg-line{
-  position:absolute;bottom:0;right:0;
-  width:350px;height:350px;
-  border-top:1px solid rgba(26,26,26,.08);
-  clip-path:polygon(100% 0,100% 100%,0 100%);
+.post-cta .corner-text{
+  position:absolute;bottom:22px;right:22px;
+  text-align:right;z-index:3;
+}
+.post-cta .corner-text .ct-label{
+  font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:#0a0a0a;opacity:.6;margin-bottom:2px;
+}
+.post-cta .corner-text .ct-url{
+  font-size:13px;font-weight:800;color:#0a0a0a;letter-spacing:.02em;
 }
 
-/* Cruz decorativa en el bloque oscuro */
-.post-cta .cross-dark{
-  position:absolute;right:44px;bottom:44px;opacity:.12;
-}
-
-.post-cta .inner{
+.post-cta .c-inner{
   position:relative;z-index:2;
   height:100%;display:flex;flex-direction:column;justify-content:space-between;
-  padding:44px;
+  padding:36px 40px 36px;
 }
+.post-cta .c-top{display:flex;align-items:center;justify-content:space-between;}
+.post-cta .c-top .rmkt-logo{font-size:20px;}
 
-.post-cta .top-row{display:flex;align-items:center;justify-content:space-between;}
-.post-cta .brand-small{
+.post-cta .c-mid{}
+.post-cta .eyebrow{
+  font-size:10px;font-weight:600;color:#00e676;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:14px;
   display:flex;align-items:center;gap:8px;
 }
-.post-cta .brand-small .logo-dark{width:22px;height:22px;opacity:.5;}
-.post-cta .brand-small span{
-  font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.1em;
-  color:#1A1A1A;opacity:.5;
+.post-cta .eyebrow::before{
+  content:'';display:block;width:24px;height:2px;background:#00e676;
 }
-.post-cta .ig-tag{
-  font-size:11px;letter-spacing:.06em;color:rgba(26,26,26,.35);
+.post-cta .c-headline{
+  font-size:52px;font-weight:900;color:#fff;
+  line-height:.88;letter-spacing:-.02em;text-transform:uppercase;
+  margin-bottom:22px;
 }
-
-.post-cta .main-block{}
-.post-cta .eyebrow{
-  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(26,26,26,.4);margin-bottom:10px;
-}
-.post-cta .headline{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:72px;line-height:.9;letter-spacing:.02em;
-  color:#1A1A1A;margin-bottom:20px;
-}
-.post-cta .sub{
-  font-size:14px;color:rgba(26,26,26,.55);line-height:1.65;
-  max-width:280px;font-weight:400;
+.post-cta .c-headline em{color:#00e676;font-style:normal;}
+.post-cta .c-sub{
+  font-size:14px;font-weight:300;color:#777;line-height:1.6;
+  max-width:340px;
 }
 
-.post-cta .cta-block{
+.post-cta .c-contact{
   display:flex;align-items:flex-end;justify-content:space-between;
 }
-.post-cta .social-stack{display:flex;flex-direction:column;gap:10px;}
-.post-cta .soc-item{
-  display:flex;align-items:center;gap:10px;
+.post-cta .c-channels{display:flex;flex-direction:column;gap:10px;}
+.post-cta .c-ch{
+  display:flex;align-items:center;gap:12px;
 }
-.post-cta .soc-icon{
-  width:34px;height:34px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  border:1px solid rgba(26,26,26,.15);
-  font-size:14px;color:#1A1A1A;flex-shrink:0;
+.post-cta .c-ch .ch-icon{
+  width:38px;height:38px;border:1px solid #1e1e1e;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:16px;
 }
-.post-cta .soc-handle{
-  font-size:13px;font-weight:600;color:#1A1A1A;letter-spacing:.01em;
-}
-.post-cta .soc-platform{
-  font-size:10px;color:rgba(26,26,26,.35);letter-spacing:.05em;text-transform:uppercase;
-}
+.post-cta .c-ch .ch-icon.green-bg{background:#00e676;}
+.post-cta .c-ch .ch-handle{font-size:14px;font-weight:700;color:#fff;}
+.post-cta .c-ch .ch-platform{font-size:10px;color:#555;letter-spacing:.06em;text-transform:uppercase;}
 
-.post-cta .qr-block{
+.post-cta .c-qr{
   display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin-right:50px;
 }
-.post-cta .qr-block img{
-  width:90px;height:90px;border-radius:4px;
-  border:1px solid rgba(26,26,26,.12);
+.post-cta .c-qr img{
+  width:88px;height:88px;
+  border:1px solid #1a1a1a;border-radius:6px;
+  filter:brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(95deg) brightness(.8);
+  opacity:.85;
 }
-.post-cta .qr-block .qr-txt{
-  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(26,26,26,.3);text-align:center;line-height:1.5;
+.post-cta .c-qr .qr-label{
+  font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:#444;text-align:center;line-height:1.6;
 }
 
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════
    DESIGN 3 — IG STORY  600×1067
-══════════════════════════════════════════ */
+══════════════════════════════════════════════════ */
 .story{
   width:600px;height:1067px;
-  background:#1A1A1A;
+  background:#0a0a0a;
   position:relative;overflow:hidden;
 }
-
-/* Degradado de fondo */
-.story .bg-grad{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 60% at 80% 0%,rgba(245,239,230,.04) 0%,transparent 70%);
+.story .st-glow1{
+  position:absolute;top:-100px;right:-100px;
+  width:480px;height:480px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,118,.08) 0%,transparent 65%);
+  pointer-events:none;
 }
-/* Líneas de fondo */
-.story .bg-lines{
-  position:absolute;inset:0;opacity:.04;
-  background:repeating-linear-gradient(
-    90deg,
-    rgba(245,239,230,1) 0px,rgba(245,239,230,1) 1px,
-    transparent 1px,transparent 60px
-  );
+.story .st-glow2{
+  position:absolute;bottom:-60px;left:-80px;
+  width:400px;height:400px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,118,.05) 0%,transparent 70%);
+  pointer-events:none;
 }
-/* Franja superior */
-.story .top-stripe{
+.story .st-grid{
+  position:absolute;inset:0;opacity:.025;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(255,255,255,1) 59px,rgba(255,255,255,1) 60px),
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(255,255,255,1) 59px,rgba(255,255,255,1) 60px);
+}
+/* Franja verde top */
+.story .st-topbar{
   position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(to right,#F5EFE6,rgba(245,239,230,0));
+  background:linear-gradient(to right,#00e676,rgba(0,230,118,0));
 }
 
-.story .inner{
+.story .st-inner{
   position:relative;z-index:2;
   height:100%;display:flex;flex-direction:column;
-  padding:52px 48px;
+  padding:48px 48px 44px;
 }
 
 /* STORY TOP */
-.story .s-top{
+.story .st-top{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:56px;
+  margin-bottom:44px;
 }
-.story .s-brand{display:flex;align-items:center;gap:12px;}
-.story .s-brand .logo-story{width:36px;height:36px;opacity:.8;}
-.story .s-brand .name{
-  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.12em;
-  color:#F5EFE6;
-}
-.story .s-brand .sub{
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(245,239,230,.3);
-}
-.story .s-ig{
-  font-size:11px;color:rgba(245,239,230,.3);letter-spacing:.05em;
+.story .st-top .rmkt-logo{font-size:28px;}
+.story .st-top .st-handle{
+  font-size:11px;color:#444;letter-spacing:.05em;
 }
 
-/* STORY MAIN TITLE */
-.story .s-title-block{margin-bottom:40px;}
-.story .s-pre{
-  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(245,239,230,.3);margin-bottom:14px;
+/* STORY HEADLINE */
+.story .st-headline-block{margin-bottom:36px;}
+.story .st-overline{
+  font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;
+  text-transform:uppercase;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
 }
-.story .s-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:96px;line-height:.9;letter-spacing:.03em;
-  color:#F5EFE6;
+.story .st-overline::before{content:'';width:20px;height:2px;background:#00e676;display:block;}
+.story .st-h1{
+  font-size:62px;font-weight:900;color:#fff;
+  line-height:.88;letter-spacing:-.01em;text-transform:uppercase;
+  margin-bottom:14px;
 }
-.story .s-title .line2{
-  display:block;font-size:72px;letter-spacing:.04em;
-  color:rgba(245,239,230,.5);
+.story .st-h1 em{color:#00e676;font-style:normal;}
+.story .st-h2{
+  font-size:14px;font-weight:300;color:#666;line-height:1.65;
+  max-width:400px;
 }
 
 /* DIVIDER */
-.story .s-divider{
-  height:1px;background:rgba(245,239,230,.08);
-  margin:32px 0;
+.story .st-div{
+  height:1px;background:rgba(255,255,255,.05);margin:32px 0;
 }
 
-/* TAGLINE */
-.story .s-tagline{
-  font-size:13px;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(245,239,230,.4);line-height:2;margin-bottom:40px;
+/* PHONE + FEATURES */
+.story .st-showcase{
+  display:flex;gap:32px;align-items:flex-start;margin-bottom:36px;
+}
+.story .st-features{flex:1;}
+.story .st-feat-title{
+  font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:#444;margin-bottom:16px;
+}
+.story .st-feat{
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:14px;
+}
+.story .st-feat-icon{
+  width:28px;height:28px;border:1px solid #1e1e1e;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;margin-top:1px;
+}
+.story .st-feat-name{
+  font-size:13px;font-weight:700;color:#ccc;margin-bottom:2px;
+}
+.story .st-feat-desc{
+  font-size:11px;font-weight:300;color:#555;line-height:1.4;
 }
 
-/* SERVICIOS CARDS */
-.story .s-svc-title{
-  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(245,239,230,.25);margin-bottom:14px;
+/* PROOF / BADGE */
+.story .st-badge{
+  background:#111;border:1px solid #1e1e1e;border-left:3px solid #00e676;
+  padding:16px 20px;margin-bottom:32px;
 }
-.story .s-services{display:flex;gap:12px;margin-bottom:40px;}
-.story .s-svc{
-  flex:1;border:1px solid rgba(245,239,230,.1);
-  padding:20px 18px;
-  background:rgba(245,239,230,.02);
+.story .st-badge-label{
+  font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:#00e676;margin-bottom:5px;
 }
-.story .s-svc .s-day{
-  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(245,239,230,.25);margin-bottom:6px;
+.story .st-badge-text{
+  font-size:15px;font-weight:700;color:#fff;line-height:1.3;
 }
-.story .s-svc .s-sname{
-  font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;
-  color:#F5EFE6;margin-bottom:4px;
-}
-.story .s-svc .s-stime{
-  font-size:26px;font-weight:700;color:#F5EFE6;letter-spacing:-.01em;
+.story .st-badge-sub{
+  font-size:11px;font-weight:300;color:#555;margin-top:4px;
 }
 
-/* PROGRAMA ALPHA */
-.story .s-alpha{
-  background:rgba(245,239,230,.05);
-  border:1px solid rgba(245,239,230,.1);
-  border-left:3px solid rgba(245,239,230,.4);
-  padding:18px 22px;
-  margin-bottom:40px;
-}
-.story .s-alpha .a-label{
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(245,239,230,.35);margin-bottom:5px;
-}
-.story .s-alpha .a-name{
-  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;
-  color:#F5EFE6;
-}
-.story .s-alpha .a-desc{
-  font-size:12px;color:rgba(245,239,230,.4);margin-top:4px;line-height:1.5;
-}
-
-/* BOTTOM CTA */
-.story .s-bottom{
+/* STORY BOTTOM CTA */
+.story .st-bottom{
   margin-top:auto;
   display:flex;align-items:flex-end;justify-content:space-between;
 }
-.story .s-social{display:flex;flex-direction:column;gap:8px;}
-.story .s-soc-row{
-  display:flex;align-items:center;gap:10px;
-}
-.story .s-soc-row .icon{
-  width:30px;height:30px;border:1px solid rgba(245,239,230,.12);border-radius:50%;
+.story .st-channels{display:flex;flex-direction:column;gap:10px;}
+.story .st-ch{display:flex;align-items:center;gap:12px;}
+.story .st-ch .icon{
+  width:36px;height:36px;border:1px solid #1c1c1c;border-radius:8px;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;color:rgba(245,239,230,.5);flex-shrink:0;
+  font-size:15px;flex-shrink:0;
 }
-.story .s-soc-row .handle{
-  font-size:12px;font-weight:600;color:rgba(245,239,230,.6);
-}
-.story .s-soc-row .net{
-  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(245,239,230,.25);
-}
+.story .st-ch .icon.g{background:#00e676;}
+.story .st-ch .ch-name{font-size:13px;font-weight:700;color:#ddd;}
+.story .st-ch .ch-net{font-size:9px;color:#444;letter-spacing:.08em;text-transform:uppercase;}
 
-.story .s-qr{display:flex;flex-direction:column;align-items:center;gap:6px;}
-.story .s-qr img{
-  width:80px;height:80px;
-  border:1px solid rgba(245,239,230,.1);border-radius:3px;opacity:.65;
+.story .st-qr{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.story .st-qr img{
+  width:96px;height:96px;border-radius:8px;
+  border:1px solid #1c1c1c;
+  filter:brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(95deg) brightness(.75);
+  opacity:.9;
 }
-.story .s-qr .s-qr-txt{
-  font-size:8px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(245,239,230,.2);text-align:center;line-height:1.6;
+.story .st-qr .ql{
+  font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:#333;text-align:center;line-height:1.7;
 }
-
-/* ── CROSS SVG REUTILIZABLE ── */
-.cross-svg{display:block;}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════════════
-     LABEL 1
-══════════════════════════════════════════════════════ -->
-<p class="label">IG Post — 600 × 600</p>
 
-<!-- ══════════════════════════════════════════════════════
-     DESIGN 1 — SHOWCASE
-══════════════════════════════════════════════════════ -->
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║  DESIGN 1 — IG POST SHOWCASE  600×600                   ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<p class="label">IG Post Showcase — 600 × 600</p>
+
 <div class="post-showcase page">
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+  <div class="green-bar"></div>
 
-  <!-- Arcos de fondo -->
-  <div class="bg-arc arc1"></div>
-  <div class="bg-arc arc2"></div>
-  <div class="bg-arc arc3"></div>
+  <div class="s-inner">
 
-  <!-- Cruz decorativa -->
-  <div class="cross-bg">
-    <svg class="cross-svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
-      <rect x="68" y="0" width="24" height="160" fill="#F5EFE6"/>
-      <rect x="0" y="56" width="160" height="24" fill="#F5EFE6"/>
-    </svg>
-  </div>
-
-  <!-- Franja izquierda -->
-  <div class="stripe"></div>
-
-  <div class="inner">
-
-    <!-- TOP -->
-    <div class="top">
-      <svg class="logo-mark" viewBox="0 0 28 28" fill="none">
-        <rect x="11" y="0" width="6" height="28" fill="#F5EFE6" opacity=".7"/>
-        <rect x="0" y="8" width="28" height="6" fill="#F5EFE6" opacity=".7"/>
-      </svg>
-      <span class="brand-label">Iglesia Linaje Escogido</span>
-    </div>
-
-    <!-- MID -->
-    <div class="mid">
-      <div class="pre-title">Reynosa, Tamaulipas</div>
-      <div class="main-title">LINAJE<br>ESCOGIDO</div>
-      <div class="tagline">
-        Una iglesia funcional · Apasionada<br>
-        <span>·</span> Sensible al Espíritu Santo
-      </div>
-
-      <div class="services">
-        <div class="svc">
-          <div class="svc-day">Domingo</div>
-          <div class="svc-name">Servicio General</div>
-          <div class="svc-time">2:30<small style="font-size:13px;font-weight:400;opacity:.6;"> pm</small></div>
-        </div>
-        <div class="svc">
-          <div class="svc-day">Martes</div>
-          <div class="svc-name">Reunión General</div>
-          <div class="svc-time">7:30<small style="font-size:13px;font-weight:400;opacity:.6;"> pm</small></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- BOTTOM -->
-    <div class="bottom">
-      <div class="location">
-        Ávila Camacho #130 · Col. La Presa<br>
-        <span style="opacity:.6;">@linajeescogido.mx</span>
-      </div>
-      <div class="qr-wrap">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=112x112&color=F5EFE6&bgcolor=1A1A1A&data=https://linajeescogidoreynosa.org" alt="QR"/>
-        <span class="qr-label">Visita el sitio</span>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════════════════════
-     LABEL 2
-══════════════════════════════════════════════════════ -->
-<p class="label">IG Post CTA — 600 × 600</p>
-
-<!-- ══════════════════════════════════════════════════════
-     DESIGN 2 — CTA
-══════════════════════════════════════════════════════ -->
-<div class="post-cta page">
-
-  <!-- Bloque geométrico oscuro -->
-  <div class="bg-block"></div>
-  <div class="bg-line"></div>
-
-  <!-- Cruz decorativa sobre bloque oscuro -->
-  <div class="cross-dark">
-    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-      <rect x="50" y="0" width="20" height="120" fill="#F5EFE6"/>
-      <rect x="0" y="40" width="120" height="20" fill="#F5EFE6"/>
-    </svg>
-  </div>
-
-  <div class="inner">
-
-    <!-- TOP ROW -->
-    <div class="top-row">
-      <div class="brand-small">
-        <svg class="logo-dark" viewBox="0 0 22 22" fill="none">
-          <rect x="8.5" y="0" width="5" height="22" fill="#1A1A1A" opacity=".4"/>
-          <rect x="0" y="6" width="22" height="5" fill="#1A1A1A" opacity=".4"/>
-        </svg>
-        <span>Linaje Escogido</span>
-      </div>
-      <span class="ig-tag">@linajeescogido.mx</span>
-    </div>
-
-    <!-- MAIN -->
-    <div class="main-block">
-      <div class="eyebrow">¡Te esperamos!</div>
-      <div class="headline">TENEMOS<br>UN LUGAR<br>PARA TI</div>
-      <div class="sub">
-        Únete al Programa Alpha y explora los fundamentos de la fe en un ambiente abierto, sin presión y lleno de comunidad.
-      </div>
-    </div>
-
-    <!-- CTA BOTTOM -->
-    <div class="cta-block">
-      <div class="social-stack">
-        <div class="soc-item">
-          <div class="soc-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-          </div>
-          <div>
-            <div class="soc-handle">@linajeescogido.mx</div>
-            <div class="soc-platform">Instagram</div>
-          </div>
-        </div>
-        <div class="soc-item">
-          <div class="soc-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </div>
-          <div>
-            <div class="soc-handle">Linaje Escogido</div>
-            <div class="soc-platform">Facebook</div>
-          </div>
-        </div>
-        <div class="soc-item" style="margin-top:4px;">
-          <div style="font-size:11px;color:rgba(26,26,26,.4);letter-spacing:.06em;">
-            🌐 linajeescogidoreynosa.org
-          </div>
-        </div>
-      </div>
-
-      <div class="qr-block">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&color=1A1A1A&bgcolor=F5EFE6&data=https://linajeescogidoreynosa.org/index.html%23alpha" alt="QR Alpha"/>
-        <div class="qr-txt">Regístrate al<br>Programa Alpha</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════════════════════
-     LABEL 3
-══════════════════════════════════════════════════════ -->
-<p class="label">IG Story — 600 × 1067</p>
-
-<!-- ══════════════════════════════════════════════════════
-     DESIGN 3 — STORY
-══════════════════════════════════════════════════════ -->
-<div class="story page">
-
-  <div class="bg-grad"></div>
-  <div class="bg-lines"></div>
-  <div class="top-stripe"></div>
-
-  <!-- Cruz decorativa fondo -->
-  <div style="position:absolute;right:40px;top:40px;opacity:.04;">
-    <svg width="280" height="280" viewBox="0 0 280 280" fill="none">
-      <rect x="118" y="0" width="44" height="280" fill="#F5EFE6"/>
-      <rect x="0" y="100" width="280" height="44" fill="#F5EFE6"/>
-    </svg>
-  </div>
-
-  <div class="inner">
-
-    <!-- TOP -->
+    <!-- TOP: marca -->
     <div class="s-top">
-      <div class="s-brand">
-        <svg class="logo-story" viewBox="0 0 36 36" fill="none">
-          <rect x="14" y="0" width="8" height="36" fill="#F5EFE6" opacity=".75"/>
-          <rect x="0" y="10" width="36" height="8" fill="#F5EFE6" opacity=".75"/>
-        </svg>
-        <div>
-          <div class="name">Linaje Escogido</div>
-          <div class="sub">Iglesia · Reynosa, Tamps.</div>
+      <div>
+        <div class="rmkt-logo" style="font-size:20px;"><span class="rmkt-r">R</span><span class="rmkt-mkt">MKT</span></div>
+        <div class="rmkt-sub">Ramos · Digital</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="tag" style="font-size:10px;color:#333;letter-spacing:.06em;">Nuestro trabajo</span>
+        <div class="arrow-btn" style="width:28px;height:28px;">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
       </div>
-      <div class="s-ig">@linajeescogido.mx</div>
     </div>
 
-    <!-- TITLE BLOCK -->
-    <div class="s-title-block">
-      <div class="s-pre">Una iglesia que te espera</div>
-      <div class="s-title">
-        LINAJE
-        <span class="line2">ESCOGIDO</span>
+    <!-- MID: headline + phone mockup -->
+    <div class="s-mid">
+      <div class="headline-block">
+        <div class="overline">Sitio web para iglesias</div>
+        <div class="h1">Tu iglesia<br>en <em>línea</em>,<br>hoy.</div>
+        <div class="desc">Diseño profesional, panel de administración y formularios — todo incluido.</div>
+        <div class="features">
+          <div class="feat"><div class="feat-dot"></div>Horarios y anuncios en tiempo real</div>
+          <div class="feat"><div class="feat-dot"></div>Registro al Programa Alpha</div>
+          <div class="feat"><div class="feat-dot"></div>Peticiones de oración online</div>
+          <div class="feat"><div class="feat-dot"></div>Panel admin desde el celular</div>
+        </div>
       </div>
-    </div>
 
-    <div class="s-divider"></div>
+      <!-- PHONE MOCKUP: muestra el proyecto real -->
+      <div class="phone-wrap">
+        <div class="phone-mock">
+          <div class="phone-notch"></div>
 
-    <!-- TAGLINE -->
-    <div class="s-tagline">
-      Funcional · Apasionada<br>Sensible al Espíritu Santo
-    </div>
+          <!-- Nav del sitio -->
+          <div class="ph-nav">
+            <div class="ph-nav-logo">
+              <div class="ph-nav-cross"></div>
+              <span style="width:4px;"></span>
+              <span class="ph-nav-name">Linaje Escogido</span>
+            </div>
+            <div class="ph-nav-btn">Visítanos</div>
+          </div>
 
-    <!-- SERVICIOS -->
-    <div class="s-svc-title">Horarios de servicios</div>
-    <div class="s-services">
-      <div class="s-svc">
-        <div class="s-day">Domingo</div>
-        <div class="s-sname">Servicio General</div>
-        <div class="s-stime">2:30<small style="font-size:14px;font-weight:400;opacity:.5;"> pm</small></div>
+          <!-- Hero del sitio -->
+          <div class="ph-hero">
+            <div class="ph-hero-cross">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <rect x="12" y="0" width="6" height="30" fill="#F5EFE6"/>
+                <rect x="0" y="10" width="30" height="6" fill="#F5EFE6"/>
+              </svg>
+            </div>
+            <div class="ph-hero-eyebrow">Reynosa, Tamaulipas</div>
+            <div class="ph-hero-title">LINAJE<br>ESCOGIDO</div>
+            <div class="ph-hero-tag">Funcional · Apasionada</div>
+            <div class="ph-hero-btns">
+              <div class="ph-btn-cream">Cómo llegar</div>
+              <div class="ph-btn-out">Alpha →</div>
+            </div>
+          </div>
+
+          <!-- Horarios mini -->
+          <div class="ph-section">
+            <div class="ph-sec-label">Servicios</div>
+            <div class="ph-sec-title">Horarios</div>
+            <div class="ph-cards">
+              <div class="ph-card">
+                <div class="ph-card-day">Domingo</div>
+                <div class="ph-card-time">2:30pm</div>
+                <div class="ph-card-name">Servicio</div>
+              </div>
+              <div class="ph-card dark">
+                <div class="ph-card-day" style="color:rgba(245,239,230,.35);">Martes</div>
+                <div class="ph-card-time" style="color:#F5EFE6;">7:30pm</div>
+                <div class="ph-card-name" style="color:rgba(245,239,230,.4);">Reunión</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Anuncio mini -->
+          <div class="ph-announce">
+            <div class="ph-ann-chip">Novedades</div>
+            <div class="ph-ann-title">Programa Alpha</div>
+            <div class="ph-ann-body">Sesiones abiertas para todos · Regístrate ahora</div>
+          </div>
+        </div>
+        <div class="phone-shadow"></div>
       </div>
-      <div class="s-svc">
-        <div class="s-day">Martes</div>
-        <div class="s-sname">Reunión General</div>
-        <div class="s-stime">7:30<small style="font-size:14px;font-weight:400;opacity:.5;"> pm</small></div>
-      </div>
-    </div>
 
-    <!-- ALPHA -->
-    <div class="s-alpha">
-      <div class="a-label">Nuevo · Programa</div>
-      <div class="a-name">Alpha — ¿Quién es Dios?</div>
-      <div class="a-desc">Sesiones abiertas para explorar la fe · Sin presión · Todos son bienvenidos</div>
     </div>
 
     <!-- BOTTOM -->
     <div class="s-bottom">
-      <div class="s-social">
-        <div class="s-soc-row">
-          <div class="icon">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+      <div class="site-url">ramosmkt<span>.lat</span></div>
+      <div class="ig-handle" style="color:#333;">@ramosmkt</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║  DESIGN 2 — IG POST CTA  600×600                        ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<p class="label">IG Post CTA — 600 × 600</p>
+
+<div class="post-cta page">
+  <div class="bg-glow2"></div>
+  <div class="corner-block"></div>
+  <div class="corner-text">
+    <div class="ct-label">Visítanos en</div>
+    <div class="ct-url">ramosmkt.lat</div>
+  </div>
+
+  <div class="c-inner">
+
+    <div class="c-top">
+      <div>
+        <div class="rmkt-logo" style="font-size:22px;"><span class="rmkt-r">R</span><span class="rmkt-mkt">MKT</span></div>
+        <div class="rmkt-sub">Ramos · Digital</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H5M12 2V9" stroke="#0a0a0a" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <div class="c-mid">
+      <div class="eyebrow">¿Tu iglesia ya tiene sitio web?</div>
+      <div class="c-headline">Hacemos<br>tu sitio<br><em>nosotros.</em></div>
+      <div class="c-sub">Diseño, desarrollo, hosting y panel de admin incluidos. Tú solo administras el contenido.</div>
+    </div>
+
+    <div class="c-contact">
+      <div class="c-channels">
+        <div class="c-ch">
+          <div class="ch-icon green-bg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.83L0 24l6.338-1.499A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.805 9.805 0 01-5.003-1.371l-.36-.214-3.722.88.936-3.618-.235-.372A9.808 9.808 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
           </div>
           <div>
-            <div class="handle">@linajeescogido.mx</div>
-            <div class="net">Instagram</div>
+            <div class="ch-handle">+52 814 807 8309</div>
+            <div class="ch-platform">WhatsApp · Escríbenos ahora</div>
           </div>
         </div>
-        <div class="s-soc-row">
-          <div class="icon">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" opacity=".5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        <div class="c-ch">
+          <div class="ch-icon" style="border-color:#1e1e1e;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#aaa" stroke="none"/></svg>
           </div>
           <div>
-            <div class="handle">Linaje Escogido</div>
-            <div class="net">Facebook</div>
-          </div>
-        </div>
-        <div style="margin-top:10px;">
-          <div style="font-size:10px;letter-spacing:.08em;color:rgba(245,239,230,.25);">
-            📍 Ávila Camacho #130 · Col. La Presa
-          </div>
-          <div style="font-size:10px;letter-spacing:.08em;color:rgba(245,239,230,.2);margin-top:3px;">
-            🌐 linajeescogidoreynosa.org
+            <div class="ch-handle" style="color:#aaa;">@ramosmkt</div>
+            <div class="ch-platform">Instagram · Facebook</div>
           </div>
         </div>
       </div>
 
-      <div class="s-qr">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&color=F5EFE6&bgcolor=1A1A1A&data=https://linajeescogidoreynosa.org" alt="QR Sitio"/>
-        <div class="s-qr-txt">Escanea para<br>visitar el sitio</div>
+      <div class="c-qr">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=176x176&color=000000&bgcolor=ffffff&data=https://wa.me/528148078309?text=Hola!%20Vi%20el%20sitio%20de%20Linaje%20Escogido%20y%20me%20interesa%20un%20sitio%20web%20para%20mi%20iglesia" alt="QR WhatsApp"/>
+        <div class="qr-label">Escanea y<br>escríbenos</div>
       </div>
     </div>
 
   </div>
 </div>
+
+
+<!-- ╔══════════════════════════════════════════════════════════╗
+     ║  DESIGN 3 — IG STORY  600×1067                          ║
+     ╚══════════════════════════════════════════════════════════╝ -->
+<p class="label">IG Story — 600 × 1067</p>
+
+<div class="story page">
+  <div class="st-glow1"></div>
+  <div class="st-glow2"></div>
+  <div class="st-grid"></div>
+  <div class="st-topbar"></div>
+
+  <div class="st-inner">
+
+    <!-- TOP -->
+    <div class="st-top">
+      <div>
+        <div class="rmkt-logo" style="font-size:26px;"><span class="rmkt-r">R</span><span class="rmkt-mkt">MKT</span></div>
+        <div class="rmkt-sub">Ramos · Digital</div>
+      </div>
+      <div class="st-handle">@ramosmkt</div>
+    </div>
+
+    <!-- HEADLINE -->
+    <div class="st-headline-block">
+      <div class="st-overline">Sitio web para tu iglesia</div>
+      <div class="st-h1">Así queda<br>con <em>RMKT.</em></div>
+      <div class="st-h2">Diseñamos y desarrollamos la presencia digital de tu iglesia. Profesional, rápido y desde tu celular.</div>
+    </div>
+
+    <div class="st-div"></div>
+
+    <!-- PHONE + FEATURES -->
+    <div class="st-showcase">
+      <!-- Teléfono mockup -->
+      <div class="phone-mock" style="width:128px;height:220px;border-radius:16px;">
+        <div class="phone-notch"></div>
+        <div class="ph-nav">
+          <div class="ph-nav-logo">
+            <div class="ph-nav-cross"></div>
+            <span style="width:3px;"></span>
+            <span class="ph-nav-name">Linaje Escogido</span>
+          </div>
+          <div class="ph-nav-btn">Visítanos</div>
+        </div>
+        <div class="ph-hero" style="min-height:68px;">
+          <div class="ph-hero-cross">
+            <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
+              <rect x="12" y="0" width="6" height="30" fill="#F5EFE6"/>
+              <rect x="0" y="10" width="30" height="6" fill="#F5EFE6"/>
+            </svg>
+          </div>
+          <div class="ph-hero-eyebrow">Reynosa, Tamps.</div>
+          <div class="ph-hero-title" style="font-size:14px;">LINAJE<br>ESCOGIDO</div>
+          <div class="ph-hero-tag">Funcional · Apasionada</div>
+          <div class="ph-hero-btns" style="margin-top:5px;">
+            <div class="ph-btn-cream">Llegar</div>
+            <div class="ph-btn-out">Alpha →</div>
+          </div>
+        </div>
+        <div class="ph-section">
+          <div class="ph-sec-label">Servicios</div>
+          <div class="ph-sec-title" style="font-size:8px;">Horarios</div>
+          <div class="ph-cards">
+            <div class="ph-card"><div class="ph-card-day">Dom</div><div class="ph-card-time" style="font-size:6px;">2:30pm</div></div>
+            <div class="ph-card dark"><div class="ph-card-day" style="color:rgba(245,239,230,.3);">Mar</div><div class="ph-card-time" style="font-size:6px;color:#F5EFE6;">7:30pm</div></div>
+          </div>
+        </div>
+        <div class="ph-announce">
+          <div class="ph-ann-chip">Alpha</div>
+          <div class="ph-ann-title" style="font-size:5px;">Programa Alpha · Regístrate</div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="st-features">
+        <div class="st-feat-title">Qué incluye</div>
+        <div class="st-feat">
+          <div class="st-feat-icon">🗓</div>
+          <div><div class="st-feat-name">Horarios dinámicos</div><div class="st-feat-desc">Actualiza sin tocar código</div></div>
+        </div>
+        <div class="st-feat">
+          <div class="st-feat-icon">📢</div>
+          <div><div class="st-feat-name">Anuncios y galería</div><div class="st-feat-desc">Sube fotos desde el panel</div></div>
+        </div>
+        <div class="st-feat">
+          <div class="st-feat-icon">📋</div>
+          <div><div class="st-feat-name">Formularios online</div><div class="st-feat-desc">Alpha y peticiones de oración</div></div>
+        </div>
+        <div class="st-feat">
+          <div class="st-feat-icon">⚙️</div>
+          <div><div class="st-feat-name">Panel de administración</div><div class="st-feat-desc">Desde cualquier dispositivo</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BADGE / PROOF -->
+    <div class="st-badge">
+      <div class="st-badge-label">Ejemplo real de nuestro trabajo</div>
+      <div class="st-badge-text">Iglesia Linaje Escogido — Reynosa, Tamps.</div>
+      <div class="st-badge-sub">linajeescogidoreynosa.org · Diseño y desarrollo por RMKT</div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="st-bottom">
+      <div class="st-channels">
+        <div class="st-ch">
+          <div class="icon g">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.83L0 24l6.338-1.499A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.805 9.805 0 01-5.003-1.371l-.36-.214-3.722.88.936-3.618-.235-.372A9.808 9.808 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+          </div>
+          <div>
+            <div class="ch-name">+52 814 807 8309</div>
+            <div class="ch-net">WhatsApp</div>
+          </div>
+        </div>
+        <div class="st-ch">
+          <div class="icon" style="border-color:#1c1c1c;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#666" stroke="none"/></svg>
+          </div>
+          <div>
+            <div class="ch-name" style="color:#888;font-size:12px;">@ramosmkt</div>
+            <div class="ch-net">Instagram · Facebook</div>
+          </div>
+        </div>
+        <div style="margin-top:6px;">
+          <div style="font-size:11px;font-weight:500;color:#00e676;letter-spacing:.04em;">ramosmkt.lat</div>
+        </div>
+      </div>
+
+      <div class="st-qr">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=192x192&color=000000&bgcolor=ffffff&data=https://wa.me/528148078309?text=Hola!%20Vi%20el%20sitio%20de%20Linaje%20Escogido%20y%20me%20interesa%20un%20sitio%20web%20para%20mi%20iglesia" alt="QR WhatsApp RMKT"/>
+        <div class="ql">Escríbenos<br>por WhatsApp</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 </body>
 </html>
