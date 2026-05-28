@@ -4,807 +4,1016 @@
 <meta charset="UTF-8"/>
 <title>Flyers RMKT — Linaje Escogido</title>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   background:#050505;
   display:flex;flex-direction:column;align-items:center;
-  gap:64px;padding:64px 20px;
-  font-family:'Jost',sans-serif;
+  gap:0;padding:60px 20px;
+  font-family:'Jost',system-ui,sans-serif;
 }
-.label{
-  color:#333;font-size:10px;text-align:center;
-  margin-bottom:-48px;letter-spacing:4px;text-transform:uppercase;
-  font-family:'Jost',sans-serif;font-weight:400;
+.section-label{
+  font-family:'Jost',system-ui,sans-serif;
+  font-weight:700;font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+  color:#00e676;padding:32px 0 20px;text-align:center;width:600px;
+  border-top:1px solid rgba(0,230,118,.1);margin-top:40px;
 }
-.page{outline:1px dashed rgba(128,128,128,0.2);}
+.section-label:first-child{border-top:none;margin-top:0;padding-top:0;}
+.design-label{
+  font-family:'Jost',system-ui,sans-serif;
+  font-weight:400;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:#2a2a2a;padding:16px 0 12px;text-align:center;width:600px;
+}
+.dl-btn{
+  width:600px;background:#00e676;color:#0a0a0a;
+  font-family:'Jost',system-ui,sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:14px;border:none;cursor:pointer;border-radius:8px;
+  margin-top:14px;margin-bottom:8px;transition:opacity .2s;
+}
+.dl-btn:hover{opacity:.85;}
+@media print{body{display:none;}}
 
-/* ─────────────────────────────────────────────
-   SHARED RMKT ELEMENTS
-───────────────────────────────────────────── */
-.rmkt-logo{display:flex;align-items:baseline;gap:0;line-height:1;}
-.rmkt-r{font-weight:900;font-size:inherit;color:#fff;}
-.rmkt-mkt{font-weight:900;font-size:inherit;color:#00e676;}
-.rmkt-sub{
-  font-size:9px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
-  color:#555;
-}
+/* ═══ SHARED ═══ */
+.rmkt-logo-type{display:flex;align-items:baseline;gap:0;line-height:1;font-family:'Jost',system-ui,sans-serif;}
+.rl-r{font-weight:900;color:#fff;}
+.rl-mkt{font-weight:900;color:#00e676;}
+.rl-sub{font-size:9px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:#444;margin-top:2px;}
 .green{color:#00e676;}
-.arrow-btn{
-  width:36px;height:36px;background:#00e676;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.arrow-btn svg{display:block;}
+.qr-box{background:#fff;padding:10px;border-radius:8px;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.qr-box img{display:block;border-radius:4px;}
+.qr-lbl{font-family:'Jost',system-ui,sans-serif;font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#0a0a0a;text-align:center;line-height:1.5;}
 
-/* ─────────────────────────────────────────────
-   PHONE MOCKUP — muestra el proyecto real
-───────────────────────────────────────────── */
-.phone-mock{
-  width:138px;height:236px;
-  background:#0f0f0f;
-  border-radius:18px;
-  border:2px solid #222;
-  overflow:hidden;
-  position:relative;
+/* ─────────────────────────────────────────
+   SHARED PHONE MOCKUP
+───────────────────────────────────────── */
+.ph{
+  background:#0f0f0f;border-radius:22px;
+  border:2.5px solid #252525;overflow:hidden;position:relative;
+  box-shadow:0 24px 64px rgba(0,0,0,.85),0 0 0 1px #111;
   flex-shrink:0;
-  box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 0 1px #111;
 }
-.phone-notch{
+.ph-notch{
   position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:36px;height:7px;background:#0f0f0f;
-  border-radius:0 0 6px 6px;z-index:10;
+  width:40px;height:8px;background:#0f0f0f;
+  border-radius:0 0 8px 8px;z-index:10;
 }
-/* Nav del sitio */
+/* Nav bar */
 .ph-nav{
-  background:#F5EFE6;padding:6px 8px;
+  background:#F5EFE6;padding:7px 10px;
   display:flex;align-items:center;justify-content:space-between;
   border-bottom:1px solid rgba(26,26,26,.1);
-  margin-top:7px;
+  margin-top:8px;
 }
-.ph-nav-logo{
-  display:flex;align-items:center;gap:4px;
-}
-.ph-nav-cross{
-  width:9px;height:9px;position:relative;flex-shrink:0;
-}
-.ph-nav-cross::before,.ph-nav-cross::after{
-  content:'';position:absolute;background:#1A1A1A;
-}
-.ph-nav-cross::before{width:2px;height:9px;left:3.5px;top:0;}
-.ph-nav-cross::after{width:9px;height:2px;left:0;top:3.5px;}
-.ph-nav-name{font-size:5px;font-weight:700;color:#1A1A1A;letter-spacing:.1em;text-transform:uppercase;}
-.ph-nav-btn{
-  background:#1A1A1A;color:#F5EFE6;
-  font-size:4px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  padding:2px 5px;
-}
-/* Hero del sitio */
-.ph-hero{
+.ph-cross{width:10px;height:10px;position:relative;flex-shrink:0;}
+.ph-cross::before,.ph-cross::after{content:'';position:absolute;background:#1A1A1A;}
+.ph-cross::before{width:2px;height:10px;left:4px;top:0;}
+.ph-cross::after{width:10px;height:2px;left:0;top:4px;}
+.ph-nav-name{font-size:5.5px;font-weight:800;color:#1A1A1A;letter-spacing:.1em;text-transform:uppercase;margin-left:5px;}
+.ph-nav-btn{background:#1A1A1A;color:#F5EFE6;font-size:4.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2.5px 6px;}
+/* Hero foto */
+.ph-hero-img{
+  width:100%;position:relative;overflow:hidden;
   background:#1A1A1A;
-  padding:10px 8px 8px;
-  position:relative;overflow:hidden;
-  min-height:74px;
 }
-.ph-hero-cross{
-  position:absolute;right:6px;top:4px;opacity:.06;
+.ph-hero-img img{width:100%;display:block;object-fit:cover;object-position:center 15%;}
+.ph-hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(26,26,26,.3) 0%,rgba(26,26,26,.75) 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:8px 9px;
 }
-.ph-hero-eyebrow{
-  font-size:4px;letter-spacing:.18em;text-transform:uppercase;
-  color:rgba(245,239,230,.35);margin-bottom:3px;
-}
-.ph-hero-title{
-  font-family:'Jost',sans-serif;font-weight:900;font-size:16px;
-  line-height:.92;letter-spacing:.03em;color:#F5EFE6;
-  text-transform:uppercase;margin-bottom:5px;
-}
-.ph-hero-tag{
-  font-size:4px;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(245,239,230,.4);line-height:1.7;margin-bottom:7px;
-}
-.ph-hero-btns{display:flex;gap:3px;}
-.ph-btn-cream{
-  background:#F5EFE6;color:#1A1A1A;
-  font-size:4px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  padding:3px 6px;
-}
-.ph-btn-out{
-  border:1px solid rgba(245,239,230,.3);
-  font-size:4px;color:#F5EFE6;padding:3px 5px;letter-spacing:.04em;
-}
-/* Sección horarios mini */
-.ph-section{
-  background:#F5EFE6;padding:7px 8px;
-}
-.ph-sec-label{
-  font-size:4px;letter-spacing:.18em;text-transform:uppercase;
-  color:#888;margin-bottom:2px;
-}
-.ph-sec-title{
-  font-weight:900;font-size:9px;letter-spacing:.04em;color:#1A1A1A;
-  text-transform:uppercase;margin-bottom:5px;
-}
-.ph-cards{display:flex;gap:3px;}
-.ph-card{
-  flex:1;border:1px solid #1A1A1A;padding:4px 5px;
-}
-.ph-card.dark{background:#1A1A1A;color:#F5EFE6;}
-.ph-card-day{font-size:4px;opacity:.4;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px;}
-.ph-card-time{font-weight:700;font-size:7px;color:inherit;}
-.ph-card-name{font-size:4px;opacity:.5;text-transform:uppercase;letter-spacing:.08em;}
-/* Sección anuncios mini */
-.ph-announce{
-  background:#F5EFE6;padding:5px 8px;
-  border-top:1px solid rgba(26,26,26,.08);
-}
-.ph-ann-chip{
-  display:inline-block;background:#1A1A1A;color:#F5EFE6;
-  font-size:3.5px;padding:1.5px 4px;letter-spacing:.1em;text-transform:uppercase;
-  margin-bottom:2px;
-}
-.ph-ann-title{font-weight:700;font-size:6px;color:#1A1A1A;margin-bottom:1px;}
-.ph-ann-body{font-size:4px;color:rgba(26,26,26,.5);line-height:1.4;}
+.ph-hero-ttl{font-family:'Jost',system-ui,sans-serif;font-weight:900;font-size:14px;line-height:.9;letter-spacing:.06em;text-transform:uppercase;color:#F5EFE6;}
+.ph-hero-tag{font-size:4px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,239,230,.5);margin-top:3px;}
+.ph-hero-btns{display:flex;gap:3px;margin-top:5px;}
+.ph-btn-c{background:#F5EFE6;color:#1A1A1A;font-size:4px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2.5px 6px;}
+.ph-btn-o{border:1px solid rgba(245,239,230,.35);color:#F5EFE6;font-size:4px;padding:2.5px 5px;letter-spacing:.04em;}
+/* Sección crema */
+.ph-cream{background:#F5EFE6;padding:7px 9px;}
+.ph-sec-lbl{font-size:4px;letter-spacing:.18em;text-transform:uppercase;color:#888;margin-bottom:2px;font-weight:500;}
+.ph-sec-ttl{font-weight:900;font-size:10px;letter-spacing:.04em;color:#1A1A1A;text-transform:uppercase;margin-bottom:5px;}
+.ph-cards-row{display:flex;gap:3px;}
+.ph-card{flex:1;border:1px solid #1A1A1A;padding:4px 5px;}
+.ph-card.dk{background:#1A1A1A;color:#F5EFE6;}
+.ph-card-d{font-size:4px;opacity:.4;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px;}
+.ph-card-t{font-weight:700;font-size:8px;color:inherit;}
+.ph-card-n{font-size:3.5px;opacity:.45;text-transform:uppercase;letter-spacing:.08em;}
+/* Footer mini */
+.ph-announce{background:#1A1A1A;padding:6px 9px;}
+.ph-ann-lbl{display:inline-block;background:#F5EFE6;color:#1A1A1A;font-size:3.5px;padding:1.5px 4px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
+.ph-ann-ttl{font-weight:700;font-size:6px;color:#F5EFE6;line-height:1.2;}
+.ph-ann-sub{font-size:4px;color:rgba(245,239,230,.35);margin-top:1px;}
 
-
-/* ══════════════════════════════════════════════════
-   DESIGN 1 — IG POST SHOWCASE  600×600
-══════════════════════════════════════════════════ */
-.post-showcase{
-  width:600px;height:600px;
-  background:#0a0a0a;
-  position:relative;overflow:hidden;
+/* ─────────────────────────────────────────
+   SHARED BROWSER / ADMIN MOCKUP
+───────────────────────────────────────── */
+.brow{
+  background:#111;border-radius:10px;
+  border:1.5px solid #222;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.9);flex-shrink:0;
 }
-
-/* Fondo: gradiente verde sutil */
-.post-showcase .bg-glow{
-  position:absolute;
-  width:500px;height:500px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(0,230,118,.07) 0%,transparent 70%);
-  top:-100px;right:-100px;pointer-events:none;
+.brow-bar{
+  background:#1a1a1a;padding:7px 10px;
+  display:flex;align-items:center;gap:6px;
+  border-bottom:1px solid #222;
 }
-/* Líneas de grid de fondo */
-.post-showcase .bg-grid{
-  position:absolute;inset:0;opacity:.035;
-  background:
-    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,1) 39px,rgba(255,255,255,1) 40px),
-    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,1) 39px,rgba(255,255,255,1) 40px);
+.brow-dots{display:flex;gap:4px;}
+.brow-dot{width:7px;height:7px;border-radius:50%;}
+.brow-url{
+  flex:1;background:#242424;border-radius:3px;padding:2px 8px;
+  font-size:8px;color:#555;letter-spacing:.03em;
+  font-family:'Jost',system-ui,sans-serif;
 }
-/* Borde verde izquierdo */
-.post-showcase .green-bar{
-  position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:linear-gradient(to bottom,#00e676,rgba(0,230,118,0));
+/* Admin UI inside browser */
+.adm-layout{display:flex;height:100%;}
+.adm-sidebar{
+  width:52px;background:#111;border-right:1px solid rgba(245,239,230,.05);
+  display:flex;flex-direction:column;padding:8px 6px;gap:2px;
 }
-
-.post-showcase .s-inner{
-  position:relative;z-index:2;
-  height:100%;display:flex;flex-direction:column;justify-content:space-between;
-  padding:36px 40px 32px;
-}
-
-/* TOP: marca RMKT */
-.post-showcase .s-top{
-  display:flex;align-items:center;justify-content:space-between;
-}
-.post-showcase .s-top .rmkt-logo{font-size:22px;}
-.post-showcase .s-top .tag{
-  font-size:10px;font-weight:400;color:#444;letter-spacing:.06em;
-}
-
-/* MIDDLE: headline + mockup */
-.post-showcase .s-mid{
-  display:flex;align-items:center;gap:32px;
-  flex:1;align-self:center;padding:20px 0 0;
-}
-.post-showcase .headline-block{flex:1;}
-.post-showcase .overline{
-  font-size:10px;font-weight:600;color:#00e676;letter-spacing:.2em;
-  text-transform:uppercase;margin-bottom:12px;
-}
-.post-showcase .h1{
-  font-size:46px;font-weight:900;color:#fff;
-  line-height:.9;letter-spacing:-.01em;text-transform:uppercase;
-  margin-bottom:16px;
-}
-.post-showcase .h1 em{color:#00e676;font-style:normal;}
-.post-showcase .desc{
-  font-size:13px;font-weight:300;color:#888;line-height:1.6;
-  max-width:220px;
-}
-.post-showcase .features{
-  display:flex;flex-direction:column;gap:6px;margin-top:18px;
-}
-.post-showcase .feat{
-  display:flex;align-items:center;gap:8px;
-  font-size:11px;font-weight:500;color:#aaa;
-}
-.post-showcase .feat-dot{
-  width:5px;height:5px;border-radius:50%;background:#00e676;flex-shrink:0;
-}
-
-/* PHONE en el post-showcase */
-.post-showcase .phone-wrap{
-  position:relative;
-}
-.post-showcase .phone-shadow{
-  position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
-  width:100px;height:20px;
-  background:radial-gradient(ellipse,rgba(0,230,118,.2),transparent 70%);
-}
-
-/* BOTTOM */
-.post-showcase .s-bottom{
-  display:flex;align-items:center;justify-content:space-between;
-}
-.post-showcase .site-url{
-  font-size:11px;font-weight:500;color:#333;letter-spacing:.04em;
-}
-.post-showcase .site-url span{color:#00e676;}
-.post-showcase .ig-handle{
-  font-size:11px;color:#444;letter-spacing:.04em;
-}
-
-
-/* ══════════════════════════════════════════════════
-   DESIGN 2 — IG POST CTA  600×600
-══════════════════════════════════════════════════ */
-.post-cta{
-  width:600px;height:600px;
-  background:#0a0a0a;
-  position:relative;overflow:hidden;
-}
-.post-cta .bg-glow2{
-  position:absolute;
-  width:600px;height:400px;
-  background:radial-gradient(ellipse 70% 60% at 30% 120%,rgba(0,230,118,.1) 0%,transparent 70%);
-  bottom:0;left:0;pointer-events:none;
-}
-/* Bloque verde esquina inferior derecha */
-.post-cta .corner-block{
-  position:absolute;bottom:0;right:0;
-  width:200px;height:200px;
-  background:#00e676;
-  clip-path:polygon(100% 0,100% 100%,0 100%);
-}
-.post-cta .corner-text{
-  position:absolute;bottom:22px;right:22px;
-  text-align:right;z-index:3;
-}
-.post-cta .corner-text .ct-label{
-  font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  color:#0a0a0a;opacity:.6;margin-bottom:2px;
-}
-.post-cta .corner-text .ct-url{
-  font-size:13px;font-weight:800;color:#0a0a0a;letter-spacing:.02em;
-}
-
-.post-cta .c-inner{
-  position:relative;z-index:2;
-  height:100%;display:flex;flex-direction:column;justify-content:space-between;
-  padding:36px 40px 36px;
-}
-.post-cta .c-top{display:flex;align-items:center;justify-content:space-between;}
-.post-cta .c-top .rmkt-logo{font-size:20px;}
-
-.post-cta .c-mid{}
-.post-cta .eyebrow{
-  font-size:10px;font-weight:600;color:#00e676;letter-spacing:.2em;
-  text-transform:uppercase;margin-bottom:14px;
-  display:flex;align-items:center;gap:8px;
-}
-.post-cta .eyebrow::before{
-  content:'';display:block;width:24px;height:2px;background:#00e676;
-}
-.post-cta .c-headline{
-  font-size:52px;font-weight:900;color:#fff;
-  line-height:.88;letter-spacing:-.02em;text-transform:uppercase;
-  margin-bottom:22px;
-}
-.post-cta .c-headline em{color:#00e676;font-style:normal;}
-.post-cta .c-sub{
-  font-size:14px;font-weight:300;color:#777;line-height:1.6;
-  max-width:340px;
-}
-
-.post-cta .c-contact{
-  display:flex;align-items:flex-end;justify-content:space-between;
-}
-.post-cta .c-channels{display:flex;flex-direction:column;gap:10px;}
-.post-cta .c-ch{
-  display:flex;align-items:center;gap:12px;
-}
-.post-cta .c-ch .ch-icon{
-  width:38px;height:38px;border:1px solid #1e1e1e;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  font-size:16px;
-}
-.post-cta .c-ch .ch-icon.green-bg{background:#00e676;}
-.post-cta .c-ch .ch-handle{font-size:14px;font-weight:700;color:#fff;}
-.post-cta .c-ch .ch-platform{font-size:10px;color:#555;letter-spacing:.06em;text-transform:uppercase;}
-
-.post-cta .c-qr{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  margin-right:50px;
-}
-.post-cta .c-qr img{
-  width:88px;height:88px;
-  border-radius:6px;
-  background:#fff;padding:4px;
-}
-.post-cta .c-qr .qr-label{
-  font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
-  color:#444;text-align:center;line-height:1.6;
-}
-
-
-/* ══════════════════════════════════════════════════
-   DESIGN 3 — IG STORY  600×1067
-══════════════════════════════════════════════════ */
-.story{
-  width:600px;height:1067px;
-  background:#0a0a0a;
-  position:relative;overflow:hidden;
-}
-.story .st-glow1{
-  position:absolute;top:-100px;right:-100px;
-  width:480px;height:480px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(0,230,118,.08) 0%,transparent 65%);
-  pointer-events:none;
-}
-.story .st-glow2{
-  position:absolute;bottom:-60px;left:-80px;
-  width:400px;height:400px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(0,230,118,.05) 0%,transparent 70%);
-  pointer-events:none;
-}
-.story .st-grid{
-  position:absolute;inset:0;opacity:.025;
-  background:
-    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(255,255,255,1) 59px,rgba(255,255,255,1) 60px),
-    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(255,255,255,1) 59px,rgba(255,255,255,1) 60px);
-}
-/* Franja verde top */
-.story .st-topbar{
-  position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(to right,#00e676,rgba(0,230,118,0));
-}
-
-.story .st-inner{
-  position:relative;z-index:2;
-  height:100%;display:flex;flex-direction:column;
-  padding:48px 48px 44px;
-}
-
-/* STORY TOP */
-.story .st-top{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:44px;
-}
-.story .st-top .rmkt-logo{font-size:28px;}
-.story .st-top .st-handle{
-  font-size:11px;color:#444;letter-spacing:.05em;
-}
-
-/* STORY HEADLINE */
-.story .st-headline-block{margin-bottom:36px;}
-.story .st-overline{
-  font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;
-  text-transform:uppercase;margin-bottom:12px;
-  display:flex;align-items:center;gap:10px;
-}
-.story .st-overline::before{content:'';width:20px;height:2px;background:#00e676;display:block;}
-.story .st-h1{
-  font-size:62px;font-weight:900;color:#fff;
-  line-height:.88;letter-spacing:-.01em;text-transform:uppercase;
-  margin-bottom:14px;
-}
-.story .st-h1 em{color:#00e676;font-style:normal;}
-.story .st-h2{
-  font-size:14px;font-weight:300;color:#666;line-height:1.65;
-  max-width:400px;
-}
-
-/* DIVIDER */
-.story .st-div{
-  height:1px;background:rgba(255,255,255,.05);margin:32px 0;
-}
-
-/* PHONE + FEATURES */
-.story .st-showcase{
-  display:flex;gap:32px;align-items:flex-start;margin-bottom:36px;
-}
-.story .st-features{flex:1;}
-.story .st-feat-title{
-  font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
-  color:#444;margin-bottom:16px;
-}
-.story .st-feat{
-  display:flex;align-items:flex-start;gap:10px;
-  margin-bottom:14px;
-}
-.story .st-feat-icon{
-  width:28px;height:28px;border:1px solid #1e1e1e;border-radius:6px;
+.adm-brand{
+  padding:4px 0 8px;border-bottom:1px solid rgba(245,239,230,.06);margin-bottom:4px;
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;flex-shrink:0;margin-top:1px;
 }
-.story .st-feat-name{
-  font-size:13px;font-weight:700;color:#ccc;margin-bottom:2px;
+.adm-brand img{width:16px;height:16px;object-fit:contain;opacity:.7;}
+.adm-nav-item{
+  padding:5px 4px;border-radius:4px;display:flex;align-items:center;gap:4px;
+  font-size:6px;font-weight:500;color:rgba(245,239,230,.35);
+  font-family:'Jost',system-ui,sans-serif;letter-spacing:.04em;
 }
-.story .st-feat-desc{
-  font-size:11px;font-weight:300;color:#555;line-height:1.4;
+.adm-nav-item.active{background:rgba(245,239,230,.09);color:rgba(245,239,230,.85);}
+.adm-nav-dot{width:4px;height:4px;border-radius:50%;background:rgba(245,239,230,.15);flex-shrink:0;}
+.adm-nav-dot.on{background:#00e676;}/* verde para activo */
+.adm-main{flex:1;display:flex;flex-direction:column;}
+.adm-topbar{
+  background:#181818;border-bottom:1px solid rgba(245,239,230,.05);
+  padding:5px 8px;display:flex;align-items:center;justify-content:space-between;
 }
+.adm-topbar-title{font-size:7px;font-weight:700;color:rgba(245,239,230,.7);font-family:'Jost',system-ui,sans-serif;}
+.adm-topbar-right{display:flex;gap:4px;align-items:center;}
+.adm-avatar{width:14px;height:14px;border-radius:50%;background:rgba(245,239,230,.1);border:1px solid rgba(245,239,230,.08);}
+.adm-content{flex:1;padding:7px;background:#0f0f0f;}
+.adm-panel-title{font-size:9px;font-weight:900;color:#F5EFE6;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;font-family:'Jost',system-ui,sans-serif;}
+.adm-card{background:#1c1c1c;border:1px solid rgba(245,239,230,.06);border-radius:4px;padding:6px;margin-bottom:5px;}
+.adm-card-lbl{font-size:5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,239,230,.3);margin-bottom:3px;font-family:'Jost',system-ui,sans-serif;}
+.adm-field{background:rgba(245,239,230,.04);border:1px solid rgba(245,239,230,.07);border-radius:3px;padding:3px 5px;margin-bottom:3px;}
+.adm-field-lbl{font-size:4px;color:rgba(245,239,230,.25);letter-spacing:.1em;text-transform:uppercase;font-family:'Jost',system-ui,sans-serif;}
+.adm-field-val{font-size:6px;color:rgba(245,239,230,.55);font-family:'Jost',system-ui,sans-serif;margin-top:1px;}
+.adm-btn-pub{background:#F5EFE6;color:#0f0f0f;font-size:6px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:3px;display:inline-block;font-family:'Jost',system-ui,sans-serif;}
+/* Table mini */
+.adm-table{width:100%;border-collapse:collapse;}
+.adm-table th{font-size:4.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,239,230,.25);padding:3px 4px;border-bottom:1px solid rgba(245,239,230,.06);text-align:left;font-family:'Jost',system-ui,sans-serif;}
+.adm-table td{font-size:5.5px;color:rgba(245,239,230,.5);padding:3px 4px;border-bottom:1px solid rgba(245,239,230,.03);font-family:'Jost',system-ui,sans-serif;}
+.adm-status{width:5px;height:5px;border-radius:50%;display:inline-block;}
+.adm-status.on{background:#5a9;}
+.adm-status.off{background:#444;}
+/* Photo grid mini */
+.adm-photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+.adm-photo-item{aspect-ratio:1;border-radius:2px;overflow:hidden;border:1px solid rgba(245,239,230,.06);}
+.adm-photo-item img{width:100%;height:100%;object-fit:cover;display:block;}
+.adm-photo-ph{width:100%;height:100%;background:rgba(245,239,230,.04);}
 
-/* PROOF / BADGE */
-.story .st-badge{
-  background:#111;border:1px solid #1e1e1e;border-left:3px solid #00e676;
-  padding:16px 20px;margin-bottom:32px;
-}
-.story .st-badge-label{
-  font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
-  color:#00e676;margin-bottom:5px;
-}
-.story .st-badge-text{
-  font-size:15px;font-weight:700;color:#fff;line-height:1.3;
-}
-.story .st-badge-sub{
-  font-size:11px;font-weight:300;color:#555;margin-top:4px;
-}
 
-/* STORY BOTTOM CTA */
-.story .st-bottom{
-  margin-top:auto;
-  display:flex;align-items:flex-end;justify-content:space-between;
+/*══════════════════════════════════════════════════════════
+  POST-WEB-1   Website Showcase  600×600
+══════════════════════════════════════════════════════════*/
+#post-web-1{
+  width:600px;height:600px;background:#0a0a0a;
+  position:relative;overflow:hidden;
+  outline:1px dashed rgba(0,230,118,.15);
 }
-.story .st-channels{display:flex;flex-direction:column;gap:10px;}
-.story .st-ch{display:flex;align-items:center;gap:12px;}
-.story .st-ch .icon{
-  width:36px;height:36px;border:1px solid #1c1c1c;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;flex-shrink:0;
+#post-web-1 .glow{
+  position:absolute;top:-120px;right:-120px;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,118,.08) 0%,transparent 65%);pointer-events:none;
 }
-.story .st-ch .icon.g{background:#00e676;}
-.story .st-ch .ch-name{font-size:13px;font-weight:700;color:#ddd;}
-.story .st-ch .ch-net{font-size:9px;color:#444;letter-spacing:.08em;text-transform:uppercase;}
+#post-web-1 .vbar{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,#00e676,transparent);}
+#post-web-1 .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:36px 40px 32px;}
+#post-web-1 .top{display:flex;align-items:flex-start;justify-content:space-between;}
+#post-web-1 .overline{font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px;}
+#post-web-1 .headline{font-size:48px;font-weight:900;color:#fff;line-height:.88;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:12px;}
+#post-web-1 .headline em{color:#00e676;font-style:normal;}
+#post-web-1 .sub{font-size:13px;font-weight:300;color:#666;line-height:1.55;max-width:220px;margin-bottom:18px;}
+#post-web-1 .feats{display:flex;flex-direction:column;gap:7px;}
+#post-web-1 .feat{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:500;color:#888;}
+#post-web-1 .fdot{width:5px;height:5px;border-radius:50%;background:#00e676;flex-shrink:0;}
+#post-web-1 .mid{display:flex;gap:28px;flex:1;align-items:center;padding-top:16px;}
+#post-web-1 .txt-col{flex:1;display:flex;flex-direction:column;justify-content:center;}
+#post-web-1 .ph-col{display:flex;align-items:center;padding-top:8px;}
+#post-web-1 .bottom{display:flex;align-items:flex-end;justify-content:space-between;}
+#post-web-1 .bottom-left{display:flex;flex-direction:column;gap:2px;}
+#post-web-1 .bottom-url{font-size:11px;font-weight:600;color:#00e676;letter-spacing:.04em;}
+#post-web-1 .bottom-ig{font-size:10px;color:#333;letter-spacing:.04em;}
+#post-web-1 .qr-row{display:flex;gap:10px;align-items:flex-end;}
 
-.story .st-qr{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.story .st-qr img{
-  width:96px;height:96px;border-radius:8px;
-  background:#fff;padding:4px;
+
+/*══════════════════════════════════════════════════════════
+  POST-WEB-2   Website CTA  600×600
+══════════════════════════════════════════════════════════*/
+#post-web-2{
+  width:600px;height:600px;background:#0a0a0a;
+  position:relative;overflow:hidden;
+  outline:1px dashed rgba(0,230,118,.15);
 }
-.story .st-qr .ql{
-  font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  color:#333;text-align:center;line-height:1.7;
+#post-web-2 .hero-strip{
+  position:absolute;bottom:0;left:0;right:0;height:190px;overflow:hidden;
 }
+#post-web-2 .hero-strip img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;opacity:.18;}
+#post-web-2 .hero-strip-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,#0a0a0a 0%,rgba(10,10,10,.4) 100%);
+}
+#post-web-2 .glow2{
+  position:absolute;bottom:-60px;left:-60px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,118,.06) 0%,transparent 70%);pointer-events:none;
+}
+#post-web-2 .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:36px 40px 36px;}
+#post-web-2 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+#post-web-2 .eyebrow{font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+#post-web-2 .eyebrow::before{content:'';display:block;width:22px;height:2px;background:#00e676;}
+#post-web-2 .headline{font-size:44px;font-weight:900;color:#fff;line-height:.88;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:16px;}
+#post-web-2 .headline em{color:#00e676;font-style:normal;}
+#post-web-2 .sub{font-size:13px;font-weight:300;color:#666;line-height:1.6;max-width:360px;margin-bottom:28px;}
+#post-web-2 .cta-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto;}
+#post-web-2 .channels{display:flex;flex-direction:column;gap:12px;}
+#post-web-2 .ch{display:flex;align-items:center;gap:12px;}
+#post-web-2 .ch-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#post-web-2 .ch-icon.wa{background:#00e676;}
+#post-web-2 .ch-icon.ig{border:1px solid #222;}
+#post-web-2 .ch-icon.fb{border:1px solid #222;}
+#post-web-2 .ch-handle{font-size:14px;font-weight:700;color:#ddd;letter-spacing:.01em;}
+#post-web-2 .ch-net{font-size:9px;color:#444;letter-spacing:.08em;text-transform:uppercase;}
+
+
+/*══════════════════════════════════════════════════════════
+  STORY-WEB   Website Story  600×1067
+══════════════════════════════════════════════════════════*/
+#story-web{
+  width:600px;height:1067px;background:#0a0a0a;
+  position:relative;overflow:hidden;
+  outline:1px dashed rgba(0,230,118,.15);
+}
+#story-web .glow-t{position:absolute;top:-80px;right:-80px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,.07) 0%,transparent 65%);pointer-events:none;}
+#story-web .glow-b{position:absolute;bottom:-80px;left:-80px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,.05) 0%,transparent 70%);pointer-events:none;}
+#story-web .topbar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#00e676,transparent);}
+#story-web .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:48px 48px 44px;}
+#story-web .s-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;}
+#story-web .s-handle{font-size:11px;color:#333;letter-spacing:.05em;}
+#story-web .s-overline{font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+#story-web .s-overline::before{content:'';width:18px;height:2px;background:#00e676;display:block;}
+#story-web .s-h1{font-size:58px;font-weight:900;color:#fff;line-height:.88;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:10px;}
+#story-web .s-h1 em{color:#00e676;font-style:normal;}
+#story-web .s-desc{font-size:14px;font-weight:300;color:#555;line-height:1.6;max-width:420px;margin-bottom:28px;}
+#story-web .s-div{height:1px;background:rgba(255,255,255,.05);margin:20px 0;}
+/* Phone + features row */
+#story-web .s-mid{display:flex;gap:28px;align-items:flex-start;margin-bottom:28px;}
+#story-web .s-feats{flex:1;}
+#story-web .s-feat-ttl{font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#333;margin-bottom:14px;}
+#story-web .s-feat{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
+#story-web .s-fi{width:30px;height:30px;border:1px solid #1e1e1e;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+#story-web .s-fn{font-size:13px;font-weight:700;color:#bbb;margin-bottom:2px;}
+#story-web .s-fd{font-size:11px;font-weight:300;color:#444;line-height:1.4;}
+#story-web .s-bottom{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;}
+#story-web .s-chans{display:flex;flex-direction:column;gap:10px;}
+#story-web .s-ch{display:flex;align-items:center;gap:10px;}
+#story-web .s-chi{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#story-web .s-chi.wa{background:#00e676;}
+#story-web .s-chi.ig{border:1px solid #1e1e1e;}
+#story-web .s-chn{font-size:13px;font-weight:700;color:#aaa;}
+#story-web .s-chp{font-size:9px;color:#333;letter-spacing:.08em;text-transform:uppercase;}
+#story-web .s-qrs{display:flex;gap:10px;align-items:flex-end;}
+
+
+/*══════════════════════════════════════════════════════════
+  POST-ADMIN-1   Admin Showcase  600×600
+══════════════════════════════════════════════════════════*/
+#post-admin-1{
+  width:600px;height:600px;background:#0a0a0a;
+  position:relative;overflow:hidden;
+  outline:1px dashed rgba(0,230,118,.15);
+}
+#post-admin-1 .glow{
+  position:absolute;top:-100px;left:-100px;width:460px;height:460px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,118,.07) 0%,transparent 65%);pointer-events:none;
+}
+#post-admin-1 .vbar{position:absolute;right:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,#00e676,transparent);}
+#post-admin-1 .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:34px 40px 30px;}
+#post-admin-1 .top{display:flex;align-items:flex-start;justify-content:space-between;}
+#post-admin-1 .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.2);padding:4px 12px;border-radius:20px;font-size:10px;font-weight:600;color:#00e676;letter-spacing:.1em;text-transform:uppercase;}
+#post-admin-1 .badge-dot{width:6px;height:6px;border-radius:50%;background:#00e676;}
+#post-admin-1 .headline{font-size:42px;font-weight:900;color:#fff;line-height:.88;letter-spacing:-.02em;text-transform:uppercase;margin:14px 0 10px;}
+#post-admin-1 .headline em{color:#00e676;font-style:normal;}
+#post-admin-1 .sub{font-size:12px;font-weight:300;color:#555;line-height:1.55;max-width:240px;}
+#post-admin-1 .mid{display:flex;gap:24px;align-items:center;flex:1;padding:14px 0 0;}
+#post-admin-1 .txt-col{display:flex;flex-direction:column;gap:10px;flex:1;}
+#post-admin-1 .feat-chip{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:500;color:#777;}
+#post-admin-1 .fc-dot{width:5px;height:5px;border-radius:50%;background:#00e676;flex-shrink:0;}
+#post-admin-1 .brow-col{flex-shrink:0;}
+#post-admin-1 .bottom{display:flex;align-items:flex-end;justify-content:space-between;}
+#post-admin-1 .b-url{font-size:11px;font-weight:600;color:#00e676;letter-spacing:.04em;}
+#post-admin-1 .b-ig{font-size:10px;color:#333;letter-spacing:.04em;}
+
+
+/*══════════════════════════════════════════════════════════
+  POST-ADMIN-2   Admin CTA  600×600
+══════════════════════════════════════════════════════════*/
+#post-admin-2{
+  width:600px;height:600px;background:#0a0a0a;
+  position:relative;overflow:hidden;
+  outline:1px dashed rgba(0,230,118,.15);
+}
+#post-admin-2 .corner{
+  position:absolute;bottom:0;right:0;width:220px;height:220px;
+  background:#00e676;clip-path:polygon(100% 0,100% 100%,0 100%);
+}
+#post-admin-2 .corner-txt{position:absolute;bottom:24px;right:24px;text-align:right;z-index:4;}
+#post-admin-2 .corner-txt .ct1{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#0a0a0a;opacity:.55;margin-bottom:2px;}
+#post-admin-2 .corner-txt .ct2{font-size:14px;font-weight:800;color:#0a0a0a;}
+#post-admin-2 .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:36px 40px 36px;}
+#post-admin-2 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+#post-admin-2 .eyebrow{font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+#post-admin-2 .eyebrow::before{content:'';display:block;width:22px;height:2px;background:#00e676;}
+#post-admin-2 .headline{font-size:40px;font-weight:900;color:#fff;line-height:.88;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:14px;}
+#post-admin-2 .headline em{color:#00e676;font-style:normal;}
+#post-admin-2 .sub{font-size:13px;font-weight:300;color:#555;line-height:1.6;max-width:340px;margin-bottom:22px;}
+#post-admin-2 .preview-strip{display:flex;gap:8px;margin-bottom:auto;}
+#post-admin-2 .adm-chip{background:#161616;border:1px solid #222;border-radius:6px;padding:8px 12px;font-size:11px;font-weight:600;color:#777;display:flex;align-items:center;gap:6px;}
+#post-admin-2 .adm-chip .chip-dot{width:6px;height:6px;border-radius:50%;background:#00e676;flex-shrink:0;}
+#post-admin-2 .cta-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:auto;}
+#post-admin-2 .channels{display:flex;flex-direction:column;gap:12px;}
+#post-admin-2 .ch{display:flex;align-items:center;gap:12px;}
+#post-admin-2 .ch-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#post-admin-2 .ch-icon.wa{background:#00e676;}
+#post-admin-2 .ch-icon.ig{border:1px solid #1e1e1e;}
+#post-admin-2 .ch-handle{font-size:14px;font-weight:700;color:#ccc;}
+#post-admin-2 .ch-net{font-size:9px;color:#333;letter-spacing:.08em;text-transform:uppercase;}
+
+
+/*══════════════════════════════════════════════════════════
+  STORY-ADMIN   Admin Story  600×1067
+══════════════════════════════════════════════════════════*/
+#story-admin{
+  width:600px;height:1067px;background:#0a0a0a;
+  position:relative;overflow:hidden;
+  outline:1px dashed rgba(0,230,118,.15);
+}
+#story-admin .glow-t{position:absolute;top:-60px;left:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,.07) 0%,transparent 65%);pointer-events:none;}
+#story-admin .glow-b{position:absolute;bottom:-80px;right:-80px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(0,230,118,.05) 0%,transparent 70%);pointer-events:none;}
+#story-admin .topbar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#00e676,transparent);}
+#story-admin .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:48px 48px 44px;}
+#story-admin .sa-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;}
+#story-admin .sa-handle{font-size:11px;color:#333;letter-spacing:.05em;}
+#story-admin .sa-overline{font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+#story-admin .sa-overline::before{content:'';width:18px;height:2px;background:#00e676;display:block;}
+#story-admin .sa-h1{font-size:56px;font-weight:900;color:#fff;line-height:.88;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:10px;}
+#story-admin .sa-h1 em{color:#00e676;font-style:normal;}
+#story-admin .sa-sub{font-size:14px;font-weight:300;color:#444;line-height:1.6;max-width:400px;margin-bottom:24px;}
+#story-admin .sa-div{height:1px;background:rgba(255,255,255,.05);margin:20px 0;}
+#story-admin .sa-brow-wrap{margin-bottom:26px;}
+#story-admin .sa-caps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px;}
+#story-admin .sa-cap{background:#111;border:1px solid #1c1c1c;border-radius:8px;padding:14px 16px;}
+#story-admin .sa-cap-icon{font-size:18px;margin-bottom:6px;}
+#story-admin .sa-cap-name{font-size:13px;font-weight:700;color:#aaa;margin-bottom:3px;}
+#story-admin .sa-cap-desc{font-size:11px;font-weight:300;color:#444;line-height:1.4;}
+#story-admin .sa-cap.accent{border-color:rgba(0,230,118,.2);background:rgba(0,230,118,.04);}
+#story-admin .sa-cap.accent .sa-cap-name{color:#00e676;}
+#story-admin .sa-bottom{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;}
+#story-admin .sa-chans{display:flex;flex-direction:column;gap:10px;}
+#story-admin .sa-ch{display:flex;align-items:center;gap:10px;}
+#story-admin .sa-chi{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#story-admin .sa-chi.wa{background:#00e676;}
+#story-admin .sa-chi.ig{border:1px solid #1e1e1e;}
+#story-admin .sa-chn{font-size:13px;font-weight:700;color:#888;}
+#story-admin .sa-chp{font-size:9px;color:#333;letter-spacing:.08em;text-transform:uppercase;}
 </style>
 </head>
 <body>
 
+<!-- ████████████████████████████████████████████████
+     BLOQUE 1 — SITIO WEB
+████████████████████████████████████████████████ -->
+<div class="section-label">Sitio Web — 3 diseños</div>
 
-<!-- ╔══════════════════════════════════════════════════════════╗
-     ║  DESIGN 1 — IG POST SHOWCASE  600×600                   ║
-     ╚══════════════════════════════════════════════════════════╝ -->
-<p class="label">IG Post Showcase — 600 × 600</p>
+<!-- ─── WEB DESIGN LABEL 1 ─── -->
+<div class="design-label">Post Showcase — 600 × 600</div>
 
-<div class="post-showcase page">
-  <div class="bg-glow"></div>
-  <div class="bg-grid"></div>
-  <div class="green-bar"></div>
+<!-- ════════════════════════════
+     POST-WEB-1
+════════════════════════════ -->
+<div id="post-web-1">
+  <div class="glow"></div>
+  <div class="vbar"></div>
+  <div class="inner">
 
-  <div class="s-inner">
-
-    <!-- TOP: marca -->
-    <div class="s-top">
+    <div class="top">
       <div>
-        <div class="rmkt-logo" style="font-size:20px;"><span class="rmkt-r">R</span><span class="rmkt-mkt">MKT</span></div>
-        <div class="rmkt-sub">Ramos · Digital</div>
+        <div class="rmkt-logo-type" style="font-size:22px;"><span class="rl-r">R</span><span class="rl-mkt">MKT</span></div>
+        <div class="rl-sub">Ramos · Digital</div>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span class="tag" style="font-size:10px;color:#333;letter-spacing:.06em;">Nuestro trabajo</span>
-        <div class="arrow-btn" style="width:28px;height:28px;">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/></svg>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:10px;color:#2a2a2a;letter-spacing:.05em;">Nuestro trabajo</span>
+        <div style="width:28px;height:28px;background:#00e676;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
       </div>
     </div>
 
-    <!-- MID: headline + phone mockup -->
-    <div class="s-mid">
-      <div class="headline-block">
+    <div class="mid">
+      <div class="txt-col">
         <div class="overline">Sitio web para iglesias</div>
-        <div class="h1">Tu iglesia<br>en <em>línea</em>,<br>hoy.</div>
-        <div class="desc">Diseño profesional, panel de administración y formularios — todo incluido.</div>
-        <div class="features">
-          <div class="feat"><div class="feat-dot"></div>Horarios y anuncios en tiempo real</div>
-          <div class="feat"><div class="feat-dot"></div>Registro al Programa Alpha</div>
-          <div class="feat"><div class="feat-dot"></div>Peticiones de oración online</div>
-          <div class="feat"><div class="feat-dot"></div>Panel admin desde el celular</div>
+        <div class="headline">Tu <em>iglesia</em><br>en línea.</div>
+        <div class="sub">Diseño, panel admin y formularios incluidos desde el primer día.</div>
+        <div class="feats">
+          <div class="feat"><div class="fdot"></div>Horarios y anuncios en tiempo real</div>
+          <div class="feat"><div class="fdot"></div>Registro al Programa Alpha</div>
+          <div class="feat"><div class="fdot"></div>Peticiones de oración online</div>
+          <div class="feat"><div class="fdot"></div>Galería de fotos actualizable</div>
         </div>
       </div>
 
-      <!-- PHONE MOCKUP: muestra el proyecto real -->
-      <div class="phone-wrap">
-        <div class="phone-mock">
-          <div class="phone-notch"></div>
-
-          <!-- Nav del sitio -->
+      <!-- Phone mockup usando pastores.jpg -->
+      <div class="ph-col">
+        <div class="ph" style="width:148px;height:260px;">
+          <div class="ph-notch"></div>
           <div class="ph-nav">
-            <div class="ph-nav-logo">
-              <div class="ph-nav-cross"></div>
-              <span style="width:4px;"></span>
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div class="ph-cross"></div>
               <span class="ph-nav-name">Linaje Escogido</span>
             </div>
             <div class="ph-nav-btn">Visítanos</div>
           </div>
-
-          <!-- Hero del sitio -->
-          <div class="ph-hero">
-            <div class="ph-hero-cross">
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-                <rect x="12" y="0" width="6" height="30" fill="#F5EFE6"/>
-                <rect x="0" y="10" width="30" height="6" fill="#F5EFE6"/>
-              </svg>
-            </div>
-            <div class="ph-hero-eyebrow">Reynosa, Tamaulipas</div>
-            <div class="ph-hero-title">LINAJE<br>ESCOGIDO</div>
-            <div class="ph-hero-tag">Funcional · Apasionada</div>
-            <div class="ph-hero-btns">
-              <div class="ph-btn-cream">Cómo llegar</div>
-              <div class="ph-btn-out">Alpha →</div>
+          <div class="ph-hero-img" style="height:118px;">
+            <img src="pastores.jpg" style="height:118px;"/>
+            <div class="ph-hero-overlay">
+              <div class="ph-hero-ttl">LINAJE<br>ESCOGIDO</div>
+              <div class="ph-hero-tag">Funcional · Apasionada · Sensible</div>
+              <div class="ph-hero-btns">
+                <div class="ph-btn-c">Llegar</div>
+                <div class="ph-btn-o">Alpha →</div>
+              </div>
             </div>
           </div>
-
-          <!-- Horarios mini -->
-          <div class="ph-section">
-            <div class="ph-sec-label">Servicios</div>
-            <div class="ph-sec-title">Horarios</div>
-            <div class="ph-cards">
+          <div class="ph-cream">
+            <div class="ph-sec-lbl">Servicios</div>
+            <div class="ph-sec-ttl">Horarios</div>
+            <div class="ph-cards-row">
               <div class="ph-card">
-                <div class="ph-card-day">Domingo</div>
-                <div class="ph-card-time">2:30pm</div>
-                <div class="ph-card-name">Servicio</div>
+                <div class="ph-card-d">Dom</div>
+                <div class="ph-card-t">2:30pm</div>
+                <div class="ph-card-n">Servicio</div>
               </div>
-              <div class="ph-card dark">
-                <div class="ph-card-day" style="color:rgba(245,239,230,.35);">Martes</div>
-                <div class="ph-card-time" style="color:#F5EFE6;">7:30pm</div>
-                <div class="ph-card-name" style="color:rgba(245,239,230,.4);">Reunión</div>
+              <div class="ph-card dk">
+                <div class="ph-card-d" style="color:rgba(245,239,230,.3);">Mar</div>
+                <div class="ph-card-t" style="color:#F5EFE6;">7:30pm</div>
+                <div class="ph-card-n" style="color:rgba(245,239,230,.35);">Reunión</div>
               </div>
             </div>
           </div>
-
-          <!-- Anuncio mini -->
           <div class="ph-announce">
-            <div class="ph-ann-chip">Novedades</div>
-            <div class="ph-ann-title">Programa Alpha</div>
-            <div class="ph-ann-body">Sesiones abiertas para todos · Regístrate ahora</div>
+            <div class="ph-ann-lbl">Novedades</div>
+            <div class="ph-ann-ttl">Programa Alpha</div>
+            <div class="ph-ann-sub">Regístrate · Sin costo</div>
           </div>
         </div>
-        <div class="phone-shadow"></div>
       </div>
-
     </div>
 
-    <!-- BOTTOM -->
-    <div class="s-bottom">
-      <div>
-        <div class="site-url">ramosmkt<span>.lat</span></div>
-        <div class="ig-handle" style="color:#333;margin-top:3px;">@ramosmkt</div>
+    <div class="bottom">
+      <div class="bottom-left">
+        <div class="bottom-url">ramosmkt.lat</div>
+        <div class="bottom-ig">@ramos_mkt.rex</div>
       </div>
-      <div style="display:flex;gap:16px;align-items:flex-end;">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=112x112&color=000000&bgcolor=ffffff&data=https://linajeescogidoreynosa.org" alt="QR Sitio" style="width:54px;height:54px;border-radius:4px;background:#fff;padding:3px;"/>
-          <span style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#333;">Sitio web</span>
+      <div class="qr-row">
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://linajeescogidoreynosa.org" width="58" height="58" alt="QR Sitio"/>
+          <div class="qr-lbl">Ver sitio</div>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=112x112&color=000000&bgcolor=ffffff&data=https://wa.me/528148078309?text=Hola!%20Vi%20el%20sitio%20de%20Linaje%20Escogido%20y%20me%20interesa%20un%20sitio%20web%20para%20mi%20iglesia" alt="QR WhatsApp" style="width:54px;height:54px;border-radius:4px;background:#fff;padding:3px;"/>
-          <span style="font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#333;">WhatsApp</span>
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://wa.me/528148078309?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto%20web" width="58" height="58" alt="QR WA"/>
+          <div class="qr-lbl">WhatsApp</div>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+<button class="dl-btn" onclick="dl('post-web-1','rmkt-web-showcase.png',2)">Descargar Post Showcase PNG</button>
 
 
-<!-- ╔══════════════════════════════════════════════════════════╗
-     ║  DESIGN 2 — IG POST CTA  600×600                        ║
-     ╚══════════════════════════════════════════════════════════╝ -->
-<p class="label">IG Post CTA — 600 × 600</p>
+<!-- ─── WEB DESIGN LABEL 2 ─── -->
+<div class="design-label">Post CTA — 600 × 600</div>
 
-<div class="post-cta page">
-  <div class="bg-glow2"></div>
-  <div class="corner-block"></div>
-  <div class="corner-text">
-    <div class="ct-label">Visítanos en</div>
-    <div class="ct-url">ramosmkt.lat</div>
+<!-- ════════════════════════════
+     POST-WEB-2
+════════════════════════════ -->
+<div id="post-web-2">
+  <div class="hero-strip">
+    <img src="pastores.jpg" alt=""/>
+    <div class="hero-strip-grad"></div>
   </div>
+  <div class="glow2"></div>
+  <div class="inner">
 
-  <div class="c-inner">
-
-    <div class="c-top">
+    <div class="top">
       <div>
-        <div class="rmkt-logo" style="font-size:22px;"><span class="rmkt-r">R</span><span class="rmkt-mkt">MKT</span></div>
-        <div class="rmkt-sub">Ramos · Digital</div>
+        <div class="rmkt-logo-type" style="font-size:20px;"><span class="rl-r">R</span><span class="rl-mkt">MKT</span></div>
+        <div class="rl-sub">Ramos · Digital</div>
       </div>
-      <div class="arrow-btn">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H5M12 2V9" stroke="#0a0a0a" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <div style="width:32px;height:32px;background:#00e676;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
     </div>
 
-    <div class="c-mid">
-      <div class="eyebrow">¿Tu iglesia ya tiene sitio web?</div>
-      <div class="c-headline">Hacemos<br>tu sitio<br><em>nosotros.</em></div>
-      <div class="c-sub">Diseño, desarrollo, hosting y panel de admin incluidos. Tú solo administras el contenido.</div>
-    </div>
+    <div class="eyebrow">¿Tu iglesia ya está en línea?</div>
+    <div class="headline">Tu sitio,<br>a tu <em>medida.</em></div>
+    <div class="sub">Diseñamos sitios web completos para iglesias e instituciones religiosas. Con panel de admin incluido y listos en días.</div>
 
-    <div class="c-contact">
-      <div class="c-channels">
-        <div class="c-ch">
-          <div class="ch-icon green-bg">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.83L0 24l6.338-1.499A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.805 9.805 0 01-5.003-1.371l-.36-.214-3.722.88.936-3.618-.235-.372A9.808 9.808 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+    <div class="cta-row">
+      <div class="channels">
+        <div class="ch">
+          <div class="ch-icon wa">
+            <!-- WhatsApp SVG -->
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.975-1.306A9.94 9.94 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
           </div>
           <div>
             <div class="ch-handle">+52 814 807 8309</div>
-            <div class="ch-platform">WhatsApp · Escríbenos ahora</div>
+            <div class="ch-net">WhatsApp · Escríbenos</div>
           </div>
         </div>
-        <div class="c-ch">
-          <div class="ch-icon" style="border-color:#1e1e1e;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#aaa" stroke="none"/></svg>
+        <div class="ch">
+          <div class="ch-icon ig">
+            <!-- Instagram SVG -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#888" stroke="none"/></svg>
           </div>
           <div>
-            <div class="ch-handle" style="color:#aaa;">@ramosmkt</div>
-            <div class="ch-platform">Instagram · Facebook</div>
+            <div class="ch-handle" style="color:#888;">@ramos_mkt.rex</div>
+            <div class="ch-net">Instagram</div>
+          </div>
+        </div>
+        <div class="ch">
+          <div class="ch-icon fb">
+            <!-- Facebook SVG -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#888"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </div>
+          <div>
+            <div class="ch-handle" style="color:#888;">/ramosmkt</div>
+            <div class="ch-net">Facebook</div>
           </div>
         </div>
       </div>
 
-      <div class="c-qr">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=176x176&color=000000&bgcolor=ffffff&data=https://wa.me/528148078309?text=Hola!%20Vi%20el%20sitio%20de%20Linaje%20Escogido%20y%20me%20interesa%20un%20sitio%20web%20para%20mi%20iglesia" alt="QR WhatsApp"/>
-        <div class="qr-label">Escanea y<br>escríbenos</div>
+      <div class="qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://wa.me/528148078309?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto%20web" width="96" height="96" alt="QR WA"/>
+        <div class="qr-lbl">Escanea y<br>escríbenos</div>
       </div>
     </div>
 
   </div>
 </div>
+<button class="dl-btn" onclick="dl('post-web-2','rmkt-web-cta.png',2)">Descargar Post CTA PNG</button>
 
 
-<!-- ╔══════════════════════════════════════════════════════════╗
-     ║  DESIGN 3 — IG STORY  600×1067                          ║
-     ╚══════════════════════════════════════════════════════════╝ -->
-<p class="label">IG Story — 600 × 1067</p>
+<!-- ─── WEB STORY LABEL ─── -->
+<div class="design-label">Story — 600 × 1067</div>
 
-<div class="story page">
-  <div class="st-glow1"></div>
-  <div class="st-glow2"></div>
-  <div class="st-grid"></div>
-  <div class="st-topbar"></div>
+<!-- ════════════════════════════
+     STORY-WEB
+════════════════════════════ -->
+<div id="story-web">
+  <div class="glow-t"></div>
+  <div class="glow-b"></div>
+  <div class="topbar"></div>
+  <div class="inner">
 
-  <div class="st-inner">
-
-    <!-- TOP -->
-    <div class="st-top">
+    <div class="s-top">
       <div>
-        <div class="rmkt-logo" style="font-size:26px;"><span class="rmkt-r">R</span><span class="rmkt-mkt">MKT</span></div>
-        <div class="rmkt-sub">Ramos · Digital</div>
+        <div class="rmkt-logo-type" style="font-size:26px;"><span class="rl-r">R</span><span class="rl-mkt">MKT</span></div>
+        <div class="rl-sub">Ramos · Digital</div>
       </div>
-      <div class="st-handle">@ramosmkt</div>
+      <div class="s-handle">@ramos_mkt.rex</div>
     </div>
 
-    <!-- HEADLINE -->
-    <div class="st-headline-block">
-      <div class="st-overline">Sitio web para tu iglesia</div>
-      <div class="st-h1">Así queda<br>con <em>RMKT.</em></div>
-      <div class="st-h2">Diseñamos y desarrollamos la presencia digital de tu iglesia. Profesional, rápido y desde tu celular.</div>
-    </div>
+    <div class="s-overline">Sitio web para iglesias</div>
+    <div class="s-h1">Tu presencia<br>digital, <em>hoy.</em></div>
+    <div class="s-desc">Diseñamos el sitio web de tu iglesia con todo incluido — panel de administración, formularios y galería. Listo en días.</div>
 
-    <div class="st-div"></div>
+    <div class="s-div"></div>
 
-    <!-- PHONE + FEATURES -->
-    <div class="st-showcase">
-      <!-- Teléfono mockup -->
-      <div class="phone-mock" style="width:128px;height:220px;border-radius:16px;">
-        <div class="phone-notch"></div>
+    <!-- Phone + features -->
+    <div class="s-mid">
+      <div class="ph" style="width:152px;height:270px;">
+        <div class="ph-notch"></div>
         <div class="ph-nav">
-          <div class="ph-nav-logo">
-            <div class="ph-nav-cross"></div>
-            <span style="width:3px;"></span>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <div class="ph-cross"></div>
             <span class="ph-nav-name">Linaje Escogido</span>
           </div>
           <div class="ph-nav-btn">Visítanos</div>
         </div>
-        <div class="ph-hero" style="min-height:68px;">
-          <div class="ph-hero-cross">
-            <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
-              <rect x="12" y="0" width="6" height="30" fill="#F5EFE6"/>
-              <rect x="0" y="10" width="30" height="6" fill="#F5EFE6"/>
-            </svg>
-          </div>
-          <div class="ph-hero-eyebrow">Reynosa, Tamps.</div>
-          <div class="ph-hero-title" style="font-size:14px;">LINAJE<br>ESCOGIDO</div>
-          <div class="ph-hero-tag">Funcional · Apasionada</div>
-          <div class="ph-hero-btns" style="margin-top:5px;">
-            <div class="ph-btn-cream">Llegar</div>
-            <div class="ph-btn-out">Alpha →</div>
+        <div class="ph-hero-img" style="height:126px;">
+          <img src="pastores.jpg" style="height:126px;"/>
+          <div class="ph-hero-overlay">
+            <div class="ph-hero-ttl">LINAJE<br>ESCOGIDO</div>
+            <div class="ph-hero-tag">Reynosa, Tamaulipas</div>
+            <div class="ph-hero-btns">
+              <div class="ph-btn-c">Llegar</div>
+              <div class="ph-btn-o">Alpha →</div>
+            </div>
           </div>
         </div>
-        <div class="ph-section">
-          <div class="ph-sec-label">Servicios</div>
-          <div class="ph-sec-title" style="font-size:8px;">Horarios</div>
-          <div class="ph-cards">
-            <div class="ph-card"><div class="ph-card-day">Dom</div><div class="ph-card-time" style="font-size:6px;">2:30pm</div></div>
-            <div class="ph-card dark"><div class="ph-card-day" style="color:rgba(245,239,230,.3);">Mar</div><div class="ph-card-time" style="font-size:6px;color:#F5EFE6;">7:30pm</div></div>
+        <div class="ph-cream">
+          <div class="ph-sec-lbl">Servicios</div>
+          <div class="ph-sec-ttl">Horarios</div>
+          <div class="ph-cards-row">
+            <div class="ph-card"><div class="ph-card-d">Dom</div><div class="ph-card-t">2:30pm</div></div>
+            <div class="ph-card dk"><div class="ph-card-d" style="color:rgba(245,239,230,.3);">Mar</div><div class="ph-card-t" style="color:#F5EFE6;">7:30pm</div></div>
           </div>
         </div>
         <div class="ph-announce">
-          <div class="ph-ann-chip">Alpha</div>
-          <div class="ph-ann-title" style="font-size:5px;">Programa Alpha · Regístrate</div>
+          <div class="ph-ann-lbl">Alpha</div>
+          <div class="ph-ann-ttl">Regístrate ahora</div>
         </div>
       </div>
 
-      <!-- Features -->
-      <div class="st-features">
-        <div class="st-feat-title">Qué incluye</div>
-        <div class="st-feat">
-          <div class="st-feat-icon">🗓</div>
-          <div><div class="st-feat-name">Horarios dinámicos</div><div class="st-feat-desc">Actualiza sin tocar código</div></div>
-        </div>
-        <div class="st-feat">
-          <div class="st-feat-icon">📢</div>
-          <div><div class="st-feat-name">Anuncios y galería</div><div class="st-feat-desc">Sube fotos desde el panel</div></div>
-        </div>
-        <div class="st-feat">
-          <div class="st-feat-icon">📋</div>
-          <div><div class="st-feat-name">Formularios online</div><div class="st-feat-desc">Alpha y peticiones de oración</div></div>
-        </div>
-        <div class="st-feat">
-          <div class="st-feat-icon">⚙️</div>
-          <div><div class="st-feat-name">Panel de administración</div><div class="st-feat-desc">Desde cualquier dispositivo</div></div>
-        </div>
+      <div class="s-feats">
+        <div class="s-feat-ttl">Qué incluye</div>
+        <div class="s-feat"><div class="s-fi">🗓</div><div><div class="s-fn">Horarios dinámicos</div><div class="s-fd">Sin tocar código</div></div></div>
+        <div class="s-feat"><div class="s-fi">📸</div><div><div class="s-fn">Galería de fotos</div><div class="s-fd">Sube desde el panel</div></div></div>
+        <div class="s-feat"><div class="s-fi">📋</div><div><div class="s-fn">Formularios online</div><div class="s-fd">Alpha + oración</div></div></div>
+        <div class="s-feat"><div class="s-fi">⚙️</div><div><div class="s-fn">Panel de admin</div><div class="s-fd">Desde tu celular</div></div></div>
       </div>
     </div>
 
-    <!-- BADGE / PROOF -->
-    <div class="st-badge">
-      <div class="st-badge-label">Ejemplo real de nuestro trabajo</div>
-      <div class="st-badge-text">Iglesia Linaje Escogido — Reynosa, Tamps.</div>
-      <div class="st-badge-sub">linajeescogidoreynosa.org · Diseño y desarrollo por RMKT</div>
+    <div style="background:#111;border:1px solid #1c1c1c;border-left:3px solid #00e676;padding:14px 18px;margin-bottom:24px;">
+      <div style="font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#00e676;margin-bottom:4px;">Trabajo real · En producción</div>
+      <div style="font-size:14px;font-weight:700;color:#bbb;">Iglesia Linaje Escogido</div>
+      <div style="font-size:11px;font-weight:300;color:#444;margin-top:2px;">Reynosa, Tamaulipas · linajeescogidoreynosa.org</div>
     </div>
 
-    <!-- BOTTOM -->
-    <div class="st-bottom">
-      <div class="st-channels">
-        <div class="st-ch">
-          <div class="icon g">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.83L0 24l6.338-1.499A11.96 11.96 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.805 9.805 0 01-5.003-1.371l-.36-.214-3.722.88.936-3.618-.235-.372A9.808 9.808 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+    <div class="s-bottom">
+      <div class="s-chans">
+        <div class="s-ch">
+          <div class="s-chi wa">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.975-1.306A9.94 9.94 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
           </div>
-          <div>
-            <div class="ch-name">+52 814 807 8309</div>
-            <div class="ch-net">WhatsApp</div>
-          </div>
+          <div><div class="s-chn">+52 814 807 8309</div><div class="s-chp">WhatsApp</div></div>
         </div>
-        <div class="st-ch">
-          <div class="icon" style="border-color:#1c1c1c;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#666" stroke="none"/></svg>
-          </div>
-          <div>
-            <div class="ch-name" style="color:#888;font-size:12px;">@ramosmkt</div>
-            <div class="ch-net">Instagram · Facebook</div>
-          </div>
+        <div class="s-ch">
+          <div class="s-chi ig"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#555" stroke="none"/></svg></div>
+          <div><div class="s-chn" style="font-size:12px;">@ramos_mkt.rex</div><div class="s-chp">Instagram</div></div>
         </div>
-        <div style="margin-top:6px;">
-          <div style="font-size:11px;font-weight:500;color:#00e676;letter-spacing:.04em;">ramosmkt.lat</div>
-        </div>
+        <div style="margin-top:6px;font-size:12px;font-weight:600;color:#00e676;letter-spacing:.04em;">ramosmkt.lat</div>
       </div>
 
-      <div class="st-qr">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=192x192&color=000000&bgcolor=ffffff&data=https://wa.me/528148078309?text=Hola!%20Vi%20el%20sitio%20de%20Linaje%20Escogido%20y%20me%20interesa%20un%20sitio%20web%20para%20mi%20iglesia" alt="QR WhatsApp RMKT"/>
-        <div class="ql">Escríbenos<br>por WhatsApp</div>
+      <div class="s-qrs" style="flex-direction:column;align-items:center;gap:10px;">
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://linajeescogidoreynosa.org" width="76" height="76" alt="QR Sitio"/>
+          <div class="qr-lbl">Ver el sitio</div>
+        </div>
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://wa.me/528148078309?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto%20web" width="76" height="76" alt="QR WA"/>
+          <div class="qr-lbl">WhatsApp</div>
+        </div>
       </div>
     </div>
 
   </div>
 </div>
+<button class="dl-btn" onclick="dl('story-web','rmkt-web-story.png',3)">Descargar Story PNG</button>
 
 
+<!-- ████████████████████████████████████████████████
+     BLOQUE 2 — PANEL DE ADMINISTRACIÓN
+████████████████████████████████████████████████ -->
+<div class="section-label">Panel de Administración — 3 diseños</div>
+
+<!-- ─── ADMIN DESIGN LABEL 1 ─── -->
+<div class="design-label">Post Showcase Admin — 600 × 600</div>
+
+<!-- ════════════════════════════
+     POST-ADMIN-1
+════════════════════════════ -->
+<div id="post-admin-1">
+  <div class="glow"></div>
+  <div class="vbar"></div>
+  <div class="inner">
+
+    <div class="top">
+      <div>
+        <div class="rmkt-logo-type" style="font-size:22px;"><span class="rl-r">R</span><span class="rl-mkt">MKT</span></div>
+        <div class="rl-sub">Ramos · Digital</div>
+      </div>
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Panel incluido
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div style="font-size:10px;font-weight:600;color:#00e676;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px;">Panel de administración</div>
+      <div class="headline">Control <em>total</em><br>sin código.</div>
+      <div class="sub">Gestiona tu sitio desde cualquier dispositivo. Sin contratar a nadie.</div>
+    </div>
+
+    <div class="mid">
+      <!-- Browser mockup admin -->
+      <div class="brow-col">
+        <div class="brow" style="width:238px;height:172px;">
+          <div class="brow-bar">
+            <div class="brow-dots">
+              <div class="brow-dot" style="background:#ff5f57;"></div>
+              <div class="brow-dot" style="background:#febc2e;"></div>
+              <div class="brow-dot" style="background:#28c840;"></div>
+            </div>
+            <div class="brow-url">linajeescogidoreynosa.org/admin</div>
+          </div>
+          <div class="adm-layout" style="height:calc(100% - 26px);">
+            <div class="adm-sidebar">
+              <div class="adm-brand"><img src="logo_inv.png" alt="logo"/></div>
+              <div class="adm-nav-item active"><div class="adm-nav-dot on"></div>Anuncios</div>
+              <div class="adm-nav-item"><div class="adm-nav-dot"></div>Hero</div>
+              <div class="adm-nav-item"><div class="adm-nav-dot"></div>Galería</div>
+              <div class="adm-nav-item"><div class="adm-nav-dot"></div>Horarios</div>
+              <div class="adm-nav-item"><div class="adm-nav-dot"></div>Alpha</div>
+              <div class="adm-nav-item"><div class="adm-nav-dot"></div>Pastores</div>
+              <div class="adm-nav-item"><div class="adm-nav-dot"></div>Oración</div>
+            </div>
+            <div class="adm-main">
+              <div class="adm-topbar">
+                <div class="adm-topbar-title">Hola, Admin</div>
+                <div class="adm-topbar-right"><div class="adm-avatar"></div></div>
+              </div>
+              <div class="adm-content">
+                <div class="adm-panel-title">Anuncios</div>
+                <div class="adm-card">
+                  <div class="adm-card-lbl">Nuevo anuncio</div>
+                  <div class="adm-field"><div class="adm-field-lbl">Título</div><div class="adm-field-val">Programa Alpha 2026</div></div>
+                  <div class="adm-field"><div class="adm-field-lbl">Fecha</div><div class="adm-field-val">2026-05-28</div></div>
+                  <div class="adm-btn-pub">Publicar</div>
+                </div>
+                <table class="adm-table">
+                  <thead><tr><th>Título</th><th>Estado</th></tr></thead>
+                  <tbody>
+                    <tr><td>Programa Alpha</td><td><span class="adm-status on"></span></td></tr>
+                    <tr><td>Servicio especial</td><td><span class="adm-status on"></span></td></tr>
+                    <tr><td>Evento pasado</td><td><span class="adm-status off"></span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="txt-col">
+        <div class="feat-chip"><div class="fc-dot"></div>Subir fotos al hero</div>
+        <div class="feat-chip"><div class="fc-dot"></div>Editar texto del hero</div>
+        <div class="feat-chip"><div class="fc-dot"></div>Publicar anuncios</div>
+        <div class="feat-chip"><div class="fc-dot"></div>Gestionar horarios</div>
+        <div class="feat-chip"><div class="fc-dot"></div>Ver registros Alpha</div>
+        <div class="feat-chip"><div class="fc-dot"></div>Leer peticiones de oración</div>
+        <div class="feat-chip"><div class="fc-dot"></div>Exportar datos a CSV</div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div>
+        <div class="b-url">ramosmkt.lat</div>
+        <div class="b-ig">@ramos_mkt.rex</div>
+      </div>
+      <div class="qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://wa.me/528148078309?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto%20web" width="64" height="64" alt="QR WA"/>
+        <div class="qr-lbl">Cotizar</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<button class="dl-btn" onclick="dl('post-admin-1','rmkt-admin-showcase.png',2)">Descargar Post Admin Showcase PNG</button>
+
+
+<!-- ─── ADMIN DESIGN LABEL 2 ─── -->
+<div class="design-label">Post CTA Admin — 600 × 600</div>
+
+<!-- ════════════════════════════
+     POST-ADMIN-2
+════════════════════════════ -->
+<div id="post-admin-2">
+  <div class="corner"></div>
+  <div class="corner-txt">
+    <div class="ct1">Visítanos en</div>
+    <div class="ct2">ramosmkt.lat</div>
+  </div>
+  <div class="inner">
+
+    <div class="top">
+      <div>
+        <div class="rmkt-logo-type" style="font-size:20px;"><span class="rl-r">R</span><span class="rl-mkt">MKT</span></div>
+        <div class="rl-sub">Ramos · Digital</div>
+      </div>
+      <div style="width:32px;height:32px;background:#00e676;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+        <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <div class="eyebrow">¿Quién actualiza tu sitio?</div>
+    <div class="headline">Tú lo<br>controlas <em>todo.</em></div>
+    <div class="sub">Panel de administración incluido en cada sitio. Sube fotos, publica anuncios y ve tus registros — sin depender de nadie.</div>
+
+    <!-- Chips de módulos -->
+    <div class="preview-strip" style="flex-wrap:wrap;gap:8px;">
+      <div class="adm-chip"><div class="chip-dot"></div>Anuncios</div>
+      <div class="adm-chip"><div class="chip-dot"></div>Galería</div>
+      <div class="adm-chip"><div class="chip-dot"></div>Horarios</div>
+      <div class="adm-chip"><div class="chip-dot"></div>Hero</div>
+      <div class="adm-chip"><div class="chip-dot"></div>Registros Alpha</div>
+      <div class="adm-chip"><div class="chip-dot"></div>Peticiones</div>
+    </div>
+
+    <div class="cta-row">
+      <div class="channels">
+        <div class="ch">
+          <div class="ch-icon wa">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.975-1.306A9.94 9.94 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+          </div>
+          <div><div class="ch-handle">+52 814 807 8309</div><div class="ch-net">WhatsApp</div></div>
+        </div>
+        <div class="ch">
+          <div class="ch-icon ig"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#666" stroke="none"/></svg></div>
+          <div><div class="ch-handle" style="color:#777;">@ramos_mkt.rex</div><div class="ch-net">Instagram</div></div>
+        </div>
+        <div class="ch">
+          <div class="ch-icon fb"><svg width="18" height="18" viewBox="0 0 24 24" fill="#666"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+          <div><div class="ch-handle" style="color:#777;">/ramosmkt</div><div class="ch-net">Facebook</div></div>
+        </div>
+      </div>
+
+      <div class="qr-box" style="margin-right:54px;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://wa.me/528148078309?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto%20web" width="90" height="90" alt="QR WA"/>
+        <div class="qr-lbl">Escanea y<br>escríbenos</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<button class="dl-btn" onclick="dl('post-admin-2','rmkt-admin-cta.png',2)">Descargar Post Admin CTA PNG</button>
+
+
+<!-- ─── ADMIN STORY LABEL ─── -->
+<div class="design-label">Story Admin — 600 × 1067</div>
+
+<!-- ════════════════════════════
+     STORY-ADMIN
+════════════════════════════ -->
+<div id="story-admin">
+  <div class="glow-t"></div>
+  <div class="glow-b"></div>
+  <div class="topbar"></div>
+  <div class="inner">
+
+    <div class="sa-top">
+      <div>
+        <div class="rmkt-logo-type" style="font-size:26px;"><span class="rl-r">R</span><span class="rl-mkt">MKT</span></div>
+        <div class="rl-sub">Ramos · Digital</div>
+      </div>
+      <div class="sa-handle">@ramos_mkt.rex</div>
+    </div>
+
+    <div class="sa-overline">Panel de administración</div>
+    <div class="sa-h1">Tu sitio,<br>lo manejas <em>tú.</em></div>
+    <div class="sa-sub">Cada sitio que hacemos incluye un panel completo para que gestiones todo sin depender de un desarrollador.</div>
+
+    <div class="sa-div"></div>
+
+    <!-- Browser mockup grande -->
+    <div class="sa-brow-wrap">
+      <div class="brow" style="width:100%;">
+        <div class="brow-bar">
+          <div class="brow-dots">
+            <div class="brow-dot" style="background:#ff5f57;"></div>
+            <div class="brow-dot" style="background:#febc2e;"></div>
+            <div class="brow-dot" style="background:#28c840;"></div>
+          </div>
+          <div class="brow-url">linajeescogidoreynosa.org/admin.html</div>
+        </div>
+        <div class="adm-layout" style="height:180px;">
+          <div class="adm-sidebar" style="width:64px;">
+            <div class="adm-brand"><img src="logo_inv.png" alt="logo"/></div>
+            <div class="adm-nav-item active"><div class="adm-nav-dot on"></div>Anuncios</div>
+            <div class="adm-nav-item"><div class="adm-nav-dot"></div>Hero</div>
+            <div class="adm-nav-item"><div class="adm-nav-dot"></div>Galería</div>
+            <div class="adm-nav-item"><div class="adm-nav-dot"></div>Horarios</div>
+            <div class="adm-nav-item"><div class="adm-nav-dot"></div>Alpha</div>
+            <div class="adm-nav-item"><div class="adm-nav-dot"></div>Pastores</div>
+            <div class="adm-nav-item"><div class="adm-nav-dot"></div>Oración</div>
+          </div>
+          <div class="adm-main">
+            <div class="adm-topbar">
+              <div class="adm-topbar-title">Panel · Linaje Escogido</div>
+              <div class="adm-topbar-right"><div class="adm-avatar"></div></div>
+            </div>
+            <div class="adm-content" style="display:flex;gap:8px;">
+              <div style="flex:1;">
+                <div class="adm-panel-title">Anuncios</div>
+                <div class="adm-card">
+                  <div class="adm-card-lbl">Nuevo anuncio</div>
+                  <div class="adm-field"><div class="adm-field-lbl">Título</div><div class="adm-field-val">Programa Alpha 2026</div></div>
+                  <div class="adm-field"><div class="adm-field-lbl">Fecha</div><div class="adm-field-val">2026-05-28</div></div>
+                  <div class="adm-btn-pub">Publicar anuncio</div>
+                </div>
+              </div>
+              <div style="flex:1.3;">
+                <table class="adm-table">
+                  <thead><tr><th>Título</th><th>Fecha</th><th>Estado</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td>Programa Alpha</td><td>28 may</td><td><span class="adm-status on"></span></td><td style="font-size:8px;color:#555;">⏸ ✕</td></tr>
+                    <tr><td>Servicio especial</td><td>20 may</td><td><span class="adm-status on"></span></td><td style="font-size:8px;color:#555;">⏸ ✕</td></tr>
+                    <tr><td>Evento pasado</td><td>5 may</td><td><span class="adm-status off"></span></td><td style="font-size:8px;color:#555;">▶ ✕</td></tr>
+                  </tbody>
+                </table>
+                <div style="margin-top:6px;">
+                  <div class="adm-card-lbl" style="margin-bottom:4px;">Fotos del hero</div>
+                  <div class="adm-photo-grid">
+                    <div class="adm-photo-item"><img src="pastores.jpg" alt=""/></div>
+                    <div class="adm-photo-item"><div class="adm-photo-ph"></div></div>
+                    <div class="adm-photo-item"><div class="adm-photo-ph"></div></div>
+                    <div class="adm-photo-item"><div class="adm-photo-ph"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capacidades grid -->
+    <div class="sa-caps">
+      <div class="sa-cap accent">
+        <div class="sa-cap-icon">📢</div>
+        <div class="sa-cap-name">Anuncios y contenido</div>
+        <div class="sa-cap-desc">Publica, activa o desactiva en segundos</div>
+      </div>
+      <div class="sa-cap">
+        <div class="sa-cap-icon">🖼️</div>
+        <div class="sa-cap-name">Fotos y galería</div>
+        <div class="sa-cap-desc">Sube imágenes directo desde el celular</div>
+      </div>
+      <div class="sa-cap">
+        <div class="sa-cap-icon">👥</div>
+        <div class="sa-cap-name">Registros Alpha</div>
+        <div class="sa-cap-desc">Ve y exporta a CSV en un clic</div>
+      </div>
+      <div class="sa-cap accent">
+        <div class="sa-cap-icon">🙏</div>
+        <div class="sa-cap-name">Peticiones de oración</div>
+        <div class="sa-cap-desc">Recibe y gestiona desde el panel</div>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="sa-bottom">
+      <div class="sa-chans">
+        <div class="sa-ch">
+          <div class="sa-chi wa"><svg width="16" height="16" viewBox="0 0 24 24" fill="#0a0a0a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.975-1.306A9.94 9.94 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></div>
+          <div><div class="sa-chn">+52 814 807 8309</div><div class="sa-chp">WhatsApp</div></div>
+        </div>
+        <div class="sa-ch">
+          <div class="sa-chi ig"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#444" stroke="none"/></svg></div>
+          <div><div class="sa-chn" style="font-size:12px;">@ramos_mkt.rex</div><div class="sa-chp">Instagram</div></div>
+        </div>
+        <div style="margin-top:6px;font-size:12px;font-weight:600;color:#00e676;">ramosmkt.lat</div>
+      </div>
+
+      <div class="qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&data=https://wa.me/528148078309?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto%20web" width="88" height="88" alt="QR WA"/>
+        <div class="qr-lbl">Cotiza tu<br>sitio web</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<button class="dl-btn" onclick="dl('story-admin','rmkt-admin-story.png',3)">Descargar Story Admin PNG</button>
+
+
+<script>
+async function dl(id, filename, pixelRatio) {
+  const el = document.getElementById(id);
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = 'Generando…';
+  btn.disabled = true;
+  try {
+    const dataUrl = await htmlToImage.toPng(el, { pixelRatio });
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    a.click();
+  } catch(e) {
+    alert('Error al generar: ' + e.message);
+  }
+  btn.textContent = orig;
+  btn.disabled = false;
+}
+</script>
 </body>
 </html>
