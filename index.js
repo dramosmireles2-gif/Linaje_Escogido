@@ -11,7 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
   loadHeroTexto();
   loadPastorFoto();
   loadHorarios();
+  initScrollUrl();
 });
+
+// ── URL por sección ──
+function initScrollUrl() {
+  const sections = document.querySelectorAll('section[id]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        history.replaceState(null, '', id ? `#${id}` : location.pathname);
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+}
 
 // ── HERO ──
 async function loadHero() {
