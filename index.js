@@ -20,11 +20,10 @@ function initScrollUrl() {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        const id = e.target.id;
-        history.replaceState(null, '', id ? `#${id}` : location.pathname);
+        history.replaceState(null, '', `#${e.target.id}`);
       }
     });
-  }, { threshold: 0.4 });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
   sections.forEach(s => observer.observe(s));
 }
 
