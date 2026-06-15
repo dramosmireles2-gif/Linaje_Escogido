@@ -6,8 +6,15 @@
 <title>Linaje Escogido</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="style.css?v=2"/>
+<link rel="stylesheet" href="style.css"/>
 <link rel="icon" href="1.png" type="image/png"/>
+<style>
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#F5EFE6}
+::-webkit-scrollbar-thumb{background:rgba(26,26,26,.45);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(26,26,26,.75)}
+html{scrollbar-width:thin;scrollbar-color:rgba(26,26,26,.45) #F5EFE6}
+</style>
 </head>
 <body>
 
@@ -242,6 +249,17 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="index.js?v=2"></script>
+<script src="index.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var sections = document.querySelectorAll('section[id]');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) history.replaceState(null, '', '#' + e.target.id);
+    });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+  sections.forEach(function(s) { observer.observe(s); });
+});
+</script>
 </body>
 </html>

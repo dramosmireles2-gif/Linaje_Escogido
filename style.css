@@ -11,9 +11,9 @@ body{background:var(--cream);color:var(--dark);font-family:'DM Sans',sans-serif;
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--cream)}
-::-webkit-scrollbar-thumb{background:rgba(26,26,26,.25);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:rgba(26,26,26,.5)}
-*{scrollbar-width:thin;scrollbar-color:rgba(26,26,26,.25) var(--cream)}
+::-webkit-scrollbar-thumb{background:rgba(26,26,26,.45);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(26,26,26,.75)}
+html{scrollbar-width:thin;scrollbar-color:rgba(26,26,26,.45) var(--cream)}
 
 /* ── NAV ── */
 nav{
